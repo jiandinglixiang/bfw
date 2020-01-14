@@ -1,0 +1,45 @@
+.component {
+  height: 30px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  background-color: #06051A;
+
+  img {
+    flex: 0 0 16px;
+    height: 16px;
+    margin-left: 15px;
+    margin-right: 3px;
+  }
+
+  div {
+    width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+
+    @keyframes myfirst {
+      0% {
+        transform: translateX(0)
+      }
+      100% {
+        transform: translateX(-100%)
+      }
+    }
+
+    p {
+      animation: myfirst 15s infinite linear;
+      min-width: 100%;
+      padding-right: 10%;
+      flex: 1 0 auto;
+      color: white;
+      font-size: 14px;
+      line-height: 30px;
+      white-space: nowrap;
+    }
+  }
+}

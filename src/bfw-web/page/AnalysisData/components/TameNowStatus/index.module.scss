@@ -1,0 +1,144 @@
+.appContent {
+  margin-top: 10px;
+  background: url("../../../../assets/data_dota.png") no-repeat left top;
+  background-size: 100% 100%;
+
+  //&.game-rear-5 {
+  //  // 刀塔
+  //  background-image: url("../../../../assets/data_dota.png");
+  //}
+
+  &.game-rear-1 {
+    // 撸啊撸
+    background-image: url("../../../../assets/data_lol.png");
+  }
+
+  &.game-rear-2 {
+    // 王者
+    background-image: url("../../../../assets/data_kog.png");
+  }
+  &.game-rear-4 {
+    // ow
+    background-image: url("../../../../assets/data_ow.png");
+  }
+  &.game-rear-3 {
+    // cs
+    background-image: url("../../../../assets/data_csgo.png");
+  }
+
+  .roundTitle {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    height: 50px;
+
+    p:first-child {
+      flex: 0 1 33.3%;
+      color: #4F5975;
+
+      &:before {
+        content: '';
+        margin: 0 10px;
+        width: 1em;
+        height: 1em;
+        display: inline-block;
+        border-radius: 50%;
+        background-color: #4F5975;
+        transform: scale(0.4);
+      }
+
+      span {
+        margin-right: 5px;
+      }
+    }
+
+    &.status-0 {
+      p:first-child:before {
+        background-color: #F9DF70;
+      }
+
+      p:last-child {
+        color: #F9DF70;
+      }
+    }
+
+    &.status-1 {
+      p:first-child:before {
+        background-color: #70F7E3;
+      }
+
+      p:last-child {
+        color: #70F7E3;
+      }
+    }
+
+
+    p:last-child {
+      flex: 0 1 33.3%;
+      text-align: center;
+      color: #4F5975;
+    }
+  }
+
+  .tamePvpName {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    height: 70px;
+
+    img {
+      width: 0;
+      margin: 0 5px;
+      flex: 0 0 70px;
+      height: auto;
+      max-height: 70px;
+    }
+
+    .rightName, .leftName {
+      width: 0;
+      flex: 1 0 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: white;
+      font-weight: bold;
+    }
+
+    .centerScore {
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+      min-width: 5%;
+      text-align: center;
+      flex: 0 0 auto;
+    }
+
+    .leftName {
+      text-align: right;
+    }
+  }
+
+  .pvpLiveList {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    min-height: 53px;
+
+    li:first-child {
+      margin-left: 2%;
+    }
+
+    li {
+      margin-right: 2%;
+      margin-bottom: 20px;
+      flex: 0 0 auto;
+      padding: 0 2%;
+      line-height: 33px;
+      background: #06051A url("../../../../assets/liveBtn.png") no-repeat left top;
+      background-size: 100% 100%;
+    }
+  }
+}

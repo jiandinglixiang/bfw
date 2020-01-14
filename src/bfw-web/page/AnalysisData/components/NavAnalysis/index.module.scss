@@ -1,0 +1,25 @@
+.appContent {
+  border-radius: 4px;
+  overflow: hidden;
+
+  li {
+    font-weight: bold;
+    padding: 10px;
+    background-color: #203457;
+    color: #4F5975;
+    border-top: 1px solid #1B2E50;
+  }
+
+  li:hover {
+    color: #70F7E3;
+    background: url("../../../../assets/data_button_hover.png") no-repeat left top;
+    background-color: #203457;
+    background-size: auto 100%;
+  }
+
+  li:active {
+    background-color: #06051A;
+  }
+}
+
+

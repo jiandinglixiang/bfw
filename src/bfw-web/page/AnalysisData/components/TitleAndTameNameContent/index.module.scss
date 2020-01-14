@@ -1,0 +1,48 @@
+.appContent {
+  margin-top: 10px;
+  background: #06051A;
+
+  > p:first-child {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px 10px 10px 10px;
+    word-wrap: break-word;
+  }
+
+  .pvpTameName {
+    padding: 0 10px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+
+    p:first-child {
+      text-align: right;
+    }
+
+    .tameName {
+      width: 0;
+      flex: 1 1 auto;
+      word-wrap: break-word;
+      font-weight: bold;
+    }
+
+    .tameDot {
+      flex: 0 0 auto;
+      margin: 0 5px;
+    }
+
+    .centerImg {
+      max-width: 380px;
+      margin-top: 1%;
+      width: 0;
+      flex: 0 0 50%;
+    }
+  }
+
+  .paddingTop10 {
+    padding-top: 10px;
+  }
+
+}

@@ -1,0 +1,86 @@
+.appContent {
+  width: 100%;
+  margin-bottom: 10px;
+  height: 60px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  background-color: #203457;
+
+  > img {
+    width: 0;
+    margin: 0 0.5%;
+    flex: 0 0 2%;
+    height: auto;
+  }
+
+  .gameNameAndTime {
+    width: 0;
+    flex: 0 0 30%;
+    margin-right: 10px;
+
+    span {
+      margin-right: 5px;
+    }
+
+    p:first-child {
+      color: white;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    p:last-child {
+      color: #85838F;
+      padding-top: 5px;
+    }
+  }
+
+  .pvpNameOdd {
+    width: 0;
+    margin-right: 20%;
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 0;
+      margin: 0 5px;
+      flex: 0 0 40px;
+      height: auto;
+      max-height: 70px;
+    }
+
+    .rightName, .leftName {
+      width: 0;
+      flex: 1 0 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: white;
+    }
+
+    .centerScore {
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      flex: 0 0 auto;
+      padding: 0 10px;
+    }
+
+    .leftName {
+      text-align: right;
+    }
+  }
+
+  .navData {
+    width: 0;
+    flex: 0 0 13%;
+    color: #F9DF70;
+    font-weight: bold;
+    padding: 0 20px 0 10px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,156 @@
+.content {
+  background-color: #06051A;
+  $height: 10px;
+
+  .tameNames {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    p:first-child {
+      text-align: right;
+      background: url("../../../assets/1.png") no-repeat right center;
+      background-size: 10px;
+    }
+
+    p:last-child {
+      background: url("../../../assets/2.png") no-repeat left center;
+      background-size: 10px;
+    }
+
+    p {
+      padding: 0 1em;
+      font-size: 12px;
+      line-height: 30px;
+      height: 30px;
+      flex: 0 0 30%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
+  ul {
+    padding: 0 15px;
+    min-height: 250px;
+
+    li {
+      &.noneAnyOne {
+        text-align: center;
+        line-height: 250px;
+        color: #4F5975;
+      }
+
+      .itemTop {
+        padding: 20px 2.5em 2px 2.5em;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+
+        p {
+          color: #85838F;
+          font-size: 12px;
+        }
+
+        p:nth-child(2) {
+          flex: 1 1 33.3%;
+          text-align: center;
+          color: white;
+          font-weight: bold;
+        }
+
+        p:first-child {
+          flex: 0 1 33.3%;
+          padding-left: $height;
+        }
+
+        p:last-child {
+          flex: 0 1 33.3%;
+          text-align: right;
+          padding-right: $height;
+        }
+      }
+
+      .itemBottom {
+        height: $height;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+
+        .centerStatistics {
+          margin: 0 1%;
+          width: 0;
+          overflow: hidden;
+          border-radius: $height;
+          flex: 1 1 auto;
+          height: $height;
+          position: relative;
+          line-height: $height;
+          background-color: #203457;
+
+          div {
+            border-radius: $height;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+          }
+
+          div:nth-of-type(1) {
+            background-color: #E12727;
+            left: 0;
+          }
+
+          div:nth-of-type(2) {
+            background-color: #4099D7;
+            right: 0;
+          }
+        }
+
+        .centerStatisticsHistory {
+          margin: 0 1%;
+          width: 0;
+          overflow: hidden;
+          border-radius: $height;
+          flex: 1 1 auto;
+          height: $height;
+          position: relative;
+          background-color: #203457;
+          line-height: $height;
+
+          div:nth-of-type(1) {
+            position: absolute;
+            right: 50%;
+            height: $height;
+            max-width: 50%;
+            border-top-left-radius: $height;
+            border-bottom-left-radius: $height;
+            background-color: #E12727;
+          }
+
+          div:nth-of-type(2) {
+            position: absolute;
+            left: 50%;
+            height: $height;
+            max-width: 50%;
+            border-top-right-radius: $height;
+            border-bottom-right-radius: $height;
+            background-color: #4099D7;
+          }
+        }
+
+        p:nth-of-type(1) {
+          flex: 0 0 2.5em;
+          text-align: left;
+        }
+
+        p:nth-of-type(2) {
+          flex: 0 0 2.5em;
+          text-align: right;
+        }
+      }
+    }
+  }
+}

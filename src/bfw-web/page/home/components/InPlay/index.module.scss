@@ -1,0 +1,100 @@
+.appContent {
+  width: 0;
+  margin-bottom: 10px;
+  flex: 0 1 33%;
+  margin-left: 0.5%;
+
+  &:nth-child(3n+1) {
+    margin-left: 0;
+  }
+
+  .matchTitle {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    background: rgba(6, 26, 53, 1);
+    height: 30px;
+    color: white;
+
+    img {
+      width: 0;
+      margin: auto 5px;
+      flex: 0 0 20px;
+      height: auto;
+      //max-height: 30px;
+    }
+
+    p:nth-of-type(1) {
+      flex: 1 1 auto;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    //p:nth-last-of-type(-1n + 2) {
+    //  padding: 0 8px;
+    //  flex: 0 0 auto;
+    //}
+
+    p:last-child {
+      //color: #70F7E3;
+      padding: 0 8px;
+      flex: 0 0 auto;
+    }
+  }
+
+  .tameDetails {
+    background-color: #203457;
+
+    .tameMatchOdd {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      height: 50px;
+      cursor: pointer;
+
+      > img {
+        margin: 0 5px;
+        width: 0;
+        flex: 0 0 40px;
+        height: auto;
+      }
+
+      .tameName {
+        width: 0;
+        flex: 1 1 auto;
+
+        p:first-child {
+          font-weight: 400;
+          color: white;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        p:last-child {
+          color: #009CFF;
+        }
+      }
+
+      .oddArray {
+        flex: 0 0 auto;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+
+        div {
+          text-align: center;
+          width: 35px;
+          font-weight: bold;
+          font-size: 18px;
+          color: white;
+        }
+
+        div.GameOver {
+          color: #85838F;
+        }
+      }
+    }
+  }
+}

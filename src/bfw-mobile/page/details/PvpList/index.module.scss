@@ -1,0 +1,124 @@
+.content {
+  overflow: hidden;
+  padding: 0 15px;
+  background-color: #06051A;
+}
+
+.noneAnyOne {
+  &:after {
+    box-sizing: border-box;
+    content: '暂无数据';
+    display: block;
+    width: 100%;
+    padding-top: 100px;
+    height: 150px;
+    text-align: center;
+    background: url("../../../assets/default_nodata.png") no-repeat center 30px;
+    background-size: 65px 65px;
+    color: #4F5975;
+  }
+}
+
+.publicClass { //ul
+  padding-top: 15px;
+
+  .contentTitle, .bodyItem {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1px;
+
+    > div {
+      width: 0;
+      flex: 0 0 25%;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .longRow {
+      flex: 1 1 auto;
+    }
+  }
+
+  &.compactRow div {
+    flex: 0 0 20%;
+  }
+
+  .contentTitle {
+    border-radius: 2px 2px 0 0;
+    background-color: #081833;
+    height: 25px;
+    font-size: 14px;
+  }
+
+  .bodyItem {
+    padding: 5px 0;
+    background-color: #203255;
+
+    img {
+      margin-bottom: 5px;
+      max-width: 90%;
+      height: 25px;
+    }
+
+    p {
+      max-width: 100%;
+      padding: 0 5px;
+      font-size: 12px;
+      line-height: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .leftText {
+      width: 100%;
+      text-align: left;
+    }
+
+    .scoreArr {
+      width: 100%;
+      padding: 0;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: space-between;
+      &:after, &:before {
+        display: block;
+        content: '';
+      }
+    }
+
+    span {
+      color: #85838F;
+    }
+
+    .winScore {
+      color: #F9DF70;
+    }
+  }
+
+  .bodyItem .longRow p:first-child {
+    word-wrap: break-word;
+    overflow: inherit;
+    text-overflow: inherit;
+    white-space: inherit;
+    margin-bottom: 5px;
+  }
+
+
+  .moreList {
+    //margin-bottom: 15px;
+    color: #4F5975;
+    text-align: center;
+    line-height: 40px;
+    height: 40px;
+    background: rgba(32, 52, 87, 1);
+    border-radius: 0 0 2px 2px;
+  }
+}

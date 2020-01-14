@@ -1,0 +1,135 @@
+.content {
+  margin-bottom: 5px;
+  min-height: 100px;
+
+  .matchState {
+    min-height: 25px;
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: #061A35;
+
+    .leftName {
+      height: 25px;
+      flex: 0 1 50%;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+
+      img {
+        margin-left: 15px;
+        margin-right: 5px;
+        max-height: 25px;
+        width: 15px;
+        flex: 0 0 auto;
+      }
+
+      p {
+        color: white;
+        width: 0;
+        flex: 1 1 auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .centerData {
+
+      text-align: center;
+      flex: 0 0 auto;
+      margin: 0 10px;
+      line-height: 25px;
+
+      .state0 {
+        color: #70F7E3;
+      }
+
+      .state1 {
+        color: white;
+      }
+
+      .state2 {
+        color: #4F5975;
+      }
+    }
+
+    .rightLink {
+      flex: 0 1 50%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-end;
+
+      .dataLink {
+        flex: 0 1 auto;
+        line-height: 25px;
+        margin-right: 15px;
+        color: #F9DF70;
+      }
+    }
+  }
+
+  .tamePvp {
+    padding-top: 15px;
+    height: 75px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: #203457;
+
+    .logOdds {
+      overflow: hidden;
+      flex: 0 0 50px;
+      text-align: center;
+
+      img {
+        vertical-align: bottom;
+        max-width: 50px;
+        height: 30px;
+        max-height: 30px;
+      }
+    }
+
+    .centerBody {
+      flex: 0 0 20%;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      justify-content: center;
+
+      p:first-child {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        &:after, &:before {
+          display: block;
+          content: '';
+        }
+      }
+    }
+
+    .tameName {
+      padding: 0 5px;
+      flex: 1 1 25%;
+      height: 30px;
+      line-height: 30px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .odds {
+      height: 25px;
+      line-height: 25px;
+      color: #009CFF;
+      text-align: center;
+      font-size: 12px;
+    }
+  }
+}

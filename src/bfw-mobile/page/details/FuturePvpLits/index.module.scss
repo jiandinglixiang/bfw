@@ -1,0 +1,37 @@
+.content {
+  overflow: hidden;
+  padding: 0 15px;
+  background-color: #06051A;
+
+  .container {
+    padding-top: 15px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    > div {
+      width: 0;
+      flex: 0 0 49.5%;
+    }
+  }
+
+  .moreList {
+    margin-bottom: 15px;
+    color: #4F5975;
+    text-align: center;
+    line-height: 40px;
+    height: 40px;
+    background: rgba(32, 52, 87, 1);
+    border-radius: 0 0 2px 2px;
+  }
+
+  .withOut {
+    display: block;
+    width: 100%;
+    height: 150px;
+    text-align: center;
+    line-height: 150px;
+    color: #4F5975;
+  }
+}

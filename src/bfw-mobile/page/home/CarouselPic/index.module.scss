@@ -1,0 +1,16 @@
+.content {
+  background-color: #203457;
+  overflow: hidden;
+
+  .carousel {
+    width: 100%;
+    height: 41vw !important;
+    max-height: 307px !important;
+
+    img {
+      width: 100%;
+      height: 100%;
+      vertical-align: top;
+    }
+  }
+}

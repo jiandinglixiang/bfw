@@ -1,0 +1,56 @@
+.noList {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  color: #4F5975;
+
+  &:after {
+    content: '暂无数据';
+    display: inline-block;
+    color: #4F5975;
+  }
+
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 130px;
+    height: 130px;
+    background: url("../../../../assets/default_nodata.png") no-repeat center center;
+    background-size: 121px;
+  }
+}
+
+.appContent {
+  flex: 1 1 auto;
+
+  .signLink {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    color: #F9DF70;
+    height: 40px;
+
+    p:first-child {
+      min-width: 5em;
+      flex: 0 0 auto;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    p:nth-child(2) {
+      flex: 1 1 60%;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    p:last-child {
+      min-width: 5em;
+      font-weight: bold;
+      flex: 0 0 auto;
+      text-align: right;
+      cursor: pointer;
+    }
+  }
+}

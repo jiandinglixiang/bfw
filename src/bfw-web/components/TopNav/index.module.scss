@@ -1,0 +1,27 @@
+.navTop {
+  background: url("../../assets/nav_bar_line.png") repeat-x left top,
+  url("../../assets/nav_bar_right.png") no-repeat right top,
+  url("../../assets/nav_bar_middle.png") no-repeat center top,
+  url("../../assets/nav_bar_left.png") no-repeat left top;
+  background-size: 10px, 372px, 320px, 373px;
+  //background-color: #1b2632;
+  width: 100%;
+  height: 61px;
+
+  > div {
+    width: 50%;
+    height: 100%;
+    padding-left: 372px;
+    padding-right: 160px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+
+    .navButton {
+      padding: 20px;
+      color: #70F7E3;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  }
+}

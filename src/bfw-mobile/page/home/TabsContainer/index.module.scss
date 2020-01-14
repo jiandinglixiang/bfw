@@ -1,0 +1,123 @@
+.content {
+  position: relative;
+  min-height: 60px;
+
+  .showMenu {
+    margin: 7px;
+    height: 16px;
+    width: 16px;
+    flex: 0 0 auto;
+  }
+
+  .rotateIcon {
+    transform: rotateX(180deg);
+  }
+
+  .navBar {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: #06051A;
+    height: 30px;
+    overflow: hidden;
+
+    .menuContent {
+      flex: 1 1 auto;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      font-size: 13px;
+      background-color: #06051A;
+
+      .dayName {
+        flex: 0 1 auto;
+        min-width: 68px;
+        max-width: 100%;
+        padding: 0 6px;
+        font-weight: bold;
+        color: #85838F;
+        line-height: 30px;
+        height: 30px;
+        white-space: nowrap;
+        text-align: center;
+        user-select: none;
+        cursor: pointer;
+        overflow: hidden;
+      }
+
+      .dayName.activeButton, .dayName:active {
+        color: #F9DF70;
+        background-color: #203457;
+      }
+
+    }
+  }
+
+  .showAll {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    min-height: 30px;
+    overflow: inherit;
+  }
+
+
+  .dayOpt {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    min-height: 30px;
+    background-color: #203457;
+
+    .dayList {
+      min-height: 30px;
+      width: 0;
+      flex: 1 1 auto;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      justify-content: flex-start;
+
+      .dayName {
+        flex: 0 1 auto;
+        min-width: 68px;
+        max-width: 100%;
+        padding: 0 6px;
+        color: #85838F;
+        line-height: 30px;
+        height: 30px;
+        white-space: nowrap;
+        text-align: center;
+        user-select: none;
+        cursor: pointer;
+        overflow: hidden;
+
+        &.activeButton, &:active {
+          color: white;
+        }
+      }
+
+      .timeUpdate {
+        flex: 1 1 auto;
+        text-align: center;
+        word-wrap: break-word;
+
+        span {
+          color: #E12727;
+        }
+      }
+    }
+  }
+}
+
+.tabOne {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  color: red;
+}

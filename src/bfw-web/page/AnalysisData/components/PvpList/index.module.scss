@@ -1,0 +1,86 @@
+.appContent {
+  height: 60px;
+  background: rgba(32, 52, 87, 1);
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  //margin-bottom: 1px;
+  margin: 0 12px 1px 10px;
+
+  .gameNameAndTime {
+    margin-left: 0.5%;
+    width: 0;
+    flex: 0 0 25%;
+
+    p:first-child {
+      font-weight: bold;
+      color: white;
+
+      span {
+        margin-right: 5px;
+      }
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    p:last-child {
+      padding-top: 5px;
+      color: #85838F;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .tamePvpName {
+    width: 0;
+    flex: 0 0 48%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0.5%;
+    height: 60px;
+
+    img {
+      width: 0;
+      margin: 0 5px;
+      flex: 0 0 60px;
+      height: auto;
+      max-height: 60px;
+    }
+
+    .rightName, .leftName {
+      width: 0;
+      flex: 1 0 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: white;
+      font-weight: bold;
+    }
+
+    .centerScore {
+      font-weight: bold;
+      color: #85838F;
+      min-width: 5%;
+      text-align: center;
+      flex: 0 0 auto;
+
+      &.winOf {
+        color: #F9DF70;
+      }
+    }
+
+    .leftName {
+      text-align: right;
+    }
+
+    .grayColor {
+      color: #85838F;
+    }
+  }
+}

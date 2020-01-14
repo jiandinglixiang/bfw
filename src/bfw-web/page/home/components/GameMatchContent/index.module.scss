@@ -1,0 +1,162 @@
+.tabBarStyle {
+  margin-top: 15px;
+  position: relative;
+
+  :global {
+    .ant-tabs-bar {
+      border-bottom: 0;
+    }
+
+    .ant-tabs-card-bar {
+      display: flex;
+      flex-flow: row nowrap;
+      background: none;
+      border-top-right-radius: 20px 10px;
+      margin-bottom: 2pt;
+
+      .ant-tabs-nav div:first-child > div:last-child {
+        position: relative;
+        margin-right: 0;
+      }
+    }
+
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-nav-container {
+      order: 1;
+      flex: 0 0 auto;
+    }
+
+    .ant-tabs .ant-tabs-top-content {
+      min-height: 337px;
+    }
+
+    .ant-tabs.ant-tabs-card .ant-tabs-extra-content {
+      float: none !important;
+      flex: 1 1 auto;
+      order: 2;
+    }
+
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+      min-width: 90px;
+      text-align: center;
+      background: url("../../../../assets/home_menu_normal.png") no-repeat left top;
+      background-size: 100%;
+      color: #85838F;
+      border: 0;
+      margin-right: 4px;
+    }
+
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
+      background-image: url("../../../../assets/home_menu_select.png");
+      color: #F9DF70;
+    }
+
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab:hover {
+      color: #F9DF70;
+    }
+
+  }
+
+  .timeAndSelected {
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    background: rgba(6, 5, 26, 0.5);
+
+    &:after {
+      position: absolute;
+      left: -10px;
+      top: 0;
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: rgba(6, 5, 26, 0.5);
+    }
+
+    .todayTime {
+      cursor: pointer;
+      position: relative;
+      color: #85838F;
+      border-radius: 0;
+      min-width: 90px;
+      padding: 0 14px 0 28px;
+      text-align: center;
+
+      &:after {
+        content: '';
+        display: inline-block;
+        min-width: 1px;
+        height: 1.5em;
+        background-color: #2F253B;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &:hover {
+        color: white;
+      }
+
+      &.tabActive {
+        color: white;
+      }
+    }
+
+    .timeUpdate {
+      color: white;
+      padding: 0 25px;
+      flex: 1 1 auto;
+      text-align: center;
+
+      span {
+        color: #FF3D3D;
+      }
+    }
+
+    .calendarIcon {
+      position: absolute;
+      right: 30px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: center;
+
+      .topCalendar {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 300px;
+        min-height: 337px;
+        z-index: 100;
+        border: 1px solid #d9d9d9;
+        background-color: white;
+      }
+    }
+
+    .noAnyOne {
+      display: none;
+    }
+  }
+
+  .rowOneByOne {
+    padding-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .noAnyOne:after {
+    flex: 1 1 auto;
+    display: block;
+    line-height: 400px;
+    background-color: #03051a;
+    text-align: center;
+    color: white;
+    content: '暂无数据';
+  }
+}
+

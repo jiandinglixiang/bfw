@@ -1,0 +1,176 @@
+.content {
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 135px;
+  padding-bottom: 8px;
+  background-size: 100% 100%;
+
+  .topState {
+    padding-top: 7px;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+
+    p:first-child {
+      padding-left: 15px;
+      flex: 0 0 35%;
+      color: #85838F;
+
+      &:before {
+        content: '';
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+        transform: scale(0.5);
+        vertical-align: bottom;
+      }
+    }
+
+    p:last-child {
+      text-align: center;
+      flex: 0 0 30%;
+    }
+  }
+
+  .topState0 {
+    // 未开始
+    p:first-child:before {
+      background-color: #F9DF70;
+    }
+
+    p:last-child {
+      color: #F9DF70;
+    }
+  }
+
+  .topState1 {
+    //进行中
+    p:first-child:before {
+      background-color: #70F7E3;
+    }
+
+    p:last-child {
+      color: #70F7E3;
+    }
+  }
+
+  .topState2 {
+    // 已结束
+    p:first-child:before {
+      background-color: #85838F
+    }
+
+    p:last-child {
+      color: #85838F;
+    }
+  }
+
+  .centerTameName {
+    padding-top: 15px;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+
+    .pvpScore {
+      flex: 1 1 27%;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      font-size: 20px;
+      font-weight: bold;
+      justify-content: space-between;
+      &:after, &:before {
+        display: block;
+        content: '';
+      }
+    }
+
+    .name {
+      margin: 0 15px;
+      flex: 1 1 22%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .logo {
+      width: 0;
+      flex: 0 0 30px;
+    }
+  }
+
+  .bottomDate {
+    color: #85838F;
+    height: 30px;
+    line-height: 30px;
+  }
+
+  &.game-rear-0 {
+    // 撸啊撸
+    background-image: url("../../../assets/data_dota2.png");
+  }
+
+  &.game-rear-1 {
+    // 撸啊撸
+    background-image: url("../../../assets/data_lol2.png");
+  }
+
+  &.game-rear-2 {
+    // 王者
+    background-image: url("../../../assets/data_kog2.png");
+  }
+
+  &.game-rear-4 {
+    // ow
+    background-image: url("../../../assets/data_ow2.png");
+  }
+
+  &.game-rear-3 {
+    // cs
+    background-image: url("../../../assets/data_csgo2.png");
+  }
+
+}
+
+.alertTitle {
+  position: relative;
+  background-color: #061A35;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+
+  img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+  }
+}
+
+:global {
+  html:not([data-scale]) .am-modal-button-group-v .am-modal-button::before {
+    display: none;
+  }
+
+  .am-modal-content {
+    background-color: transparent;
+  }
+
+  .am-modal-transparent .am-modal-content .am-modal-body {
+    padding: 0;
+  }
+
+  .am-modal-transparent .am-modal-content {
+    padding-top: 0;
+  }
+}
+

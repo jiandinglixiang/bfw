@@ -1,0 +1,49 @@
+.component {
+  height: 44px;
+  position: relative;
+
+  .body {
+    background-color: #091329;
+    height: 44px;
+
+    .backImg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 11px;
+      width: 44px;
+      height: 44px;
+    }
+
+    .center {
+      height: 100%;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      color: #70F7E3;
+
+      img {
+        max-height: 100%;
+      }
+    }
+
+    .rightContent {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      top: 0;
+    }
+  }
+
+  .fixedTop {
+    position: fixed;
+    width: 100%;
+    max-width: 750px;
+    top: 0;
+    //left: 0;
+    //right: 0;
+  }
+}

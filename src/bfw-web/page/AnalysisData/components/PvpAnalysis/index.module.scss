@@ -1,0 +1,90 @@
+.appContent {
+  margin-top: 10px;
+  min-height: 170px;
+  padding: 0 10px 10px 10px;
+  background: #06051A no-repeat center 40px;
+  background-size: auto 12px;
+
+  .roundButton {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+
+    li:first-child {
+      margin-left: 2%;
+    }
+
+    li {
+      //width: 88px;
+      min-width: 8%;
+      margin-right: 2%;
+      margin-top: 30px;
+      flex: 0 0 auto;
+      line-height: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 6px;
+      text-align: center;
+      color: #4F5975;
+      background-color: #071934;
+      border: 1px solid #4F5975;
+    }
+
+    li:hover {
+      color: white;
+    }
+
+    li.active {
+      color: white;
+      background-color: #009CFF;
+    }
+  }
+
+  .roundScore {
+    margin-top: 30px;
+
+    div:first-child {
+      min-height: 30px;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      background-color: #071934;
+
+      p {
+        width: 0;
+        font-weight: bold;
+        font-size: 16px;
+        text-align: center;
+        flex: 1 0 auto;
+        word-wrap: break-word;
+        padding: 0 10px;
+      }
+    }
+
+    div:last-child {
+      min-height: 40px;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      background-color: #203356;
+
+      p:nth-child(1n + 2) {
+        border-left: 1px solid #06051A;
+      }
+
+      p {
+        width: 0;
+        text-align: center;
+        line-height: 30px;
+        flex: 1 0 auto;
+        word-wrap: break-word;
+        padding: 0 10px;
+
+        span {
+          margin: 0 5px;
+        }
+      }
+    }
+  }
+}

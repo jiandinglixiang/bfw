@@ -1,0 +1,25 @@
+.content {
+  $width: 27px;
+  height: $width;
+  margin-bottom: 5px;
+
+  div.fixedTop {
+    background: url("../../assets/title_cyan.png") no-repeat;
+    background-size: 100% 100%;
+    height: $width;
+    width: 100%;
+    max-width: 750px;
+
+    p {
+      color: white;
+      font-size: 14px;
+      text-align: center;
+      line-height: $width;
+    }
+  }
+
+  //.fixedTop {
+  //  position: fixed;
+  //  top: 0;
+  //}
+}

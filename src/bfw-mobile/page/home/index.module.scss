@@ -1,0 +1,16 @@
+.content {
+  margin: 0 auto;
+}
+
+.fixedTop {
+  margin-top: 134px;
+  height: 41vw;
+  max-height: 307px;
+
+  > div {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    max-width: 750px;
+  }
+}
