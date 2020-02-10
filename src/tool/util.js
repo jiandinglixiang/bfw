@@ -161,6 +161,14 @@ export function initOddAndLogoMobile (item, score) {
   return tameName
 }
 
+export function toLowerCaseEqual (name1, name2) {
+  try {
+    return name1.toLocaleLowerCase() === name2.toLocaleLowerCase()
+  } catch (e) {
+    return name1 === name2
+  }
+}
+
 export function initOddAndLogo (item, score) {
   const { score1, score2 } = score || {}
   const tameName = [
@@ -171,7 +179,7 @@ export function initOddAndLogo (item, score) {
     return oddSort(item).map(value => {
       let nameLogo = { id: value.id, name: value.name, logo: defaultImg, odds: value.odds }
       let tap
-      if ((tap = tameName.find(value1 => value1.name === value.name))) {
+      if ((tap = tameName.find(value1 => toLowerCaseEqual(value1.name, value.name)))) {
         nameLogo = tap
         nameLogo.odds = value.odds
         nameLogo.id = value.id

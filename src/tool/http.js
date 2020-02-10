@@ -3,12 +3,13 @@ import { searchFormat } from './util'
 let baseURL = '/'
 if (process.env.REACT_APP_build_url === 'test') {
   baseURL = 'http://129.226.129.226:9501'
-  // 测试
+  // 打包测试地址
 } else if (process.env.REACT_APP_build_url === 'prod') {
   baseURL = 'https://scoreapi.firebulls.net'
-  // 正式
+  // 打包正式地址
 } else if (process.env.NODE_ENV !== 'production') {
-  baseURL = '/dev'
+  // 开发
+  baseURL = '/prod'
 }
 
 const headers = new Headers()
