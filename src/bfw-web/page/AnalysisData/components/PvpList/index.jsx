@@ -17,22 +17,22 @@ function PvpList ({ twoSides }) {
         <p className={styles.leftName}>
           {team1Info.name}
         </p>
-        <img src={team1Info.icon || defaultImg} alt=''/>
-        <p className={`${styles.centerScore} ${value.team1_score > value.team2_score ? styles.winOf : ''}`}>
+        <img src={team1Info.icon || defaultImg} alt='' />
+        <p className={`${styles.centerScore} ${value.team1_score * 1 > value.team2_score ? styles.winOf : ''}`}>
           {value.team1_score}
         </p>
         <p className={`${styles.centerScore} ${styles.grayColor}`}>-</p>
-        <p className={`${styles.centerScore} ${value.team2_score > value.team1_score ? styles.winOf : ''}`}>
+        <p className={`${styles.centerScore} ${value.team2_score * 1 > value.team1_score ? styles.winOf : ''}`}>
           {value.team2_score}
         </p>
-        <img src={team2Info.icon || defaultImg} alt=''/>
+        <img src={team2Info.icon || defaultImg} alt='' />
         <p className={styles.rightName}>
           {team2Info.name}
         </p>
       </div>
     </div>
   })
-  return <PaginationCustom listItem={listItem} limit={5}/>
+  return <PaginationCustom listItem={listItem} limit={5} />
 }
 
 export default PvpList
