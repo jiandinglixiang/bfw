@@ -8,7 +8,7 @@ import { formatDate2, PropTypes } from '../../../../tool/util'
 function initList (value, index) {
   let winLogo = <div><span>平</span></div>
   let winScore = <div><span>暂无</span></div>
-  if (value.team1_score * 1 > value.team2_score) {
+  if (value.team1_score * 1 > value.team2_score * 1) {
     winLogo = <div>
       <img src={value.team1_info.icon || def} alt='' />
       <p>{value.team1_info.name}</p>
@@ -20,7 +20,7 @@ function initList (value, index) {
         <span>{value.team2_score}</span>
       </p>
     </div>
-  } else if (value.team2_score * 1 > value.team1_score) {
+  } else if (value.team2_score * 1 > value.team1_score * 1) {
     winLogo = <div>
       <img src={value.team2_info.icon || def} alt='' />
       <p>{value.team2_info.name}</p>
