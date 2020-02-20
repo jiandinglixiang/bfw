@@ -8,29 +8,41 @@ function PvpAnalyze ({ oddList = [] }) {
   const [active, setActive] = useState(0)
   const { titleArr, oddsArr } = useMemo(function () {
     const titleArr = []
-    const oddsArr = oddList.map(function (value, index) {
-      titleArr.push({ round: value.round, index })
-      return [0, 1, 2].map(function (value2, index2) {
-        const one = value.odds[index2] || [{}, {}]
-        // let left = ''
-        let leftOdds = ''
-        // let right = ''
-        let rightOdds = ''
-        if (one[0] && one[0].odds) {
-          // left = (one[0].name || '').includes(one[0].value) ? one[0].name : one[0].value || ''
-          leftOdds = toFixed(one[0].odds)
-        }
-        if (one[1] && one[1].odds) {
-          // right = (one[1].name || '').includes(one[1].value) ? one[1].name : one[1].value || ''
-          rightOdds = toFixed(one[1].odds)
-        }
-        return [
-          value.play_name[index2] || ' - ',
-          `${leftOdds} - ${rightOdds}`,
-        ]
+    let oddsArr
+    try {
+      oddsArr = oddList.map(function (value, index) {
+        titleArr.push({
+          round: value.round,
+          index
+        })
+        return [0, 1, 2].map(function (value2, index2) {
+          const one = value.odds[index2] || [{}, {}]
+          // let left = ''
+          let leftOdds = ''
+          // let right = ''
+          let rightOdds = ''
+          if (one[0] && one[0].odds) {
+            // left = (one[0].name || '').includes(one[0].value) ? one[0].name : one[0].value || ''
+            leftOdds = toFixed(one[0].odds)
+          }
+          if (one[1] && one[1].odds) {
+            // right = (one[1].name || '').includes(one[1].value) ? one[1].name : one[1].value || ''
+            rightOdds = toFixed(one[1].odds)
+          }
+          return [
+            value.play_name[index2] || ' - ',
+            `${leftOdds} - ${rightOdds}`,
+          ]
+        })
       })
-    })
-    return { titleArr, oddsArr }
+    } catch (e) {
+      oddsArr = []
+    }
+
+    return {
+      titleArr,
+      oddsArr
+    }
   }, [oddList])
   // console.log(titleArr, oddsArr)
   try {

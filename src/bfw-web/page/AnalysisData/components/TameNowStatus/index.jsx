@@ -13,6 +13,15 @@ export function format (time, swf) {
   }
 }
 
+export function scoreListReduce (scoreList) {
+  return scoreList.reduce(function (sum, top = {}) {
+    // 计算总比分  使首页比分取值同步
+    sum[0] = (top.team1 || 0) + sum[0]
+    sum[1] = (top.team2 || 0) + sum[1]
+    return sum
+  }, [0, 0])
+}
+
 function TameNowStatus (props) {
   const { matchList = {}, liveList, gameId } = props
   const status = matchList.status * 1
@@ -24,12 +33,7 @@ function TameNowStatus (props) {
 
   if (status === 1) {
     if (scoreList.length) {
-      scoreArr = scoreList.reduce(function (sum, top = {}) {
-        // 计算总比分  使首页比分取值同步
-        sum[0] = (top.team1 || 0) + sum[0]
-        sum[1] = (top.team2 || 0) + sum[1]
-        return sum
-      }, [0, 0])
+      scoreArr = scoreListReduce(scoreList)
       round = gameRound(scoreList, matchList.round_total)
     } else {
       scoreArr = [0, 0]

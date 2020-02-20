@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import React, { useMemo } from 'react'
 import defLogo from '../../../assets/default_team_60.png'
 import { formatDate2, initOddAndLogoMobile, inning, PropTypes, } from '../../../../tool/util'
+import { scoreListReduce } from '../../../../bfw-web/page/AnalysisData/components/TameNowStatus'
 
 export function gameRound (scoreList, roundTotal) {
   try {
@@ -42,10 +43,10 @@ function MatchItem (props) {
     const [score1, score2] = [[], []]
     if (mode === '1') {
       const scoreList = data.score_list || []
-      let len = 0
-      if (scoreList.length && (len = scoreList[scoreList.length - 1])) {
-        score1.push({ team: len.team1, win: false, })
-        score2.push({ team: len.team2, win: false, })
+      if (scoreList.length) {
+        const arr = scoreListReduce(scoreList)
+        score1.push({ team: arr[0], win: false, })
+        score2.push({ team: arr[1], win: false, })
       } else {
         score1.push({ team: '0', win: false, })
         score2.push({ team: '0', win: false, })

@@ -8,6 +8,7 @@ import liveBtnOff from '../../../assets/btn_live_off.png'
 import def from '../../../assets/default_team_60.png'
 import { connect } from 'react-redux'
 import { gameRound } from '../../home/MatchItem/MatchItem'
+import { scoreListReduce } from '../../../../bfw-web/page/AnalysisData/components/TameNowStatus'
 
 const alert = Modal.alert
 const alertStyle = {
@@ -48,10 +49,9 @@ function PvpTameState ({ gameId, matchList, liveList }) {
     let title = null // 状态
     let dis = '-' // 中间显示横杠或
     if (status === 1) {
-      let len = null
       title = '进行中'
-      if (scoreList.length && (len = scoreList[scoreList.length - 1])) {
-        scoreArr = [len.team1, len.team2]
+      if (scoreList.length) {
+        scoreArr = scoreListReduce(scoreList)
         round = gameRound(scoreList, matchList.round_total)
       } else {
         scoreArr = [0, 0]
