@@ -10,7 +10,7 @@ function GameOver (props) {
   return <div className={styles.appContent}>
     <img src={endMatchList.icon || defaultImg} alt=''/>
     <div className={styles.gameNameAndTime}>
-      <p><span>{endMatchList.game_name}</span><span>{endMatchList.match_rules}</span></p>
+      <div><p>{endMatchList.game_name}</p><span>{endMatchList.match_rules}</span></div>
       <p>{formatDate(endMatchList.game_start_time)}</p>
     </div>
     <div className={styles.pvpNameOdd}>

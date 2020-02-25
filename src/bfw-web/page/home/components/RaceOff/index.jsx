@@ -11,7 +11,7 @@ function RaceOff (props) {
   return <div className={styles.appContent}>
     <img src={notStartMatchList.icon || defaultImg} alt=''/>
     <div className={styles.gameNameAndTime}>
-      <p><span>{notStartMatchList.game_name}</span> <span>{notStartMatchList.match_rules}</span></p>
+      <div><p>{notStartMatchList.game_name}</p> <span>{notStartMatchList.match_rules}</span></div>
       <p>{formatDate(notStartMatchList.game_start_time)}</p>
     </div>
     <div className={styles.pvpNameOdd}>
