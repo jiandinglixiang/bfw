@@ -4,18 +4,18 @@ import { PropTypes } from '../../../../tool/util'
 import MatchItem from '../MatchItem/MatchItem'
 import MatchTitle from '../../../components/MatchTitle/MatchTitle'
 
-function GameOver ({ data = [] }) {
+function RaceOff ({ data = [] }) {
   const [moreShow, setMoreShow] = useState(false)
   if (!data.length) return null
   const showMore = !moreShow && data.length > 5
   const matchList = showMore ? data.slice(0, 5) : data
   return <div className={styles.appContent}>
-    <MatchTitle title='已结束的比赛' />
+    <MatchTitle title='未开始的比赛' />
     <ul>
       {
 
         matchList.map(function (value, index) {
-          return <MatchItem key={index} data={value} mode='2' />
+          return <MatchItem key={index} data={value} mode='0' />
         })
       }
       {showMore
@@ -27,8 +27,7 @@ function GameOver ({ data = [] }) {
   </div>
 }
 
-GameOver.propTypes = {
+RaceOff.propTypes = {
   data: PropTypes.array,
 }
-
-export default GameOver
+export default RaceOff

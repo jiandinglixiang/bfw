@@ -10,10 +10,8 @@ if (device.mobile()) {
   Router = lazy(() => import(/* webpackChunkName: 'mobile' */'./bfw-mobile/router'))
   store = require('./bfw-mobile/redux').default
 } else {
-  Router = lazy(() => import(/* webpackChunkName: 'mobile' */'./bfw-mobile/router'))
-  store = require('./bfw-mobile/redux').default
-  // Router = lazy(() => import(/* webpackChunkName: 'web' */'./bfw-web/router'))
-  // store = require('./bfw-web/store').default
+  Router = lazy(() => import(/* webpackChunkName: 'web' */'./bfw-web/router'))
+  store = require('./bfw-web/store').default
 }
 ReactDOM.render(<Provider store={store}>
   <Suspense fallback={<div>Loading...</div>}>
@@ -27,8 +25,4 @@ if (process.env.NODE_ENV === 'production') {
   serviceWorker.register()
 } else {
   serviceWorker.unregister()
-}
-// 模块热替换的 API
-if (module.hot) {
-  module.hot.accept()
 }

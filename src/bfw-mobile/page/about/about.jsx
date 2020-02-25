@@ -1,36 +1,5 @@
 import React from 'react'
-import aboutImg from '../../assets/aboutus_pic.png'
-import styles from '../mine/changePassword/index.module.scss'
-import nevBar from '../../assets/nav_back.png'
-import { PropTypes } from '../../../tool/util.js'
-import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 
-function About (props) {
-  const { height } = props
-  const history = useHistory()
-  const autoWidth = {
-    width: '100%',
-    minHeight: `${height - 45}px`,
-    backgroundColor: ' #06051A'
-  }
-  return <div>
-    <div className={styles.heardNav}>
-      <img src={nevBar} onClick={() => history.goBack()} />
-      <div>关于我们</div>
-    </div>
-    <img src={aboutImg} style={autoWidth} />
-  </div>
+export function About () {
+  return <div>About</div>
 }
-
-About.propTypes = {
-  height: PropTypes.number,
-}
-
-function mapStateToProps (state) {
-  return {
-    height: state.device.height
-  }
-}
-
-export default connect(mapStateToProps)(About)

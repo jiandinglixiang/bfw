@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import styles from './index.module.scss'
-import HeadBar from '../../components/HeadBar/HeadBar.jsx'
+import HeadBar from '../../components/HeadNav/HeadNav'
 import logo from '../../assets/logo.png'
 import NoticeBar from '../../components/NoticeBar/NoticeBar'
 import CarouselPic from './CarouselPic/CarouselPic'
@@ -10,7 +10,6 @@ import { useParams } from 'react-router-dom'
 import TabsContainer from './TabsContainer/TabsContainer'
 import MatchContainer from './MatchContainer/MatchContainer'
 import { PropTypes } from '../../../tool/util'
-import TryCatch from '../../components/TryCatch/TryCatch.jsx'
 
 function Home (props) {
   const {
@@ -29,12 +28,11 @@ function Home (props) {
       }
     })
   }, [gameId, dispatch])
-  const autoStyle = {
-    width: `${width}px`,
-    minHeight: `${height}px`,
-  }
   return <div
-    style={autoStyle}
+    style={{
+      width: `${width}px`,
+      minHeight: `${height}px`,
+    }}
     className={styles.content}>
     <div className={styles.fixedTop}>
       <div>
@@ -43,17 +41,11 @@ function Home (props) {
           hideBack
         />
         <NoticeBar txt={notice} />
-        <TryCatch>
-          <CarouselPic carouseMap={bannerList} />
-        </TryCatch>
-        <TryCatch>
-          <TabsContainer />
-        </TryCatch>
+        <CarouselPic carouseMap={bannerList} />
+        <TabsContainer />
       </div>
     </div>
-    <TryCatch>
-      <MatchContainer />
-    </TryCatch>
+    <MatchContainer />
   </div>
 }
 

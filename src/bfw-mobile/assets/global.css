@@ -16,7 +16,7 @@ body, button, input, select, textarea {
 html, body {
     height: 100%;
     width: 100%;
-    background: #06051A;
+    background: #091329;
     color: white;
 }
 
@@ -75,19 +75,4 @@ button {
 table {
     border-collapse: collapse;
     border-spacing: 0
-}
-
-@font-face {
-    font-family: 'ATUO123';
-    src: url("../assets/MilibusSb.ttf");
-}
-
-.baidu-tooltip123 {
-    background: url("../assets/data123.png") no-repeat left top;
-    background-size: 100% 100%;
-}
-
-.baidu-tooltip321 {
-    background: url("../assets/data321.png") no-repeat left top;
-    background-size: 100% 100%;
 }

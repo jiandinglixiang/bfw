@@ -4,11 +4,11 @@ import { PropTypes } from '../../../tool/util'
 
 export const fixedTopClass = styles.content
 
-function MatchTitle ({ gameName = '' }) {
+function MatchTitle ({ title }) {
   try {
     return <div className={styles.content}>
       <div className={styles.fixedTop}>
-        <p>{gameName}</p>
+        <p>{title}</p>
       </div>
     </div>
   } catch (e) {
@@ -17,6 +17,6 @@ function MatchTitle ({ gameName = '' }) {
 }
 
 MatchTitle.propTypes = {
-  gameName: PropTypes.string
+  title: PropTypes.string,
 }
 export default MatchTitle
