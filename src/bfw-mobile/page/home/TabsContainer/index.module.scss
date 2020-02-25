@@ -81,34 +81,106 @@
       align-items: center;
       justify-content: flex-start;
 
-      .dayName {
+      .noStart, .starting, .endOver {
         flex: 0 1 auto;
         min-width: 68px;
         max-width: 100%;
         padding: 0 6px;
-        color: #85838F;
-        line-height: 30px;
         height: 30px;
-        white-space: nowrap;
-        text-align: center;
-        user-select: none;
-        cursor: pointer;
-        overflow: hidden;
+        color: #85838F;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
 
-        &.activeButton, &:active {
+        p {
+          padding: 4px 5px;
+          line-height: 1;
+          white-space: nowrap;
+          text-align: center;
+          user-select: none;
+          cursor: pointer;
+          overflow: hidden;
+          border-radius: 20px;
+          vertical-align: top;
+        }
+
+        p:before {
+          content: '';
+          display: inline-block;
+          width: 1em;
+          height: 15px;
+          background-size: 100% auto;
+          background-repeat: no-repeat;
+          background-position: left center;
+          vertical-align: top;
+        }
+      }
+
+      .noStart {
+        p:before {
+          background-image: url("../../../assets/score_nostart_normal.png");
+        }
+
+        &.activeButton {
           color: white;
+
+          p {
+            background-color: #62BED8;
+          }
+
+          p:before {
+            background-image: url("../../../assets/score_nostart_seclect.png");
+          }
         }
       }
 
-      .timeUpdate {
-        flex: 1 1 auto;
-        text-align: center;
-        word-wrap: break-word;
+      .starting {
+        p:before {
+          background-image: url("../../../assets/score_ongoing_normal.png");
+        }
 
-        span {
-          color: #E12727;
+        &.activeButton {
+          color: white;
+
+          p {
+            background-color: #62BED8;
+          }
+
+          p:before {
+            background-image: url("../../../assets/score_ongoing_select.png");
+            background-color: #62BED8;
+          }
         }
       }
+    }
+
+    .endOver {
+      p:before {
+        background-image: url("../../../assets/score_result_normal.png");
+      }
+
+      &.activeButton {
+        color: white;
+
+        p {
+          background-color: #62BED8;
+        }
+
+        p:before {
+          background-image: url("../../../assets/score_result_select.png");
+          background-color: #62BED8;
+        }
+      }
+    }
+  }
+
+  .timeUpdate {
+    flex: 1 1 auto;
+    text-align: center;
+    word-wrap: break-word;
+
+    span {
+      color: #E12727;
     }
   }
 }

@@ -156,21 +156,21 @@
   }
 }
 
-:global {
-  html:not([data-scale]) .am-modal-button-group-v .am-modal-button::before {
-    display: none;
-  }
-
-  .am-modal-content {
-    background-color: transparent;
-  }
-
-  .am-modal-transparent .am-modal-content .am-modal-body {
-    padding: 0;
-  }
-
-  .am-modal-transparent .am-modal-content {
-    padding-top: 0;
-  }
-}
+//:global {
+//  html:not([data-scale]) .am-modal-button-group-v .am-modal-button::before {
+//    display: none;
+//  }
+//
+//  .am-modal-content {
+//    background-color: transparent;
+//  }
+//
+//  .am-modal-transparent .am-modal-content .am-modal-body {
+//    padding: 0;
+//  }
+//
+//  .am-modal-transparent .am-modal-content {
+//    padding-top: 0;
+//  }
+//}
 

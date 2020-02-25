@@ -1,0 +1,42 @@
+.BPlist {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    color: white;
+    flex: 0 0 auto;
+    min-width: 2px;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+  }
+
+  p.green {
+    color: #2FD082;
+  }
+
+  > div {
+    width: 0;
+    flex: 1 0 auto;
+    height: 35px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+
+    &:before,
+    &:after {
+      content: '';
+      display: block;
+    }
+
+    img {
+      width: 15%;
+      margin-right: 1px;
+      max-height: 35px;
+      border-radius: 50%;
+    }
+  }
+}

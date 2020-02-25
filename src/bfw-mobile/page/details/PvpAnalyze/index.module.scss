@@ -1,40 +1,19 @@
 .content {
-  //min-height: 200px;
+  width: 100%;
+  //margin-top: 10px;
+  padding: 10px 10px 0 10px;
   background-color: #06051A;
 
-  .buttonList {
-    padding: 12px;
-    display: flex;
-    flex-flow: row wrap;
-    align-items: flex-start;
-    justify-content: flex-start;
-
-    li {
-      flex: 0 1 32%;
-      background-color: #081833;
-      border: 1px solid #4F5975;
-      border-radius: 2px;
-      line-height: 30px;
-      height: 30px;
-      margin-left: 2%;
-      margin-bottom: 1%;
-      text-align: center;
-      color: #4F5975;
-    }
-
-    li:nth-child(3n + 1) {
-      margin-left: 0;
-    }
-
-    li:active, .activeButton {
-      border: none;
-      background-color: #009CFF;
-      color: white;
-    }
+  .title {
+    color: #70F7E3;
+    line-height: 30px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #061A35;
+    margin-bottom: 5px;
   }
 
   .oddsBottom, .oddsTop {
-    padding: 0 12px;
     display: flex;
     flex-flow: row nowrap;
     align-items: flex-start;

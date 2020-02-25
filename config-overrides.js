@@ -11,7 +11,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 
 process.env.PORT = 3033 // 端口号
 paths.appBuild = resolveApp(`bfw_web_and_mobile_${process.env.REACT_APP_build_url || ''}`) // 修改名字
-
+paths.servedPath = './'
 // console.log(process.env)
 
 function addDevServer () {
@@ -53,14 +53,14 @@ module.exports = {
     //   libraryName: 'antd-mobile',
     //   style: true,
     // }),
-    addWebpackPlugin(
-      new WebpackBuildNotifierPlugin({
-        title: '',
-        logo: path.resolve('./public/favicon.ico'),
-        suppressSuccess: true,
-      }),
-      new UglifyJSPlugin()
-    ),
+    // addWebpackPlugin(
+    //   new WebpackBuildNotifierPlugin({
+    //     title: '',
+    //     logo: path.resolve('./public/favicon.ico'),
+    //     suppressSuccess: true,
+    //   }),
+    //   new UglifyJSPlugin()
+    // ),
     dropConsole(), // 生产环境去console.
   ),
   devServer: overrideDevServer(

@@ -15,6 +15,13 @@ export function setKindData (data) {
   }
 }
 
+export function setShowType (data) {
+  return {
+    type: 'SET_SHOW_TYPE',
+    ...data,
+  }
+}
+
 export function updateKindIdOrTime (data) {
   return {
     type: 'UPDATE_KIND_ID_OR_TIME',
@@ -70,6 +77,7 @@ const current = {
       notStartMatchList: {},
       startMatchList: {},
       totalNumber: {}, // { '0-2017-01-01' }
+      showType: {}, // { '0-2017-01-01' }
       kindId: null,
       time: dayName[1],
     }
@@ -78,12 +86,21 @@ const current = {
     // 同步
     const data = {}
     switch (action.type) {
-      case updateKindIdOrTime.type:
+      case setShowType().type:
+        if (action.showType !== undefined) {
+          data.showType = f1(state.showType, action.showType, state.kindId, state.time)
+          return Object.assign({}, state, data)
+        }
+        return state
+      case updateKindIdOrTime().type:
         if (action.time) {
           data.time = action.time
         }
         if (action.kindId) {
           data.kindId = action.kindId
+        }
+        if (state.showType[`${data.kindId || state.kindId}-${data.time || state.time}`] === undefined) {
+          data.showType = f1(state.showType, 0, data.kindId || state.kindId, data.time || state.time) // 默认赛程
         }
         return Object.assign({}, state, data)
       case setGameKind().type:
@@ -102,20 +119,23 @@ const current = {
           data.endMatchList = f1(state.endMatchList, action.endMatchList,
             action.kindId, action.time)
         }
-        if (Array.isArray(action.endMatchList)) {
+        if (Array.isArray(action.notStartMatchList)) {
           data.notStartMatchList = f1(state.notStartMatchList,
             action.notStartMatchList, action.kindId, action.time)
         }
-        if (Array.isArray(action.endMatchList)) {
+        if (Array.isArray(action.startMatchList)) {
           data.startMatchList = f1(state.startMatchList, action.startMatchList,
             action.kindId, action.time)
         }
-        if (Array.isArray(action.endMatchList)) {
+        if (action.totalNumber) {
           data.totalNumber = f1(state.totalNumber, action.totalNumber,
             action.kindId, action.time)
         }
         data.time = action.time
         data.kindId = action.kindId
+        if (state.showType[`${data.kindId || state.kindId}-${data.time || state.time}`] === undefined) {
+          data.showType = f1(state.showType, 0, data.kindId || state.kindId, data.time || state.time) // 默认赛程
+        }
         return Object.assign({}, state, data)
       default:
         return state

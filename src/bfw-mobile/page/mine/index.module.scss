@@ -1,0 +1,130 @@
+.listLink {
+
+  a {
+    margin-top: 1px;
+    height: 40px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    background-color: #203457;
+  }
+
+  img {
+    width: 15px;
+    flex: 0 0 auto;
+    height: 15px;
+    margin-left: 4%;
+    margin-right: 6px;
+  }
+
+  p {
+    width: 0;
+    flex: 1 1 auto;
+    line-height: 1;
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+  }
+
+  span {
+    margin-right: 3%;
+    width: 25px;
+    flex: 0 0 auto;
+    height: 25px;
+    background: url("../../assets/nav_back.png") no-repeat center center;
+    transform: rotate(180deg);
+    background-size: 100% 100%;
+  }
+
+  a:first-child {
+    margin-top: 15px;
+  }
+}
+
+.topHead {
+  width: 100%;
+  min-height: 150px;
+  height: 40vw;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  background: url("../../assets/mine_toppic.png") no-repeat #06051A left top;
+  background-size: 100% 100%;
+
+  > img {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+  }
+
+  > div {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+
+    > p {
+      line-height: 1;
+      max-width: 80%;
+      flex: 0 0 auto;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    > span {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+      background: url("../../assets/modify_name.png") no-repeat left top;
+      background-size: 100% 100%;
+    }
+  }
+}
+
+.loginOut {
+  margin-top: 15px;
+  display: block;
+  width: 100%;
+  border: 0;
+  line-height: 40px;
+  color: #85838F;
+  font-weight: bold;
+  font-size: 14px;
+  background-color: #203457;
+}
+
+.modalBody {
+  > p {
+    padding-bottom: 15px;
+    color: #131313;
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 42px;
+  }
+
+  > div {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+
+    button {
+      flex: 0 0 45%;
+      border: 0;
+      height: 34px;
+      border-radius: 3px;
+      font-weight: 500;
+      font-size: 15px;
+      color: #999999;
+    }
+
+    button:last-child {
+      color: white;
+      background-color: #63BCFF;
+    }
+  }
+}
