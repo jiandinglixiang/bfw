@@ -99,7 +99,7 @@ function UnderwayDota ({ gameData = {} }) {
       </div>
       <p className={styles.score}>{gameData.team1_score}</p>
       <div className={styles.center}>
-        <p>{nowInnings} 15123’</p>
+        <p>{nowInnings} 15’</p>
       </div>
       <p className={styles.score}>{gameData.team2_score}</p>
       <div className={styles.teamIcon2}>
