@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-
 // 自定义useState
 export function globalDataInit (InitialValue) {
   const dispatch = new Map()
@@ -52,6 +51,3 @@ export function globalDataInit (InitialValue) {
     return [state, amend, amendThrottle]
   }
 }
-
-// const useGlobal = globalDataInit({})
-// const [state, amend, amendThrottle] = useGlobal() // 多地多次使用

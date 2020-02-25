@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import InPlay from '../InPlay'
+import RaceOff from '../RaceOff'
+import GameOver from '../GameOver'
 import { fixedTopClass } from '../../../components/MatchTitle/MatchTitle'
 import fixedTop from '../index.module.scss'
 import { connect } from 'react-redux'
 import { PropTypes } from '../../../../tool/util'
 import styles from './index.module.scss'
-import NotStartedOrOver from '../NotStartedOrOver/NotStartedOrOver.jsx'
 
 let time = null
 let nodeList = [] // dom集合
@@ -43,8 +44,7 @@ function onScroll () {
 function MatchContainer ({
   endMatchList = [],
   notStartMatchList = [],
-  startMatchList = [],
-  showType = 0
+  startMatchList = []
 }) {
   const withOut = startMatchList.length + notStartMatchList.length + endMatchList.length
   useEffect(function () {
@@ -60,13 +60,11 @@ function MatchContainer ({
   if (!withOut) {
     return <div className={styles.withOut}>暂无数据</div>
   }
-  if (showType === 1) {
-    return <InPlay data={startMatchList} />
-  } else if (showType === 2) {
-    return <NotStartedOrOver data={endMatchList} isOver />
-  } else {
-    return <NotStartedOrOver data={notStartMatchList} />
-  }
+  return <div>
+    <InPlay data={startMatchList} />
+    <RaceOff data={notStartMatchList} />
+    <GameOver data={endMatchList} />
+  </div>
 }
 
 MatchContainer.propTypes = {
@@ -82,8 +80,7 @@ function mapStateToProps (state) {
   return {
     endMatchList: home.endMatchList[`${kindId}-${time}`],
     notStartMatchList: home.notStartMatchList[`${kindId}-${time}`],
-    startMatchList: home.startMatchList[`${kindId}-${time}`],
-    showType: home.showType[`${kindId}-${time}`]
+    startMatchList: home.startMatchList[`${kindId}-${time}`]
   }
 }
 

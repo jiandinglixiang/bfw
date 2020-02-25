@@ -104,24 +104,6 @@ export function inning (value) {
   }
 }
 
-export function dayCallInit (time, length) {
-  return function () {
-    const date = Moment(time)
-    let str = ''
-    if (date.isSame(dayName[0])) {
-      // 昨天
-      str = '昨天'
-    } else if (date.isSame(dayName[1])) {
-      // 今天
-      str = '今天'
-    } else if (date.isSame(dayName[2])) {
-      // 明天
-      str = '明天'
-    }
-    return `${date.format('MM月DD日')} ${str}  ${length}场比赛`
-  }
-}
-
 export function distanceNow (time) {
   const startDate = moment(time)
   const endDate = moment()
@@ -208,39 +190,7 @@ export function initOddAndLogo (item, score) {
   return tameName
 }
 
-export function defCatch (obj) {
-  // 所见即所得，多成数据取除保存
-  return function (ReturnObj) {
-    const formType1 = Object.prototype.toString.call(ReturnObj)
-    const formType2 = Object.prototype.toString.call(obj)
-    const isObj2 = formType2 === '[object Object]'
-    let isObj = formType1 === '[object Object]'
-    let arr
-    if (isObj) {
-      arr = Object.keys(ReturnObj)
-      isObj = !!arr.length
-    }
-    if (isObj2 && isObj) {
-      let copyObj
-      try {
-        copyObj = { ...obj }
-        arr.forEach(function (key) {
-          copyObj[key] = defCatch(obj[key])(ReturnObj[key])
-        })
-        return copyObj
-      } catch (e) {
-        console.log(e)
-        return ReturnObj
-      }
-    } else if (formType1 === formType2) {
-      return obj
-    } else {
-      return ReturnObj
-    }
-  }
-}
-
-export function objCatch (obj, expected = {}) {
+export function objCatch (obj) {
   return function (arrayOrKey) {
     try {
       if (Array.isArray(arrayOrKey)) {
@@ -249,16 +199,16 @@ export function objCatch (obj, expected = {}) {
           if (temp[key]) {
             temp = temp[key]
           } else {
-            temp = expected
+            temp = {}
             break
           }
         }
-        return temp || expected
+        return temp || {}
       } else {
-        return obj[arrayOrKey] || expected
+        return obj[arrayOrKey] || {}
       }
     } catch (e) {
-      return expected
+      return {}
     }
   }
 }
