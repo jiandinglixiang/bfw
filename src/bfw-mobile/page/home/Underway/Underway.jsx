@@ -103,7 +103,7 @@ function UnderwayDota ({ gameData = {} }) {
       </div>
       <p className={styles.score}>{gameData.team2_score}</p>
       <div className={styles.teamIcon2}>
-        <HeroList arrIcon={gameData.team2_more_attr.players} />123
+        <HeroList arrIcon={gameData.team2_more_attr.players} />
       </div>
     </div>
   </div>
