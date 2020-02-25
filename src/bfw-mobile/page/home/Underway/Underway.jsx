@@ -95,7 +95,7 @@ function UnderwayDota ({ gameData = {} }) {
     </div>
     <div className={styles.pvpNowStatus}>
       <div className={styles.teamIcon1}>
-        <HeroList arrIcon={gameData.team1_more_attr.players} />1111
+        <HeroList arrIcon={gameData.team1_more_attr.players} />
       </div>
       <p className={styles.score}>{gameData.team1_score}</p>
       <div className={styles.center}>
@@ -103,7 +103,7 @@ function UnderwayDota ({ gameData = {} }) {
       </div>
       <p className={styles.score}>{gameData.team2_score}</p>
       <div className={styles.teamIcon2}>
-        <HeroList arrIcon={gameData.team2_more_attr.players} />123
+        <HeroList arrIcon={gameData.team2_more_attr.players} />
       </div>
     </div>
   </div>
