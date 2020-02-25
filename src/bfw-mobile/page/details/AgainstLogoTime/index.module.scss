@@ -1,0 +1,232 @@
+.content {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+
+  > div > div {
+    min-height: 25px;
+  }
+}
+
+.first, .last {
+  width: 0;
+  flex: 1 1 auto;
+}
+
+.topLogoIcon1, .topLogoIcon2 {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  .logo {
+    flex: 1 1 auto;
+    text-align: center;
+
+    img {
+      height: 25px;
+      vertical-align: bottom;
+    }
+  }
+
+  b {
+    font-family: 'ATUO123';
+    flex: 0 0 32px;
+    text-align: center;
+    line-height: 1;
+    font-size: 16px;
+  }
+}
+
+.topLogoIcon1 {
+  > div:first-child {
+    width: 32px;
+    height: 32px;
+    align-self: flex-start;
+
+    img {
+      width: 21px;
+      height: 28px;
+    }
+  }
+}
+
+.topLogoIcon2 {
+  > div:last-child {
+    width: 32px;
+    height: 32px;
+    align-self: flex-start;
+    text-align: right;
+
+    img {
+      width: 21px;
+      height: 28px;
+    }
+  }
+}
+
+.colorGray {
+  color: #85838F;
+}
+
+.colorYellow {
+  color: #F9DF70;
+}
+
+.teamName {
+  height: 25px;
+
+  p {
+    padding: 0 5px;
+    width: 100%;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
+.aBloodIcon {
+  height: 25px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 15px;
+    height: 15px;
+    padding: 1px;
+    background: rgba(6, 5, 26, 1);
+    border: 1px solid rgba(79, 89, 117, 1);
+  }
+
+  img:nth-child(1n+2) {
+    margin-left: 2px;
+  }
+}
+
+.center {
+  flex: 0 0 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.overScore {
+  min-width: 91px;
+  height: 57px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+
+  b {
+    flex: 1 1 auto;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  p {
+    font-family: 'ATUO123';
+    font-size: 30px;
+    font-weight: bold;
+    flex: 0 0 28px;
+    line-height: 40px;
+    background: url("../../../assets/Score_board.png") no-repeat left center;
+    background-size: 100% 100%;
+    text-align: center;
+  }
+}
+
+.overTxt p {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 25px;
+  text-align: center;
+  color: #85838F;
+}
+
+.high {
+  height: 50px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.middle {
+  height: 32px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.low {
+  height: 25px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.boutNotStarted, .boutUnderway {
+  flex: 1 1 auto;
+  padding: 0 5px;
+  line-height: 22px;
+  text-align: center;
+  border-radius: 11px;
+  overflow: hidden;
+  font-weight: 500;
+
+}
+
+.boutNotStarted {
+  // 回合颜色
+  border: 2px solid #85838F;
+  color: #85838F;
+}
+
+.boutUnderway {
+  // 回合颜色
+  border: 2px solid #85838F;
+  color: #85838F;
+}
+
+.difference {
+  line-height: 1;
+  font-size: 12px;
+
+  span {
+    display: inline-block;
+  }
+
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background: url("../../../assets/coin.png") no-repeat center center;
+    background-size: 12px 12px;
+    vertical-align: bottom;
+  }
+}
+
+.notStarted {
+  line-height: 1;
+  color: #F9DF70;
+  font-weight: 500;
+  text-align: center;
+  font-size: 12px;
+
+  span:first-child {
+    margin-right: 5px;
+  }
+}
+

@@ -1,0 +1,96 @@
+.notStartedAndOverContent {
+  background-color: #203457;
+  margin-bottom: 4px;
+
+  .notStart, .over {
+    font-size: 12px;
+    line-height: 25px;
+    text-align: center;
+
+    span {
+      margin-right: 5px;
+    }
+  }
+
+  .notStart {
+    color: #70F7E3;
+  }
+
+  .over {
+    color: #85838F;
+  }
+
+  .teamPvp {
+    height: 30px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+
+    .leftName, .rightName {
+      flex: 0 0 38%;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+
+      img {
+        flex: 0 0 auto;
+        width: 20px;
+        min-height: 20px;
+      }
+
+      p {
+        width: 0;
+        flex: 1 1 auto;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        line-height: 1;
+      }
+    }
+
+    .leftName {
+      p {
+        padding: 0 10px 0 15px;
+        text-align: right;
+      }
+    }
+
+    .center {
+      font-size: 15px;
+      font-weight: bold;
+      flex: 0 0 24%;
+      text-align: center;
+      color: white;
+      line-height: 1;
+
+      p {
+        text-align: center;
+
+        span:nth-child(2) {
+          margin: 0 10px;
+        }
+
+        .maximum {
+          color: #70F7E3;
+        }
+      }
+    }
+
+    .rightName {
+      p {
+        padding: 0 15px 0 10px;
+      }
+    }
+  }
+}
+
+.moreList {
+  height: 25px;
+  line-height: 25px;
+  margin: 7px 0;
+  color: #4F5975;
+  background-color: #203457;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+}

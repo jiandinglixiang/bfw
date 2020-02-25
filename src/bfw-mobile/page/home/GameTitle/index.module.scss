@@ -1,0 +1,29 @@
+.content {
+  text-align: right;
+  line-height: 35px;
+  padding:0 2% 0 10%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  background-image: url("../../../assets/tournament_dota.png");
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 100% 100%;
+
+  &.background-5 {
+    background-image: url("../../../assets/tournament_dota.png");
+  }
+
+  &.background-3 {
+    background-image: url("../../../assets/tournament_csgo.png");
+  }
+
+  &.background-2 {
+    background-image: url("../../../assets/tournament_kog.png");
+  }
+
+  &.background-1 {
+    background-image: url("../../../assets/tournament_lol.png");
+  }
+}
+

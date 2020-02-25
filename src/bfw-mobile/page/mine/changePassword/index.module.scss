@@ -1,0 +1,82 @@
+.topPhone, .password {
+  height: 40px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #203457;
+  padding: 0 4%;
+
+  label {
+    flex: 0 0 auto;
+    margin-right: 10px;
+    color: #62BED8;
+    font-weight: bold;
+    line-height: 1;
+  }
+
+  input {
+    text-align: right;
+    width: 0;
+    flex: 1 1 auto;
+    background-color: transparent;
+    border: 0;
+    color: #4F5975;
+  }
+}
+
+.topPhone {
+  margin-bottom: 16px;
+
+  input {
+    color: white;
+  }
+}
+
+.borderBottom1 {
+  width: 100%;
+  height: 1px;
+  background-color: #4F5975;
+}
+
+.warningTxt {
+  margin-left: 4%;
+  color: #E83217;
+  line-height: 20px;
+}
+
+.heardNav {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #06051A;
+  height: 44px;
+
+  > img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 11px;
+    width: 44px;
+    height: 44px;
+  }
+
+  > div:nth-of-type(1) {
+    flex: 1 1 auto;
+    color: white;
+    font-size: 14px;
+    line-height: 44px;
+    text-align: center;
+  }
+
+  > div:nth-of-type(2) {
+    position: absolute;
+    right: 0;
+    top: 0;
+    line-height: 44px;
+    font-size: 14px;
+    color: #70F7E3;
+    padding: 0 15px;
+  }
+}

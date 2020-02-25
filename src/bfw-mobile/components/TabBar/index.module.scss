@@ -1,0 +1,58 @@
+.content {
+  width: 100%;
+  height: 40px;
+  max-width: 750px;
+  margin: 0 auto;
+
+  .body {
+    position: fixed;
+    bottom: 0;
+    max-width: 750px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: #091329;
+
+    a {
+      height: 100%;
+      flex: 1 1 50%;
+      padding-top: 25px;
+
+      p {
+        text-align: center;
+        font-size: 12px;
+        line-height: 15px;
+        font-weight: bold;
+        color: #85838F;
+      }
+    }
+
+    > a:nth-child(1) {
+      background: url("../../assets/tab_score_normal.png") no-repeat center 2px;
+      background-size: 22px 22px;
+
+      &.selected {
+        background-image: url("../../assets/tab_score_seclet.png");
+
+        p {
+          color: #70F7E3;
+        }
+      }
+    }
+
+
+    > a:nth-child(2) {
+      background: url("../../assets/tab_mine_normal.png") no-repeat center 2px;
+      background-size: 22px 22px;
+
+      &.selected {
+        background-image: url("../../assets/tab_mine_select.png");
+
+        p {
+          color: #70F7E3;
+        }
+      }
+    }
+  }
+}

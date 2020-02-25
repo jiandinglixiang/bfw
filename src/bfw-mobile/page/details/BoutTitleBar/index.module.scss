@@ -1,0 +1,40 @@
+.boutTitle {
+  height: 30px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(6, 26, 53, 1);
+  border-radius: 10px 10px 0 0;
+  padding: 0 10px;
+}
+
+.first {
+  width: 0;
+  flex: 1 1 auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 13px;
+
+  span:first-child {
+    color: #CCCCCC;
+    margin-right: 10px;
+  }
+}
+
+.last {
+  flex: 0 0 auto;
+  font-size: 13px;
+  line-height: 15px;
+
+  &:after {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: url("../../../assets/ic_go.png") no-repeat center center;
+    background-size: 15px 15px;
+    vertical-align: top;
+  }
+}

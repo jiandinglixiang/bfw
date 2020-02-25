@@ -37,7 +37,7 @@ export function updateDeviceSize (store) {
     window.document.documentElement.style.fontSize = `${size}px`
     store.dispatch(deviceSizeChange({
       width: el.offsetWidth > 750 ? 750 : el.offsetWidth,
-      height: el.offsetHeight || window.screen.availHeight,
+      height: window.screen.availHeight,
     }))
   }
 

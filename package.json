@@ -11,6 +11,7 @@
     "bignumber.js": "^9.0.0",
     "current-device": "^0.10.0",
     "customize-cra": "^0.9.1",
+    "echarts": "^4.6.0",
     "fastclick": "^1.0.6",
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",
