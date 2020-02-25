@@ -8,7 +8,7 @@ import CarouselPic from '../CarouselPic/CarouselPic'
 import { DatePicker } from 'antd-mobile'
 import PickerCustom from '../PickerCustom/PickerCustom'
 import { store } from '../../../redux'
-import { getKindDataAsync } from '../store'
+import { getKindDataAsync, setShowType } from '../store'
 import moment from 'moment'
 import CountDown from '../CountDown/CountDown'
 
@@ -20,6 +20,11 @@ function onTabClick (kindId) {
 function onTimeClick (kindId, time) {
   // 切换今天明天后天
   store.dispatch(getKindDataAsync(kindId, time))
+}
+
+function onShowTypeClick (showType) {
+  // 切换赛程赛果
+  store.dispatch(setShowType({ showType }))
 }
 
 function onSelect (setPickerTime, kindId, time) {
@@ -35,7 +40,7 @@ function TabsContainer (props) {
     gameKind,
     kindId,
     time,
-    totalNumber,
+    showType
   } = props
   const [menuState, setMenuState] = useState(0)
   const [pickerTime, setPickerTime] = useState(new Date(Date.now()))
@@ -47,10 +52,12 @@ function TabsContainer (props) {
   }, [width, gameKind])
   try {
     return <div className={styles.content}>
-      <div className={`${styles.navBar}  ${menuState === 2
-        ? styles.showAll
-        : ''}`}>
-        <div className={styles.menuContent}>
+      <div
+        className={`${styles.navBar}  ${menuState === 2
+          ? styles.showAll
+          : ''}`}>
+        <div
+          className={styles.menuContent}>
           {
             gameKind.map((value, x) => {
               const className = `${styles.dayName} ${toBigNumber(value.id)
@@ -74,21 +81,26 @@ function TabsContainer (props) {
       </div>
       <div className={styles.dayOpt}>
         <div className={styles.dayList}>
-          {dayName.map((value, x) => {
-            const className = `${styles.dayName} ${value === time
-              ? styles.activeButton
-              : ''}`
-            const total = totalNumber[`${kindId}-${value}`]
-            return <p
-              key={x}
-              onClick={() => onTimeClick(kindId, value)}
-              className={className}>
-              {x ? x === 1 ? '今天' : '明天' : '昨天'}
-              {total ? `(${total})` : null}
+          <div
+            onClick={() => onShowTypeClick(0)}
+            className={`${styles.noStart} ${showType === 0 ? styles.activeButton : ''}`}>
+            <p>
+              <span>赛程</span>
             </p>
-          })}
-          {time === dayName[1] ? <CountDown
-            cbk={() => onTimeClick(kindId, time)} /> : null}
+          </div>
+          <div
+            onClick={() => onShowTypeClick(1)}
+            className={`${styles.starting} ${showType === 1 ? styles.activeButton : ''}`}>
+            <p>
+              <span>进行中</span>
+            </p>
+          </div>
+          <div
+            onClick={() => onShowTypeClick(2)}
+            className={`${styles.endOver} ${showType === 2 ? styles.activeButton : ''}`}>
+            <p><span>赛果</span></p>
+          </div>
+          {time === dayName[1] ? <CountDown cbk={() => onTimeClick(kindId, time)} /> : null}
         </div>
         <div className={styles.showMenu}>
           <DatePicker
@@ -108,12 +120,14 @@ function TabsContainer (props) {
 }
 
 function mapStateToProps (state) {
+  const kindId = state.home.kindId
+  const time = state.home.time
   return {
     width: state.device.width,
     gameKind: state.home.gameKind,
-    kindId: state.home.kindId,
-    time: state.home.time,
-    totalNumber: state.home.totalNumber,
+    kindId: kindId,
+    time: time,
+    showType: state.home.showType[`${kindId}-${time}`],
   }
 }
 
