@@ -6,9 +6,12 @@ import MatchTitle from '../../../components/MatchTitle/MatchTitle.jsx'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
 import TryCatch from '../../../components/TryCatch/TryCatch.jsx'
+import { routerDetails } from '../Underway/Underway.jsx'
+import { useHistory } from 'react-router-dom'
 
 function ScheduleBody (props) {
   const { gameData = {}, isOver = false } = props
+  const history = useHistory()
   const timeTxt = formatDate(gameData.game_start_time, 'HH:mm')
   let timeStatus
   let pvpStatus
@@ -28,7 +31,10 @@ function ScheduleBody (props) {
     </p>
     pvpStatus = <span>VS</span>
   }
-  return <li className={styles.notStartedAndOverContent}>
+  return <li
+    className={styles.notStartedAndOverContent}
+    onClick={() => routerDetails(gameData, history)}
+  >
     {timeStatus}
     <div className={styles.teamPvp}>
       <div className={styles.leftName}>

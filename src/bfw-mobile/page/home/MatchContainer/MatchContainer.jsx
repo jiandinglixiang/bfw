@@ -57,15 +57,16 @@ function MatchContainer ({
       window.removeEventListener('scroll', onScroll)
     }
   }, [withOut, endMatchList, notStartMatchList, startMatchList])
-  if (!withOut) {
-    return <div className={styles.withOut}>暂无数据</div>
-  }
+
   if (showType === 1) {
-    return <InPlay data={startMatchList} />
+    return startMatchList.length ? <InPlay data={startMatchList} /> : <div className={styles.withOut}>暂无数据</div>
   } else if (showType === 2) {
-    return <NotStartedOrOver data={endMatchList} isOver />
+    return endMatchList.length ? <NotStartedOrOver data={endMatchList} isOver /> : <div
+      className={styles.withOut}>暂无数据</div>
   } else {
-    return <NotStartedOrOver data={notStartMatchList} />
+    return notStartMatchList.length ? <NotStartedOrOver data={notStartMatchList} /> : <div
+      className={styles.withOut}>暂无数据</div>
+
   }
 }
 

@@ -1,13 +1,16 @@
+.container {
+  min-height: 150px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
 .content {
+  width: 100%;
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
   justify-content: flex-start;
-
-
-  > div > div {
-    min-height: 25px;
-  }
 }
 
 .first, .last {
@@ -19,6 +22,7 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  min-height: 32px;
 
   .logo {
     flex: 1 1 auto;
@@ -35,12 +39,12 @@
     flex: 0 0 32px;
     text-align: center;
     line-height: 1;
-    font-size: 16px;
+    font-size: 25px;
   }
 }
 
 .topLogoIcon1 {
-  > div:first-child {
+  .teamIcon {
     width: 32px;
     height: 32px;
     align-self: flex-start;
@@ -53,7 +57,7 @@
 }
 
 .topLogoIcon2 {
-  > div:last-child {
+  .teamIcon {
     width: 32px;
     height: 32px;
     align-self: flex-start;
@@ -78,7 +82,6 @@
   height: 25px;
 
   p {
-    padding: 0 5px;
     width: 100%;
     line-height: 25px;
     font-size: 14px;
@@ -97,15 +100,15 @@
   align-items: center;
   justify-content: center;
 
-  img {
+  span, img {
     width: 15px;
     height: 15px;
     padding: 1px;
-    background: rgba(6, 5, 26, 1);
+    background-color: rgba(6, 5, 26, 1);
     border: 1px solid rgba(79, 89, 117, 1);
   }
 
-  img:nth-child(1n+2) {
+  *:nth-child(1n+2) {
     margin-left: 2px;
   }
 }
@@ -169,6 +172,7 @@
 }
 
 .low {
+  min-width: 10px;
   height: 25px;
   display: flex;
   flex-flow: row nowrap;
@@ -176,7 +180,7 @@
   justify-content: flex-start;
 }
 
-.boutNotStarted, .boutUnderway {
+.boutOver, .boutUnderway {
   flex: 1 1 auto;
   padding: 0 5px;
   line-height: 22px;
@@ -184,10 +188,9 @@
   border-radius: 11px;
   overflow: hidden;
   font-weight: 500;
-
 }
 
-.boutNotStarted {
+.boutOver {
   // 回合颜色
   border: 2px solid #85838F;
   color: #85838F;
@@ -195,8 +198,8 @@
 
 .boutUnderway {
   // 回合颜色
-  border: 2px solid #85838F;
-  color: #85838F;
+  border: 2px solid #70F7E2;
+  color: white;
 }
 
 .difference {

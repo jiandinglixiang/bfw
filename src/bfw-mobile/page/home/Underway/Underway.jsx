@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styles from './index.module.scss'
-import logo from '../../../assets/ic_dota2.png'
 import strating from '../../../assets/live_30.gif'
-import { defCatch, formatDate, inning, PropTypes, toBigNumber } from '../../../../tool/util.js'
+import { diffCatch, formatDate, inning, PropTypes, toBigNumber } from '../../../../tool/util.js'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
+import { useHistory } from 'react-router-dom'
+
+export function routerDetails (data, history) {
+  history.push(
+    `/details/${data.smid}/${data.game_type_name}/${data.game_name}/${data.host_team_name} VS ${data.guest_team_name}/${data.game_type_id}`)
+}
 
 function scoreListReduce (scoreList = []) {
   return scoreList.reduce(function (sum, top = {}) {
@@ -38,32 +43,24 @@ function HeroList ({ arrIcon = [] }) {
   })
 }
 
-function UnderwayDota ({ gameData = {} }) {
-  gameData = defCatch(gameData)({
-    team1_more_attr: {
-      other_more_attr: {},
-      players: []
-    },
-    team2_more_attr: {
-      other_more_attr: {},
-      players: []
-    },
-    poor_economy: {
-      gold: 0,
-      time: 0
-    },
-    round: 0
-  })
+function UnderwayDota ({ gameData }) {
   const moreAttr1 = gameData.team1_more_attr.other_more_attr
   const moreAttr2 = gameData.team2_more_attr.other_more_attr
-  const poorEconomy = toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1)
-  const nowInnings = inning(parseInt(gameData.round))
+
+  const inningsTime = useMemo(() => {
+    const nowInnings = inning(parseInt(gameData.round))
+    const timeTxt = gameData.poor_economy.time / 60
+    return timeTxt ? `${nowInnings} ${timeTxt}’` : nowInnings
+  }, [gameData.round, gameData.poor_economy.time])
+
+  const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
+
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
       <LeftTime gameData={gameData} />
       <div className={styles.dotaMatchRed} />
       <div className={styles.centerDifference}>
-        <p className={styles.money}>差:{poorEconomy}</p>
+        <p className={styles.money}>差:{poorEconomy}k</p>
       </div>
       <div className={styles.dotaMatchBlue} />
     </div>
@@ -97,11 +94,11 @@ function UnderwayDota ({ gameData = {} }) {
       <div className={styles.teamIcon1}>
         <HeroList arrIcon={gameData.team1_more_attr.players} />
       </div>
-      <p className={styles.score}>{gameData.team1_score}</p>
+      <p className={styles.score}>{gameData.team1_score || '-'}</p>
       <div className={styles.center}>
-        <p>{nowInnings} 15’</p>
+        <p>{inningsTime}</p>
       </div>
-      <p className={styles.score}>{gameData.team2_score}</p>
+      <p className={styles.score}>{gameData.team2_score || '-'}</p>
       <div className={styles.teamIcon2}>
         <HeroList arrIcon={gameData.team2_more_attr.players} />
       </div>
@@ -109,243 +106,210 @@ function UnderwayDota ({ gameData = {} }) {
   </div>
 }
 
-function UnderwayCsGo () {
+function UnderwayCsGo ({ gameData }) {
+  const moreAttr1 = gameData.team1_more_attr.other_more_attr
+  const moreAttr2 = gameData.team2_more_attr.other_more_attr
+
+  const [firstHalf, innings] = useMemo(() => {
+    const timeTxt = gameData.poor_economy.time / 60
+    const sbc = moreAttr1.current_round > 15 ? '下半场' : '上半场'
+    if (timeTxt && moreAttr1.current_round) {
+      return [sbc, `第${moreAttr1.current_round}回合 ${timeTxt}’`]
+    } else if (moreAttr1.current_round) {
+      return [sbc, `第${moreAttr1.current_round}回合`]
+    }
+    return [sbc]
+  }, [moreAttr1.current_round, gameData.poor_economy.time])
+
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
-      <p className={styles.leftTime}>
-        <img src={strating} />
-        <span>BO5</span>
-        <span>12:00</span>
-      </p>
-      <div className={styles.dotaMatchRed} />
+      <LeftTime gameData={gameData} />
+      <div className={styles.csgoMatchRed} />
       <div className={styles.centerDifference}>
-        <p className={styles.money}>差:+15.0</p>
+        <p>Map: {moreAttr1.map || '...'}</p>
       </div>
-      <div className={styles.lolMatchBlue} />
+      <div className={styles.csgoMatchBlue} />
     </div>
     <div className={styles.formation}>
-      {<p className={styles.teamName1}>
-        1Winning GamiWinning GamiWinning GamiWinning Gami
-      </p> || <div className={styles.nameAndKill}>
-        <p>Winning GamiWinning Gami</p>
+      <div className={styles.nameAndKill}>
+        <p>{gameData.host_team_name}</p>
         <div>
-          <img src={logo} />
-          <img src={logo} />
+          <span className={moreAttr1.flag_r16 > 0 ? styles.csgoSixtgun : ''} />
+          <span className={moreAttr1.flag_w5 > 0 ? styles.csgo5 : ''} />
+          <span className={moreAttr1.flag_r1 > 0 ? styles.csgoFirstgun : ''} />
         </div>
-      </div>}
+      </div>
       <div className={styles.teamLogo}>
-        <img src={logo} />
+        <img src={gameData.host_team_logo || defImg1} />
       </div>
       <div className={styles.matchScore}>
         <p><span>1</span><span>-</span><span>1</span></p>
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}>
-        <img src={logo} />
+        <img src={gameData.guest_team_logo || defImg2} />
       </div>
-      {<p className={styles.teamName2}>
-        Winning GamiWinning GamiWinning GamiWinning Gami
-      </p> || <div className={styles.nameAndKill2}>
-        <p>Winning GamiWinning Gami</p>
+      <div className={styles.nameAndKill2}>
+        <p>{gameData.guest_team_name}</p>
         <div>
-          <img src={logo} />
-          <img src={logo} />
+          <span className={moreAttr2.flag_r1 > 0 ? styles.csgoFirstgun : ''} />
+          <span className={moreAttr2.flag_w5 > 0 ? styles.csgo5 : ''} />
+          <span className={moreAttr2.flag_r16 > 0 ? styles.csgoSixtgun : ''} />
         </div>
-      </div>}
+      </div>
     </div>
     <div className={styles.pvpNowStatus}>
-      {<div className={styles.csgoScore}>
-        <p><span>上半场</span><span>11-4</span></p>
-      </div> || <div className={styles.teamIcon1}>
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-      </div>}
-      <p className={styles.score}>18</p>
-      <div className={styles.center}>
-        <p>第一局 01‘</p>
-        <p>第一局 01‘</p>
+      <div className={styles.csgoScore}>
+        <p><span>上半场</span><span>{moreAttr1.first_half_score || 0}-{moreAttr2.first_half_score || 0}</span></p>
       </div>
-      <p className={styles.score}>16</p>
-      {<div className={styles.csgoScore}>
-        <p><span>上半场</span><span>11-4</span></p>
-      </div> || <div className={styles.teamIcon2}>
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-      </div>}
+      <p className={styles.score}>{gameData.team1_score || '-'}</p>
+      <div className={styles.center}>
+        <p>{firstHalf}</p>
+        <p>{innings}</p>
+      </div>
+      <p className={styles.score}>{gameData.team2_score || '-'}</p>
+      <div className={styles.csgoScore}>
+        <p><span>下半场</span><span>{moreAttr1.second_half_score || 0}-{moreAttr2.second_half_score || 0}</span></p>
+      </div>
     </div>
   </div>
 }
 
-function UnderwayLol () {
+function UnderwayLol ({ gameData }) {
+  const moreAttr1 = gameData.team1_more_attr.other_more_attr
+  const moreAttr2 = gameData.team2_more_attr.other_more_attr
+
+  const inningsTime = useMemo(() => {
+    const nowInnings = inning(parseInt(gameData.round))
+    const timeTxt = gameData.poor_economy.time / 60
+    return timeTxt ? `${nowInnings} ${timeTxt}’` : nowInnings
+  }, [gameData.round, gameData.poor_economy.time])
+
+  const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
+
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
-      <p className={styles.leftTime}>
-        <img src={strating} />
-        <span>BO5</span>
-        <span>12:00</span>
-      </p>
-      <div className={styles.dotaMatchRed} />
+      <LeftTime gameData={gameData} />
+      <div className={styles.lolMatchRed} />
       <div className={styles.centerDifference}>
-        <p className={styles.money}>差:+15.0</p>
+        <p className={styles.money}>差:{poorEconomy}k</p>
       </div>
       <div className={styles.lolMatchBlue} />
     </div>
     <div className={styles.formation}>
-      {<p className={styles.teamName1}>
-        1Winning GamiWinning GamiWinning GamiWinning Gami
-      </p> || <div className={styles.nameAndKill}>
-        <p>Winning GamiWinning Gami</p>
+      <div className={styles.nameAndKill}>
+        <p>{gameData.host_team_name}</p>
         <div>
-          <img src={logo} />
-          <img src={logo} />
+          <span className={moreAttr1.first_kills > 0 ? styles.firstBloodIcon : ''} />
+          <span className={moreAttr1.five_kills > 0 ? styles.kill5Icon : ''} />
         </div>
-      </div>}
+      </div>
       <div className={styles.teamLogo}>
-        <img src={logo} />
+        <img src={gameData.host_team_logo || defImg1} />
       </div>
       <div className={styles.matchScore}>
-        <p><span>1</span><span>-</span><span>1</span></p>
+        <FullScore scoreList={gameData.score_list} />
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}>
-        <img src={logo} />
+        <img src={gameData.guest_team_logo || defImg2} />
       </div>
-      {<p className={styles.teamName2}>
-        Winning GamiWinning GamiWinning GamiWinning Gami
-      </p> || <div className={styles.nameAndKill2}>
-        <p>Winning GamiWinning Gami</p>
+      <div className={styles.nameAndKill2}>
+        <p>{gameData.guest_team_name}</p>
         <div>
-          <img src={logo} />
-          <img src={logo} />
+          <span className={moreAttr2.five_kills > 0 ? styles.kill5Icon : ''} />
+          <span className={moreAttr2.first_kills > 0 ? styles.firstBloodIcon : ''} />
         </div>
-      </div>}
+      </div>
     </div>
     <div className={styles.pvpNowStatus}>
-      {<div className={styles.csgoScore}>
-        <p><span>上半场</span><span>11-4</span></p>
-      </div> || <div className={styles.teamIcon1}>
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-      </div>}
-      <p className={styles.score}>18</p>
-      <div className={styles.center}>
-        <p>第一局 01‘</p>
-        <p>第一局 01‘</p>
+      <div className={styles.teamIcon1}>
+        <HeroList arrIcon={gameData.team1_more_attr.players} />
       </div>
-      <p className={styles.score}>16</p>
-      {<div className={styles.csgoScore}>
-        <p><span>上半场</span><span>11-4</span></p>
-      </div> || <div className={styles.teamIcon2}>
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-      </div>}
+      <p className={styles.score}>{gameData.team1_score || '-'}</p>
+      <div className={styles.center}>
+        <p>{inningsTime}</p>
+      </div>
+      <p className={styles.score}>{gameData.team2_score || '-'}</p>
+      <div className={styles.teamIcon2}>
+        <HeroList arrIcon={gameData.team2_more_attr.players} />
+      </div>
     </div>
   </div>
 }
 
-function UnderwayKoa () {
+function UnderwayKoa ({ gameData }) {
+  const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
+
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
-      <p className={styles.leftTime}>
-        <img src={strating} />
-        <span>BO5</span>
-        <span>12:00</span>
-      </p>
-      <div className={styles.dotaMatchRed} />
+      <LeftTime gameData={gameData} />
+      <div className={styles.koaMatch} />
       <div className={styles.centerDifference}>
-        <p className={styles.money}>差:+15.0</p>
+        <p className={styles.money}>差:{poorEconomy}k</p>
       </div>
-      <div className={styles.lolMatchBlue} />
+      <div className={styles.koaMatch} />
     </div>
     <div className={styles.formation}>
-      {<p className={styles.teamName1}>
-        1Winning GamiWinning GamiWinning GamiWinning Gami
-      </p> || <div className={styles.nameAndKill}>
-        <p>Winning GamiWinning Gami</p>
-        <div>
-          <img src={logo} />
-          <img src={logo} />
-        </div>
-      </div>}
-      <div className={styles.teamLogo}>
-        <img src={logo} />
-      </div>
+      <p className={styles.teamName1}>{gameData.host_team_name}</p>
+      <div className={styles.teamLogo}><img src={gameData.host_team_logo || defImg1} /></div>
       <div className={styles.matchScore}>
-        <p><span>1</span><span>-</span><span>1</span></p>
+        <FullScore scoreList={gameData.score_list} />
         <p>全局比分</p>
       </div>
-      <div className={styles.teamLogo}>
-        <img src={logo} />
-      </div>
-      {<p className={styles.teamName2}>
-        Winning GamiWinning GamiWinning GamiWinning Gami
-      </p> || <div className={styles.nameAndKill2}>
-        <p>Winning GamiWinning Gami</p>
-        <div>
-          <img src={logo} />
-          <img src={logo} />
-        </div>
-      </div>}
-    </div>
-    <div className={styles.pvpNowStatus}>
-      {<div className={styles.csgoScore}>
-        <p><span>上半场</span><span>11-4</span></p>
-      </div> || <div className={styles.teamIcon1}>
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-      </div>}
-      <p className={styles.score}>18</p>
-      <div className={styles.center}>
-        <p>第一局 01‘</p>
-        <p>第一局 01‘</p>
-      </div>
-      <p className={styles.score}>16</p>
-      {<div className={styles.csgoScore}>
-        <p><span>上半场</span><span>11-4</span></p>
-      </div> || <div className={styles.teamIcon2}>
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-        <img src={logo} />
-      </div>}
+      <div className={styles.teamLogo}><img src={gameData.guest_team_logo || defImg1} /></div>
+      <p className={styles.teamName2}>{gameData.guest_team_name}</p>
     </div>
   </div>
 }
 
 function Underway ({ gameData = {} }) {
-  const Id = parseInt(gameData.game_type_id)
-  switch (Id) {
-    case 5:
-      return <UnderwayDota gameData={gameData} />
-    case 3:
-      return <UnderwayCsGo gameData={gameData} />
-    case 1:
-      return <UnderwayLol gameData={gameData} />
-    default:
-      return <UnderwayKoa gameData={gameData} />
+  const history = useHistory()
+  gameData = diffCatch(gameData)({
+    game_type_id: 0,
+    team1_more_attr: {
+      other_more_attr: {},
+      players: []
+    },
+    team2_more_attr: {
+      other_more_attr: {},
+      players: []
+    },
+    poor_economy: {
+      gold: 0,
+      time: 0
+    },
+    round: 0
+  })
+
+  function f () {
+    switch (gameData.game_type_id) {
+      case 5:
+        return <UnderwayDota gameData={gameData} />
+      case 3:
+        return <UnderwayCsGo gameData={gameData} />
+      case 1:
+        return <UnderwayLol gameData={gameData} />
+      default:
+        return <UnderwayKoa gameData={gameData} />
+    }
   }
+
+  return <div onClick={() => routerDetails(gameData, history)}>
+    {f()}
+  </div>
 }
 
+UnderwayKoa.propTypes = {
+  gameData: PropTypes.object
+}
 Underway.propTypes = {
   gameData: PropTypes.object
 }
 UnderwayDota.propTypes = {
+  gameData: PropTypes.object
+}
+UnderwayCsGo.propTypes = {
   gameData: PropTypes.object
 }
 LeftTime.propTypes = {
@@ -353,5 +317,8 @@ LeftTime.propTypes = {
 }
 FullScore.propTypes = {
   scoreList: PropTypes.array
+}
+UnderwayLol.propTypes = {
+  gameData: PropTypes.object
 }
 export default Underway

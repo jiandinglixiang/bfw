@@ -208,35 +208,41 @@ export function initOddAndLogo (item, score) {
   return tameName
 }
 
-export function defCatch (obj) {
-  // 所见即所得，多成数据取除保存
-  return function (ReturnObj) {
-    const formType1 = Object.prototype.toString.call(ReturnObj)
-    const formType2 = Object.prototype.toString.call(obj)
-    const isObj2 = formType2 === '[object Object]'
-    let isObj = formType1 === '[object Object]'
-    let arr
-    if (isObj) {
-      arr = Object.keys(ReturnObj)
-      isObj = !!arr.length
-    }
-    if (isObj2 && isObj) {
-      let copyObj
-      try {
-        copyObj = { ...obj }
-        arr.forEach(function (key) {
-          copyObj[key] = defCatch(obj[key])(ReturnObj[key])
-        })
-        return copyObj
-      } catch (e) {
-        console.log(e)
-        return ReturnObj
-      }
-    } else if (formType1 === formType2) {
-      return obj
-    } else {
+export function diffCatch2 (obj, ReturnObj) {
+  const formType1 = Object.prototype.toString.call(ReturnObj)
+  const formType2 = Object.prototype.toString.call(obj)
+  const isObj2 = formType2 === '[object Object]'
+  let isObj = formType1 === '[object Object]'
+  let arr
+  if (isObj) {
+    arr = Object.keys(ReturnObj)
+    isObj = !!arr.length
+  }
+  if (isObj2 && isObj) {
+    let copyObj
+    try {
+      copyObj = { ...obj }
+      arr.forEach(function (key) {
+        copyObj[key] = diffCatch(obj[key])(ReturnObj[key])
+      })
+      return copyObj
+    } catch (e) {
+      console.log(e)
       return ReturnObj
     }
+  } else if (formType1 === formType2) {
+    return obj
+  } else if (formType1 === '[object Number]' && formType2 === '[object String]') {
+    return toBigNumber(obj).toNumber()
+  } else {
+    return ReturnObj
+  }
+}
+
+export function diffCatch (obj) {
+  // 所见即所得，多成数据取除保存
+  return function (ReturnObj) {
+    return diffCatch2(obj, ReturnObj)
   }
 }
 
@@ -262,5 +268,3 @@ export function objCatch (obj, expected = {}) {
     }
   }
 }
-
-objCatch({})(1)

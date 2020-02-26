@@ -18,7 +18,7 @@ function ScheduleList (props) {
 }
 
 function InPlay ({ data = [] }) {
-  return <div>123
+  return <div>
     {
       data.map((value, index) => {
         return <div key={index}>
