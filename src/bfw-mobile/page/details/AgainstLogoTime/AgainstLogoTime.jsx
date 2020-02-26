@@ -7,6 +7,7 @@ import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
 import dota from '../../../assets/default_teamblue_40.png'
 import firstBlood from '../../../assets/firstblood.png'
+import deckills from '../../../assets/deckills.png'
 
 function Underway () {
   return <div className={styles.content}>
@@ -154,7 +155,7 @@ function LogoName ({ matchList, page, right }) {
   if ([2, 4].includes(page)) {
     iconList = <div className={styles.aBloodIcon}>
       {matchList.is_first_blood > 0 ? <img src={firstBlood} /> : <span />}
-      {matchList.is_ten_kills > 0 ? <img src={firstBlood} /> : <span />}
+      {matchList.is_ten_kills > 0 ? <img src={deckills} /> : <span />}
     </div>
   }
   if (right) {
@@ -284,10 +285,10 @@ function iconList ({ gameId, page, matchList }) {
     return {
       left: <div className={styles.aBloodIcon}>
         {matchList.is_first_blood > 0 ? <img src={firstBlood} /> : <span />}
-        {matchList.is_ten_kills > 0 ? <img src={firstBlood} /> : <span />}
+        {matchList.is_ten_kills > 0 ? <img src={deckills} /> : <span />}
       </div>,
       right: <div className={styles.aBloodIcon}>
-        {matchList.is_ten_kills > 0 ? <img src={firstBlood} /> : <span />}
+        {matchList.is_ten_kills > 0 ? <img src={deckills} /> : <span />}
         {matchList.is_first_blood > 0 ? <img src={firstBlood} /> : <span />}
       </div>,
     }

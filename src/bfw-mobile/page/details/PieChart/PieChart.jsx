@@ -1,16 +1,27 @@
 import React, { useEffect, useRef } from 'react'
 import styles from './index.module.scss'
 import echarts from 'echarts'
+import { diffCatch, PropTypes } from '../../../../tool/util.js'
 
-function PieChart () {
+function PieChart ({ value }) {
   const ref = useRef()
   useEffect(function () {
     // 基于准备好的dom，初始化echarts实例
-    const myChart = echarts.init(ref.current)
+    const el = window.document.documentElement || window.document.body
+    const myChart = echarts.init(ref.current, '', {
+      width: el.offsetWidth - (el.offsetWidth * 0.04) + 'px'
+    })
+    value = diffCatch(value)({
+      name: '',
+      team1_count: '',
+      team1_ratio: 0,
+      team2_count: '',
+      team2_ratio: 0,
+    })
     // 绘制图表
     myChart.setOption({
       title: {
-        text: '完赛总击杀数>56',
+        text: value.name,
         padding: 0,
         textAlign: 'center',
         left: 'middle',
@@ -33,7 +44,7 @@ function PieChart () {
           center: ['20%', '50%'],
           data: [
             {
-              value: 100,
+              value: 100 - value.team1_ratio,
               labelLine: {
                 show: false
               },
@@ -44,7 +55,7 @@ function PieChart () {
               }
             },
             {
-              value: 100,
+              value: value.team1_ratio,
               labelLine: {
                 show: false
               },
@@ -62,7 +73,7 @@ function PieChart () {
                 },
                 formatter: function (params) {
                   // console.log(params)
-                  return '{a|' + params.value + '%}' + '\n{b|(14局)}'
+                  return `{a|${params.value}%} \n{b|(${value.team1_count})}`
                 },
                 position: 'center',
                 show: true,
@@ -89,7 +100,7 @@ function PieChart () {
           center: ['80%', '50%'],
           data: [
             {
-              value: 100,
+              value: 100 - value.team2_ratio,
               labelLine: {
                 show: false
               },
@@ -100,7 +111,7 @@ function PieChart () {
               }
             },
             {
-              value: 25,
+              value: value.team2_ratio,
               labelLine: {
                 show: false
               },
@@ -118,7 +129,7 @@ function PieChart () {
                 },
                 formatter: function (params) {
                   // console.log(params)
-                  return '{a|' + params.value + '%}' + '\n{b|(14局)}'
+                  return `{a|${params.value}%} \n{b|(${value.team2_count})}`
                 },
                 position: 'center',
                 show: true,
@@ -139,8 +150,12 @@ function PieChart () {
         }
       ]
     })
-  }, [ref])
+  }, [ref, value])
   return <div ref={ref} className={styles.container} />
+}
+
+PieChart.propTypes = {
+  value: PropTypes.object
 }
 
 export default PieChart

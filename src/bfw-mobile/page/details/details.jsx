@@ -24,6 +24,7 @@ import PieChart from './PieChart/PieChart.jsx'
 import LineChart from './LineChart/LineChart.jsx'
 import RadarChart from './RadarChart/RadarChart.jsx'
 import { connect } from 'react-redux'
+import PvpTitle from './PvpTitle/PvpTitle.jsx'
 
 function equalActive (page, eq) {
   return page === eq ? styles.active : ''
@@ -87,10 +88,8 @@ function Details (props) {
     <HeadBar title={matchName} />
     <div className={styles.paddingBody}>
       <div style={{
-        minHeight: '106px',
-        display: 'flex',
-        flexFlow: 'row nowrap',
-        alignItems: 'center'
+        minHeight: '112px',
+        padding: '20px 0 10px 0'
       }}>
         <AgainstLogoTime gameId={gameId} page={page} matchList={matchList} />
       </div>
@@ -108,42 +107,49 @@ function Details (props) {
         <PvpAnalyze oddList={matchList.odds_list} />
       </div>
       <div style={{ display: page === 1 ? 'block' : 'none' }}>
-        <PvpStatistics />
+        <PvpStatistics matchList={matchList} />
+        <PvpTitle title='赛前分析' />
       </div>
-      <div style={{ display: page === 2 ? 'block' : 'none' }}>2</div>
-      <div style={{ display: page === 3 ? 'block' : 'none' }}>3</div>
+      <div style={{ display: page === 2 ? 'block' : 'none' }}>
+        2
+      </div>
+      <div style={{ display: page === 3 ? 'block' : 'none' }}>
+        3
+      </div>
     </div>
-    <div>
+    <div style={{ display: 'none' }}>
       <div>
-        <RadarChart />
-        <LineChart />
-        <PieChart />
-        <PieChart />
+        <div>
+          <RadarChart />
+          <LineChart />
+          <PieChart />
+          <PieChart />
+        </div>
+        <AgainstLogoTime />
+        <BPList />
+        <TipTitle title='第一局' />
+        <BoutTitleBar />
+        <CsGoMapImg />
+        <CsGoNowStatus />
+        <TabsFire>
+          <PvpAnalyze />
+          <div>
+            <BeforeData />
+          </div>
+          <div>
+            <TipTitle />
+            <RoleContent />
+          </div>
+        </TabsFire>
       </div>
-      <AgainstLogoTime />
-      <BPList />
-      <TipTitle title='第一局' />
-      <BoutTitleBar />
-      <CsGoMapImg />
-      <CsGoNowStatus />
-      <TabsFire>
-        <PvpAnalyze />
-        <div>
-          <BeforeData />
-        </div>
-        <div>
-          <TipTitle />
-          <RoleContent />
-        </div>
-      </TabsFire>
-    </div>
-    <div>
-      <PvpTameState gameId={gameId} />
-      <PvpStatistics />
-      <PvpList />
-      <HistoryPvpList />
-      <FuturePvpList />
-      <OutTame />
+      <div>
+        <PvpTameState gameId={gameId} />
+        <PvpStatistics />
+        <PvpList />
+        <HistoryPvpList />
+        <FuturePvpList />
+        <OutTame />
+      </div>
     </div>
   </div>
 }
