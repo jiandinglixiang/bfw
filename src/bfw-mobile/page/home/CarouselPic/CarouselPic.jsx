@@ -21,6 +21,10 @@ function CarouselPic (props) {
             className={styles.carousel}
             rel='noopener noreferrer'>
             <img
+              style={{
+                height: '41vw',
+                maxHeight: '308px'
+              }}
               alt=''
               src={value.img}
               onLoad={(event) => {

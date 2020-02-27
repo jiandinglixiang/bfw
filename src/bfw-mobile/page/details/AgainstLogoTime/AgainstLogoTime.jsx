@@ -231,12 +231,13 @@ function underway (gameId, matchList, page) {
   </div>
 }
 
-function gameOver () {
+function gameOver (matchList, page) {
+  const score = matchList.score.split(/:|,/)
   return <div className={styles.center}>
     <div className={styles.overScore}>
-      <p>88</p>
+      <p>{score[0]}</p>
       <b>-</b>
-      <p>88</p>
+      <p>{score[1]}</p>
     </div>
     <div className={styles.overTxt}><p>已结束</p></div>
   </div>
@@ -268,7 +269,7 @@ function teamIcon ({ gameId, page }) {
 
 function teamScore ({ gameId, page, matchList }) {
   // 赛况显示
-  if (gameId === 5 && matchList.status > 0) {
+  if (gameId === 5 && matchList.status === 1) {
     const score = matchList.score.split(/:|,/).map(v => parseInt(v))
     return {
       right: <b style={{ color: page === 4 && score[1] > score[0] ? styles.colorYellow : styles.colorGray }}>
@@ -321,7 +322,7 @@ function AgainstLogoTime (props) {
       <div className={styles.topLogoIcon1}>
         {teamFaction.left}
         <div className={styles.logo}>
-          <img src={matchList.guest_team_logo || defImg2} />
+          <img src={matchList.host_team_logo || defImg1} />
         </div>
         {score.left}
       </div>

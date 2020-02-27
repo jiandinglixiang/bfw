@@ -42,7 +42,9 @@ function Home (props) {
           title={<img src={logo} height='16' alt='logo' />}
           hideBack
         />
-        <NoticeBar txt={notice} />
+        <NoticeBar
+          txt={notice}
+        />
         <TryCatch>
           <CarouselPic carouseMap={bannerList} />
         </TryCatch>

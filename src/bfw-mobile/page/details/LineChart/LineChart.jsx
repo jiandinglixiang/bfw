@@ -1,13 +1,19 @@
 import React, { useEffect, useRef } from 'react'
 import styles from './index.module.scss'
 import echarts from 'echarts'
+import { PropTypes } from '../../../../tool/util.js'
 
-function LineChart () {
+function LineChart ({ dataArr = [] }) {
   const ref = useRef()
   useEffect(function () {
     // 基于准备好的dom，初始化echarts实例
     const myChart = echarts.init(ref.current)
     // 绘制图表
+    const data = dataArr.map(value => {
+      return {
+        value: value.gold
+      }
+    })
     myChart.setOption({
       backgroundColor: '#06051A',
       tooltip: {
@@ -42,11 +48,14 @@ function LineChart () {
         containLabel: true
       },
       xAxis: {
-        type: 'category',
+        type: 'value',
         boundaryGap: false,
-        data: ['00:00', '1:00', '05:00', '06:00', '11:00', '12:00'],
+        data: ['00:00', '13:00', '26:00', '39:00', '52:00', '65:00'],
         axisLabel: {
           // 刻度线
+          formatter (value, index) {
+            return value
+          },
           fontWeight: 'bold',
           color: '#85838F'
         },
@@ -124,54 +133,8 @@ function LineChart () {
         {
           type: 'line',
           data: [
-            {
-              value: -100,
-              itemStyle: {
-                color: '#3393FF'
-              }
-            },
-            {
-              value: 200,
-              itemStyle: {
-                color: '#3393FF'
-              }
-            },
-            {
-              value: -300,
-              itemStyle: {
-                color: '#3393FF'
-              }
-            },
-            {
-              value: 100,
-              itemStyle: {
-                color: '#3393FF'
-              }
-            },
-            {
-              value: 200,
-              itemStyle: {
-                color: '#3393FF'
-              }
-            },
-            {
-              value: 300,
-              itemStyle: {
-                color: '#3393FF'
-              }
-            },
-            {
-              value: 400,
-              itemStyle: {
-                color: '#3393FF'
-              }
-            },
-            {
-              value: 400,
-              itemStyle: {
-                color: '#3393FF'
-              }
-            }
+            { value: -100 },
+            { value: 100 }
           ],
           symbol: 'none',
           areaStyle: {
@@ -183,7 +146,7 @@ function LineChart () {
           },
           lineStyle: {
             width: 3
-          },
+          }
         }
       ],
       visualMap: [
@@ -208,12 +171,12 @@ function LineChart () {
         },
       ]
     })
-  }, [ref])
+  }, [ref, dataArr])
   return <div>
     <div className={styles.lineChartSwitch}>
       <div>
-        <button>经济差</button>
-        <button className={styles.activeClick}>经验差</button>
+        <button className={styles.activeClick}>经济差</button>
+        {/* <button className={styles.activeClick}>经验差</button> */}
       </div>
     </div>
     <div ref={ref} className={styles.container} />
@@ -221,3 +184,7 @@ function LineChart () {
 }
 
 export default LineChart
+
+LineChart.propTypes = {
+  dataArr: PropTypes.array
+}

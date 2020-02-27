@@ -1,9 +1,11 @@
 .content {
-  background-color: #06051A;
+  background-repeat: no-repeat;
+  background-size: 100% 210px;
+  background-position: left top;
 }
 
 .paddingBody {
-  padding: 0 2%;
+  padding: 2%;
 }
 
 .tabsList {
@@ -11,6 +13,7 @@
   flex-flow: row nowrap;
   align-items: center;
   height: 40px;
+  background: rgba(16, 24, 49, 0.5);
 
   div {
     width: 33.3%;
@@ -43,4 +46,29 @@
       background-color: #F9DF70;;
     }
   }
+}
+
+.game-rear-5 {
+  // 撸啊撸
+  background-image: url("../../assets/data_dota2.png");
+}
+
+.game-rear-1 {
+  // 撸啊撸
+  background-image: url("../../assets/data_lol2.png");
+}
+
+.game-rear-2 {
+  // 王者
+  background-image: url("../../assets/data_kog2.png");
+}
+
+.game-rear-4 {
+  // ow
+  background-image: url("../../assets/data_ow2.png");
+}
+
+.game-rear-3 {
+  // cs
+  background-image: url("../../assets/data_csgo2.png");
 }

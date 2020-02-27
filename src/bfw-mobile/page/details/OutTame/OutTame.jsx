@@ -4,7 +4,7 @@ import stylesOutTame from './index.module.scss'
 import { TameNameLogo } from '../HistoryPvpList/HistoryPvpList'
 import styles from '../PvpList/index.module.scss'
 import def from '../../../assets/default_team_60.png'
-import { objCatch, PropTypes } from '../../../../tool/util'
+import { PropTypes } from '../../../../tool/util'
 import { connect } from 'react-redux'
 
 function initList (value, index) {
@@ -87,14 +87,12 @@ OutTame.propTypes = {
   guestList: PropTypes.array
 }
 export default connect(function (state) {
-  const players = objCatch(state.details)('players')
-  const matchList = objCatch(state.details)('matchList')
   return {
-    hostName: matchList.host_team_name,
-    hostLogo: matchList.host_team_logo,
-    guestName: matchList.guest_team_name,
-    guestLogo: matchList.guest_team_logo,
-    hostList: players.team1_players || [],
-    guestList: players.team2_players || []
+    hostName: state.details.matchList.host_team_name,
+    hostLogo: state.details.matchList.host_team_logo,
+    guestName: state.details.matchList.guest_team_name,
+    guestLogo: state.details.matchList.guest_team_logo,
+    hostList: state.details.players.team1_players || [],
+    guestList: state.details.players.team2_players || []
   }
 })(OutTame)

@@ -89,14 +89,12 @@ FuturePvpList.propTypes = {
   guestList: PropTypes.array
 }
 export default connect(function (state) {
-  const futureSchedule = objCatch(state.details)('futureSchedule')
-  const matchList = objCatch(state.details)('matchList')
   return {
-    hostName: matchList.host_team_name,
-    hostLogo: matchList.host_team_logo,
-    guestName: matchList.guest_team_name,
-    guestLogo: matchList.guest_team_logo,
-    hostList: futureSchedule.team1_future_schedule || [],
-    guestList: futureSchedule.team2_future_schedule || []
+    hostName: state.details.matchList.host_team_name,
+    hostLogo: state.details.matchList.host_team_logo,
+    guestName: state.details.matchList.guest_team_name,
+    guestLogo: state.details.matchList.guest_team_logo,
+    hostList: state.details.future_schedule.team1_future_schedule || [],
+    guestList: state.details.future_schedule.team2_future_schedule || []
   }
 })(FuturePvpList)

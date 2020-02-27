@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import PvpTitle from '../PvpTitle/PvpTitle'
 import styles from '../PvpList/index.module.scss'
 import def from '../../../assets/default_team_60.png'
-import { formatDate2, objCatch, PropTypes } from '../../../../tool/util'
+import { diffCatch, formatDate, PropTypes } from '../../../../tool/util'
 import styles2 from './index.module.scss'
 import { connect } from 'react-redux'
 
@@ -14,9 +14,11 @@ export function TameNameLogo ({ name, logo, mode }) {
 }
 
 function initItem (value, index) {
-  const confrontation = objCatch(value)('confrontation')
-  const win = objCatch(value)('win')
-  const scoreArr = (value.score || '').split(/:|,/)
+  const valueVe = diffCatch(value)({
+    confrontation: {},
+    win: {}
+  })
+  const scoreArr = (valueVe.score || '').split(/:|,/)
   let scoreE = <span>暂无</span>
   if (scoreArr.length) {
     scoreE = <p className={styles.scoreArr}>
@@ -25,18 +27,23 @@ function initItem (value, index) {
       <span className={scoreArr[1] > scoreArr[0] ? styles.winScore : ''}>{scoreArr[1]}</span>
     </p>
   }
+  const time = parseInt(valueVe.game_duration_time / 60)
+
   return <li className={styles.bodyItem} key={index}>
     <div>
-      <img src={confrontation.icon || def} alt='' />
-      <p>{confrontation.name}</p>
+      <img src={valueVe.confrontation.icon || def} alt='' />
+      <p>{valueVe.confrontation.name}</p>
     </div>
     <div className={styles.longRow}>
-      <p>{value.match_name}</p>
-      <p>{`${value.match_rules || ''} ${formatDate2(value.game_start_time)}`}</p>
+      <p>{valueVe.match_name}</p>
+      <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
     </div>
     <div>
-      <img src={win.icon || def} alt='' />
-      <p>{win.name}</p>
+      {time}'{valueVe.game_duration_time - (time ? time * 60 : 0)}
+    </div>
+    <div>
+      <img src={valueVe.win.icon || def} alt='' />
+      <p>{valueVe.win.name}</p>
     </div>
     <div>
       {scoreE}
@@ -49,7 +56,8 @@ function initList (list, len, more, showMore) {
     return <ul className={`${styles.publicClass} ${styles.compactRow}`}>
       <li className={styles.contentTitle}>
         <div>对阵</div>
-        <div className={styles.longRow}>赛事/时间</div>
+        <div className={styles.longRow}>联赛</div>
+        <div>时长</div>
         <div>胜负</div>
         <div>击杀比</div>
       </li>
@@ -105,14 +113,12 @@ TameNameLogo.propTypes = {
 }
 
 export default connect(function (state) {
-  const historyCompetition = objCatch(state.details)('historyCompetition')
-  const matchList = objCatch(state.details)('matchList')
   return {
-    hostName: matchList.host_team_name,
-    hostLogo: matchList.host_team_logo,
-    guestName: matchList.guest_team_name,
-    guestLogo: matchList.guest_team_logo,
-    hostList: historyCompetition.team1_history_competition || [],
-    guestList: historyCompetition.team2_history_competition || []
+    hostName: state.details.matchList.host_team_name,
+    hostLogo: state.details.matchList.host_team_logo,
+    guestName: state.details.matchList.guest_team_name,
+    guestLogo: state.details.matchList.guest_team_logo,
+    hostList: state.details.history_competition.team1_history_competition || [],
+    guestList: state.details.history_competition.team2_history_competition || []
   }
 })(HistoryPvpList)

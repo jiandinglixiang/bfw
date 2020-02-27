@@ -3,41 +3,50 @@ import PvpTitle from '../PvpTitle/PvpTitle'
 import styles from './index.module.scss'
 import def from '../../../assets/default_team_60.png'
 import { connect } from 'react-redux'
-import { formatDate2, PropTypes } from '../../../../tool/util'
+import { diffCatch, formatDate, formatDate2, PropTypes } from '../../../../tool/util'
 
 function initList (value, index) {
+  const valueVe = diffCatch(value)({
+    team2_score: 0,
+    team1_score: 0,
+    team2_info: {},
+    team1_info: {},
+    game_duration_time: 0
+  })
   let winLogo = <div><span>平</span></div>
   let winScore = <div><span>暂无</span></div>
-  if (value.team1_score * 1 > value.team2_score * 1) {
+  if (valueVe.team1_score * 1 > valueVe.team2_score * 1) {
     winLogo = <div>
-      <img src={value.team1_info.icon || def} alt='' />
-      <p>{value.team1_info.name}</p>
+      <img src={valueVe.team1_info.icon || def} alt='' />
+      <p>{valueVe.team1_info.name}</p>
     </div>
     winScore = <div>
       <p className={styles.scoreArr}>
-        <span className={styles.winScore}>{value.team1_score}</span>
+        <span className={styles.winScore}>{valueVe.team1_score}</span>
         <span>-</span>
-        <span>{value.team2_score}</span>
+        <span>{valueVe.team2_score}</span>
       </p>
     </div>
-  } else if (value.team2_score * 1 > value.team1_score * 1) {
+  } else if (valueVe.team2_score * 1 > valueVe.team1_score * 1) {
     winLogo = <div>
-      <img src={value.team2_info.icon || def} alt='' />
-      <p>{value.team2_info.name}</p>
+      <img src={valueVe.team2_info.icon || def} alt='' />
+      <p>{valueVe.team2_info.name}</p>
     </div>
     winScore = <div>
       <p className={styles.scoreArr}>
-        <span>{value.team1_score}</span>
+        <span>{valueVe.team1_score}</span>
         <span>-</span>
-        <span className={styles.winScore}>{value.team2_score}</span>
+        <span className={styles.winScore}>{valueVe.team2_score}</span>
       </p>
     </div>
   }
+  const time = parseInt(valueVe.game_duration_time / 60)
   return <li className={styles.bodyItem} key={index}>
     <div className={styles.longRow}>
-      <p>{value.match_name}</p>
-      <p>{`${value.match_rules || ''} ${formatDate2(value.game_start_time)}`}</p>
+      <p>{valueVe.match_name}</p>
+      <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
     </div>
+    <div>{time}'{valueVe.game_duration_time - (time ? time * 60 : 0)}</div>
     {winLogo}
     {winScore}
   </li>
@@ -58,6 +67,7 @@ function PvpList ({ twoSidesConfrontation = [] }) {
         {
           list.length ? <li className={styles.contentTitle}>
             <div className={styles.longRow}>赛事/时间</div>
+            <div>时长</div>
             <div>胜负</div>
             <div>击杀比</div>
           </li> : <li className={styles.noneAnyOne} />
@@ -82,6 +92,6 @@ PvpList.propTypes = {
 }
 export default connect(function (state) {
   return {
-    twoSidesConfrontation: state.details.twoSidesConfrontation
+    twoSidesConfrontation: state.details.two_sides_confrontation
   }
 })(PvpList)

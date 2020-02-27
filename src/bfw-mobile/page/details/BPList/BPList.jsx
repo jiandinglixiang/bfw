@@ -1,45 +1,43 @@
 import React from 'react'
 import styles from './index.module.scss'
-import dota from '../../../assets/ic_dota2.png'
+import { diffCatch } from '../../../../tool/util.js'
 
 function BPList (props) {
+  const propsVe = diffCatch(props)({
+    isBan: false,
+    team1: [],
+    team2: []
+  })
+  const noneAny = [
+    <span key='1' />,
+    <span key='2' />,
+    <span key='3' />,
+    <span key='4' />,
+    <span key='5' />,
+    propsVe.isBan && <span key='0' />
+  ]
   return <div>
     <div className={styles.BPlist}>
       <div>
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
+        {
+          !propsVe.team1.length ? noneAny : propsVe.team1.map(function (value, index) {
+            if (value.avatar) {
+              return <img key={index} src={value.avatar} />
+            }
+            return <span key={index} />
+          })
+        }
       </div>
-      <p>P</p>
+      {propsVe.isBan ? <p>B</p> : <p className={styles.green}>P</p>}
       <div>
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-      </div>
-    </div>
-    <div className={styles.BPlist}>
-      <div>
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-      </div>
-      <p className={styles.green}>P</p>
-      <div>
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
+        {
+          !propsVe.team2.length ? noneAny : propsVe.team2.map(function (value, index) {
+            if (value.avatar) {
+              return <img key={index} src={value.avatar} />
+            }
+            return <span key={index} />
+          })
+        }
       </div>
     </div>
   </div>

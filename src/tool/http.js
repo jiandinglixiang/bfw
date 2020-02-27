@@ -1,4 +1,4 @@
-import { searchFormat } from './util'
+import { diffCatch, searchFormat } from './util'
 
 let baseURL = '/'
 if (process.env.REACT_APP_build_url === 'test') {
@@ -61,6 +61,20 @@ export const http = {
   },
   getMatchAnalysis (smid) {
     return Http.get('/analysis', { smid })
+  },
+  getMatchData (smid, round) {
+    return Http.get('/match', {
+      smid,
+      round
+    }).then(value => {
+      return diffCatch(value)({
+        economic_curve_list: [],
+        match_list: {
+          real_players: [],
+          end_match: []
+        }
+      })
+    })
   },
 }
 export default http

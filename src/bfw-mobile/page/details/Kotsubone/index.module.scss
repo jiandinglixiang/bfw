@@ -6,7 +6,8 @@
 }
 
 .content {
-  min-height: 102px;
+  height: 110px;
+  padding-top: 4px;
   width: 100%;
   display: flex;
   flex-flow: row nowrap;
@@ -23,46 +24,33 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  min-height: 32px;
+  min-height: 50px;
 
   .logo {
+    align-self: flex-end;
     flex: 1 1 auto;
     text-align: center;
+    height: 25px;
 
     img {
       height: 25px;
-      vertical-align: bottom;
     }
   }
 
   b {
+    align-self: flex-end;
     font-family: 'ATUO123';
     flex: 0 0 32px;
     text-align: center;
-    line-height: 1;
+    height: 25px;
     font-size: 25px;
   }
-}
 
-.topLogoIcon1 {
   .teamIcon {
     width: 32px;
     height: 32px;
     align-self: flex-start;
-
-    img {
-      width: 21px;
-      height: 28px;
-    }
-  }
-}
-
-.topLogoIcon2 {
-  .teamIcon {
-    width: 32px;
-    height: 32px;
-    align-self: flex-start;
-    text-align: right;
+    text-align: center;
 
     img {
       width: 21px;
@@ -204,8 +192,9 @@
 }
 
 .difference {
-  line-height: 1;
+  line-height: 25px;
   font-size: 12px;
+  align-self: flex-end;
 
   span {
     display: inline-block;
@@ -215,7 +204,7 @@
     content: '';
     display: inline-block;
     width: 1em;
-    height: 1em;
+    height: 25px;
     background: url("../../../assets/coin.png") no-repeat center center;
     background-size: 12px 12px;
     vertical-align: bottom;

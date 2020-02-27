@@ -14,6 +14,13 @@ export function setMatchAnalysis (data) {
   }
 }
 
+export function setMatchResult (data) {
+  return {
+    type: 'SET_MATCH_RESULT',
+    ...data,
+  }
+}
+
 export function getMatchDetailsAsync (smid) {
   return async function (dispatch) {
     const details = await http.getMatchDetails(smid).catch((err) => {
@@ -37,54 +44,10 @@ export function getMatchDetailsAsync (smid) {
 export function getMatchAnalysisAsync (smid) {
   return async function (dispatch) {
     const analysis = await http.getMatchAnalysis(smid).catch((err) => {
-      dispatch(setMatchDetails(
-        {
-          confrontation: [],
-          futureSchedule: {
-            team1_future_schedule: [],
-            team2_future_schedule: [],
-          },
-          historyCompetition: {
-            team1_history_competition: [],
-            team2_history_competition: [],
-          },
-          histotyConfrontationStatistics: [],
-          players: {
-            team1_players: [],
-            team2_players: [],
-          },
-          twoSidesConfrontation: [],
-        },
-      ))
       return Promise.reject(err)
     })
     if (!analysis) return
-    // console.log(analysis.two_sides_confrontation)
-    const data = {
-      confrontation: analysis.confrontation || [],
-      futureSchedule: {
-        team1_future_schedule: (analysis.future_schedule &&
-          analysis.future_schedule.team1_future_schedule) || [],
-        team2_future_schedule: (analysis.future_schedule &&
-          analysis.future_schedule.team2_future_schedule) || [],
-      },
-      historyCompetition: {
-        team1_history_competition: (analysis.history_competition &&
-          analysis.history_competition.team1_history_competition) || [],
-        team2_history_competition: (analysis.history_competition &&
-          analysis.history_competition.team2_history_competition) || [],
-      },
-      histotyConfrontationStatistics: analysis.histoty_confrontation_statistics ||
-        [],
-      players: {
-        team1_players: (analysis.players && analysis.players.team1_players) ||
-          [],
-        team2_players: (analysis.players && analysis.players.team2_players) ||
-          [],
-      },
-      twoSidesConfrontation: analysis.two_sides_confrontation || [],
-    }
-    dispatch(setMatchAnalysis(data))
+    dispatch(setMatchAnalysis(analysis))
   }
 }
 
@@ -94,20 +57,19 @@ const current = {
       matchList: {},
       liveList: [],
       confrontation: [],
-      futureSchedule: {
-        team1_future_schedule: [],
-        team2_future_schedule: [],
-      },
-      historyCompetition: {
-        team1_history_competition: [],
-        team2_history_competition: [],
-      },
-      histotyConfrontationStatistics: [],
-      players: {
-        team1_players: [],
-        team2_players: [],
-      },
-      twoSidesConfrontation: [],
+      histoty_confrontation_statistics: [],
+      match_analysis: [],
+      two_sides_confrontation: {},
+      history_competition: {},
+      future_schedule: {},
+      players: {},
+      matchResult: {
+        economic_curve_list: [],
+        match_list: {
+          real_players: [],
+          end_match: []
+        }
+      }
     }
   },
   reducer (state = current.data(), action) {
@@ -121,11 +83,16 @@ const current = {
       case setMatchAnalysis().type:
         return Object.assign({}, state, {
           confrontation: action.confrontation,
-          futureSchedule: action.futureSchedule,
-          historyCompetition: action.historyCompetition,
-          histotyConfrontationStatistics: action.histotyConfrontationStatistics,
+          histoty_confrontation_statistics: action.histoty_confrontation_statistics,
+          match_analysis: action.match_analysis,
+          two_sides_confrontation: action.two_sides_confrontation,
+          history_competition: action.history_competition,
+          future_schedule: action.future_schedule,
           players: action.players,
-          twoSidesConfrontation: action.twoSidesConfrontation,
+        })
+      case setMatchResult().type:
+        return Object.assign({}, state, {
+          matchResult: action.matchResult
         })
       default:
         return state

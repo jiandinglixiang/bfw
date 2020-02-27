@@ -2,7 +2,6 @@ import React from 'react'
 import styles from './index.module.scss'
 import { diffCatch } from '../../../../tool/util'
 import PvpTitle from '../PvpTitle/PvpTitle'
-import { connect } from 'react-redux'
 import PieChart from '../PieChart/PieChart.jsx'
 
 const hideRatio = ['gpm', 'xpm', 'rating', 'adr', 'kda']
@@ -86,11 +85,4 @@ function PvpStatistics (props) {
   </div>
 }
 
-function mapStateToProps (state) {
-  return {
-    confrontation: state.details.confrontation,
-    historyConfrontation: state.details.histotyConfrontationStatistics
-  }
-}
-
-export default connect(mapStateToProps)(PvpStatistics)
+export default PvpStatistics

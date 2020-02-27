@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import HeadBar from '../../components/HeadBar/HeadBar.jsx'
 import { useParams } from 'react-router-dom'
 import PvpTameState from './PvpTameState/PvpTameState'
@@ -10,13 +10,13 @@ import HistoryPvpList from './HistoryPvpList/HistoryPvpList'
 import FuturePvpList from './FuturePvpLits/FuturePvpLits'
 import OutTame from './OutTame/OutTame'
 import { store } from '../../redux'
-import { getMatchAnalysisAsync, getMatchDetailsAsync } from './store'
+import { getMatchDetailsAsync } from './store'
 import { diffCatch, PropTypes } from '../../../tool/util.js'
 import AgainstLogoTime from './AgainstLogoTime/AgainstLogoTime.jsx'
 import BPList from './BPList/BPList.jsx'
 import BeforeData from './BeforeData/BeforeData.jsx'
 import TipTitle from './TipTitle/TipTitle.jsx'
-import RoleContent from './RoleContent/RoleContent.jsx'
+import RoleContent from './OneMember/OneMember.jsx'
 import BoutTitleBar from './BoutTitleBar/BoutTitleBar.jsx'
 import CsGoNowStatus from './CsGoNowStatus/CsGoNowStatus.jsx'
 import CsGoMapImg from './CsGoMapImg/CsGoMapImg.jsx'
@@ -24,36 +24,52 @@ import PieChart from './PieChart/PieChart.jsx'
 import LineChart from './LineChart/LineChart.jsx'
 import RadarChart from './RadarChart/RadarChart.jsx'
 import { connect } from 'react-redux'
-import PvpTitle from './PvpTitle/PvpTitle.jsx'
+import CsGoPage1 from './CsGoPage/CsGoPage1.jsx'
+import CsGoPage2 from './CsGoPage/CsGoPage2.jsx'
+import CsGoPage3 from './CsGoPage/CsGoPage3.jsx'
+import { globalDataInit } from '../../../tool/useData.js'
+
+const useGDetails = globalDataInit({
+  index: 0,
+  page: <div />,
+  data: {}
+})
 
 function equalActive (page, eq) {
   return page === eq ? styles.active : ''
 }
 
-function TabsFire (props) {
-  const { children = [] } = props
-  const [page, setPage] = useState(2)
-  return <div>
-    <div className={styles.tabsList}>
-      <div className={equalActive(page, 0)} onClick={() => setPage(0)}><p>指数分析</p></div>
-      <div className={equalActive(page, 1)} onClick={() => setPage(1)}><p>历史数据</p></div>
-      {<div className={equalActive(page, 2)} onClick={() => setPage(2)}><p>赛况</p>
-      </div> || <div className={equalActive(page, 3)} onClick={() => setPage(3)}><p>赛果</p></div>}
+function TabsList ({ gameOver }) {
+  const [state, update] = useGDetails()
+  return <div className={styles.tabsList}>
+    <div
+      className={equalActive(state.index, 0)}
+      onClick={() => update(Object.assign(state, { index: 0 }))}>
+      <p>指数分析</p>
     </div>
-    <div style={{ display: page === 0 ? 'block' : 'none' }}>{children[0]}</div>
-    <div style={{ display: page === 1 ? 'block' : 'none' }}>{children[1]}</div>
-    <div style={{ display: page === 2 ? 'block' : 'none' }}>{children[2]}</div>
-    <div style={{ display: page === 3 ? 'block' : 'none' }}>{children[3]}</div>
+    <div
+      className={equalActive(state.index, 1)}
+      onClick={() => update(Object.assign(state, { index: 1 }))}>
+      <p>历史数据</p>
+    </div>
+    {
+      // 已结束
+      gameOver ? <div
+        className={equalActive(state.index, 3)}
+        onClick={() => update(Object.assign(state, { index: 3 }))}>
+        <p>赛果</p>
+      </div> : <div
+        className={equalActive(state.index, 2)}
+        onClick={() => update(Object.assign(state, { index: 2 }))}>
+        <p>赛况</p>
+      </div>
+    }
   </div>
-}
-
-TabsFire.propTypes = {
-  children: PropTypes.array
 }
 
 function Details (props) {
   const params = useParams()
-  const [page, setPage] = useState(0)
+  const [tabs] = useGDetails()
   const { matchName, gameId, smid } = diffCatch(params)({
     matchName: '加载中...',
     gameId: 0,
@@ -78,46 +94,35 @@ function Details (props) {
       status: 0 // 状态 0：未开始 1：进行中 2：已结束
     }
   })
+
   useEffect(function () {
-    store.dispatch(getMatchDetailsAsync(smid)).then(function () {
-      store.dispatch(getMatchAnalysisAsync(smid))
-    })
+    store.dispatch(getMatchDetailsAsync(smid))
     window.scrollTo(0, 0)
   }, [smid])
+
   return <div className={styles.content}>
-    <HeadBar title={matchName} />
+    <div className={styles['game-rear-' + gameId]}>
+      <HeadBar title={matchName} />
+      <AgainstLogoTime gameId={gameId} page={tabs.index} matchList={matchList} />
+      <TabsList gameOver={matchList.status === 2} />
+      {false && <BPList isBan />}
+      {false && <BPList />}
+    </div>
     <div className={styles.paddingBody}>
-      <div style={{
-        minHeight: '112px',
-        padding: '20px 0 10px 0'
-      }}>
-        <AgainstLogoTime gameId={gameId} page={page} matchList={matchList} />
-      </div>
-      <div className={styles.tabsList}>
-        <div className={equalActive(page, 0)} onClick={() => setPage(0)}><p>指数分析</p></div>
-        <div className={equalActive(page, 1)} onClick={() => setPage(1)}><p>历史数据</p></div>
-        {
-          // 已结束
-          matchList.status === 2 ? <div className={equalActive(page, 3)} onClick={() => setPage(3)}><p>
-            赛果</p></div> : <div className={equalActive(page, 2)} onClick={() => setPage(2)}><p>
-            赛况</p></div>
-        }
-      </div>
-      <div style={{ display: page === 0 ? 'block' : 'none' }}>
+      <div style={{ display: tabs.index === 0 ? 'block' : 'none' }}>
         <PvpAnalyze oddList={matchList.odds_list} />
       </div>
-      <div style={{ display: page === 1 ? 'block' : 'none' }}>
-        <PvpStatistics matchList={matchList} />
-        <PvpTitle title='赛前分析' />
-      </div>
-      <div style={{ display: page === 2 ? 'block' : 'none' }}>
-        2
-      </div>
-      <div style={{ display: page === 3 ? 'block' : 'none' }}>
-        3
-      </div>
+      {
+        tabs.index === 1 && <CsGoPage1 matchList={matchList} smid={smid} />
+      }
+      {
+        tabs.index === 2 && <CsGoPage2 matchList={matchList} smid={smid} />
+      }
+      {
+        tabs.index === 3 && <CsGoPage3 matchList={matchList} smid={smid} />
+      }
     </div>
-    <div style={{ display: 'none' }}>
+    {false && <div>
       <div>
         <div>
           <RadarChart />
@@ -131,16 +136,14 @@ function Details (props) {
         <BoutTitleBar />
         <CsGoMapImg />
         <CsGoNowStatus />
-        <TabsFire>
-          <PvpAnalyze />
-          <div>
-            <BeforeData />
-          </div>
-          <div>
-            <TipTitle />
-            <RoleContent />
-          </div>
-        </TabsFire>
+        <PvpAnalyze />
+        <div>
+          <BeforeData />
+        </div>
+        <div>
+          <TipTitle />
+          <RoleContent />
+        </div>
       </div>
       <div>
         <PvpTameState gameId={gameId} />
@@ -150,16 +153,16 @@ function Details (props) {
         <FuturePvpList />
         <OutTame />
       </div>
-    </div>
+    </div>}
   </div>
 }
 
-Details.propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
-  matchList: PropTypes.object,
-}
 export default connect(function (state) {
   return {
     matchList: state.details.matchList
   }
 })(Details)
+
+TabsList.propTypes = {
+  gameOver: PropTypes.bool
+}
