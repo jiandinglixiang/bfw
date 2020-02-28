@@ -2,12 +2,15 @@ import React from 'react'
 import styles from './index.module.scss'
 import tianhui from '../../../assets/tianhui_type2.png'
 import yemo from '../../../assets/nightdemon_type2.png'
-import { diffCatch, formatDate, toBigNumber } from '../../../../tool/util.js'
+import { diffCatch, formatDate, inning, toBigNumber } from '../../../../tool/util.js'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
 import dota from '../../../assets/default_teamblue_40.png'
 import firstBlood from '../../../assets/firstblood.png'
 import deckills from '../../../assets/deckills.png'
+import { scoreListReduce } from '../../../../bfw-web/page/AnalysisData/components/TameNowStatus'
+import { gameRound } from '../../home/MatchItem/MatchItem.jsx'
+import { comparisonUtil } from '../details.jsx'
 
 /*
 function Underway () {
@@ -458,12 +461,44 @@ function GameUnderway (props) {
     </div> */
 }
 
+export function statusToTxt (s) {
+  if (s === 1) {
+    return '进行中'
+  } else if (s === 2) {
+    return '已结束'
+  }
+  return '未开始'
+}
+
+function timeToTxt (time, status) {
+  if (!time) {
+    return [statusToTxt(status)]
+  }
+  const time2 = parseInt(time / 60)
+  return [`${time2}:${time - time2 * 60}`]
+}
+
 function TopLogoNameScore (props) {
   const propsVE = diffCatch(props)({
     isBoth: false,
+    endMatch: {
+      poor_economy: {
+        gold: 0
+      },
+      team1: {},
+      team2: {},
+    },
     matchList: {
+      poor_economy: { gold: 0 },
+      score_list: [],
       score: '',
-      game_start_time: ''
+      game_start_time: '',
+      team1_more_attr: {
+        other_more_attr: {}
+      },
+      team2_more_attr: {
+        other_more_attr: {}
+      }
     }
   })
   const data = {
@@ -471,33 +506,82 @@ function TopLogoNameScore (props) {
     status: 0,
     matchRules: '',
     time: [],
+    round: '',
+    gold: 0,
     team1: {},
     team2: {}
   }
+  const equalStatus = comparisonUtil(data.gameId, data.status)
+
   if (propsVE.isBoth) {
-    // 小局
+    // 小局页
+    data.status = propsVE.endMatch.team1.status
+    data.gameId = propsVE.endMatch.team1.game_type_id
+    data.team1.logo = propsVE.endMatch.team1.team_logo
+    data.team2.logo = propsVE.endMatch.team2.team_logo
+    data.team1.name = propsVE.endMatch.team1.team_name
+    data.team2.name = propsVE.endMatch.team2.team_name
+    data.team1.score = propsVE.endMatch.team1.score
+    data.team2.score = propsVE.endMatch.team2.score
+    if (data.gameId === 5) {
+      data.team1.camp = propsVE.endMatch.team1.camp === 'dire'
+      // 阵营
+      data.team2.camp = propsVE.endMatch.team2.camp === 'dire'
+    } else if (data.gameId === 1) {
+      data.team1.camp = propsVE.endMatch.team1.camp === 'blue'
+      // 阵营
+      data.team2.camp = propsVE.endMatch.team2.camp === 'blue'
+    }
+
+    data.round = propsVE.endMatch.team1.round && inning(propsVE.endMatch.team1.round)
+    data.time = timeToTxt(propsVE.endMatch.poor_economy.time, data.status)
+    data.gold = toBigNumber(propsVE.endMatch.poor_economy.gold / 1000).toFormat(1)
   } else {
-    // 通用
+    // 详情页
     data.status = propsVE.matchList.status
     data.gameId = propsVE.matchList.game_type_id
     data.team1.logo = propsVE.matchList.host_team_logo
     data.team1.name = propsVE.matchList.host_team_name
     data.team2.logo = propsVE.matchList.guest_team_logo
     data.team2.name = propsVE.matchList.guest_team_name
+    if (data.status === 1) {
+      // 进行中
+      const score = scoreListReduce(propsVE.matchList.score_list)
+      data.team1.score = score[0]
+      data.team2.score = score[1]
+      if (data.gameId === 5) {
+        data.team1.camp = propsVE.matchList.team1_more_attr.other_more_attr.camp === 'dire'
+        // 阵营dire天辉
+        data.team2.camp = propsVE.matchList.team2_more_attr.other_more_attr.camp === 'dire'
+      } else if (data.gameId === 1) {
+        data.team1.camp = propsVE.matchList.team1_more_attr.other_more_attr.camp === 'blue'
+        // 阵营蓝方
+        data.team2.camp = propsVE.matchList.team2_more_attr.other_more_attr.camp === 'blue'
+      }
+      data.round = gameRound(propsVE.matchList.score_list, propsVE.matchList.round_total)
+      data.time = timeToTxt(propsVE.matchList.poor_economy.time, data.status)
+      data.gold = toBigNumber(propsVE.matchList.poor_economy.gold / 1000).toFormat(1)
+    }
   }
 
-  if (data.status === 1) {
+  if (data.status === 1 || propsVE.isBoth) {
     return <GameUnderway {...data} />
   }
   if (data.status === 0) {
+    // 未开始
+    (() => {
+      let time = formatDate(propsVE.matchList.game_start_time, 'YYYY-MM-DD+HH:mm')
+      time = time.split('+')
+      data.time = time
+    })()
     data.matchRules = propsVE.matchList.match_rules
-    let time = formatDate(propsVE.matchList.game_start_time, 'YYYY-MM-DD+HH:mm')
-    time = time.split('+')
-    data.time = time
   } else {
-    const scoreArr = propsVE.matchList.score.split(/:|,/)
-    data.team1.score = scoreArr[0]
-    data.team2.score = scoreArr[1]
+    // 已结束其他
+    (() => {
+      const scoreArr = propsVE.matchList.score.split(/:|,/)
+      data.team1.score = scoreArr[0]
+      data.team2.score = scoreArr[1]
+    })()
   }
   return <GameOverOrNotStarted {...data} />
 }

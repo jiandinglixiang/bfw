@@ -99,91 +99,93 @@ function Details (props) {
   })
   const equalStatus = comparisonUtil(matchList.game_type_id, matchList.status)
 
-  return (<div>
-    <div className={styles['game-rear-' + matchList.game_type_id]}>
-      <HeadBar title={matchList.game_name} />
-      <div style={{
-        paddingTop: '16px',
-        minHeight: '121px'
-      }}>
-        <Switch>
-          <Route path='/details/both'>
-            <TopLogoNameScore matchList={matchList} isBoth />
-            {equalStatus(5, 1) && <BPList isBan />}
-            {equalStatus([1, 5], [1, 2]) && <BPList />}
-            {equalStatus(3, 1) && <CsGoNowStatus />}
-          </Route>
-          <Route path='/details'>
-            <TopLogoNameScore matchList={matchList} />
-            {equalStatus(5, 1) && <BPList isBan />}
-            {equalStatus([1, 5], [1, 2]) && <BPList />}
-            {equalStatus(3, 1) && <CsGoNowStatus />}
-          </Route>
-        </Switch>
-        {!!liveList.length && <LiveButton liveList={liveList} />}
-      </div>
-      <Route exact path='/details'>
-        <TabsList
-          gameOver={matchList.status === 2}
-          index={tabIndex}
-          updateIndex={update}
-        />
-      </Route>
-    </div>
-    <Switch>
-      <Route path='/details/both'>
-        <div>
-          小局
-        </div>
-      </Route>
-      <Route path='/details'>
-        <div className={styles.paddingBody}>
-          <div style={{ display: tabIndex === 0 ? 'block' : 'none' }}>
-            <PvpAnalyze oddList={matchList.odds_list} />
-          </div>
-          {
-            tabIndex === 1 && <CsGoPage1 matchList={matchList} smid={matchList.smid} />
-          }
-          {
-            tabIndex === 2 && <CsGoPage2 matchList={matchList} smid={matchList.smid} />
-          }
-          {
-            tabIndex === 3 && <CsGoPage3 matchList={matchList} smid={matchList.smid} />
-          }
-        </div>
-      </Route>
-    </Switch>
+  return (
     <div>
-      <div>
-        <div>
-          <RadarChart />
-          <LineChart />
-          <PieChart />
-          <PieChart />
+      <div className={styles['game-rear-' + matchList.game_type_id]}>
+        <HeadBar title={matchList.game_name} />
+        <div style={{
+          paddingTop: '16px',
+          minHeight: '121px'
+        }}>
+          <Switch>
+            <Route path='/details/both'>
+              <TopLogoNameScore matchList={matchList} isBoth />
+              {equalStatus(5, 1) && <BPList isBan />}
+              {equalStatus([1, 5], [1, 2]) && <BPList />}
+              {equalStatus(3, 1) && <CsGoNowStatus />}
+            </Route>
+            <Route path='/details'>
+              <TopLogoNameScore matchList={matchList} />
+              {equalStatus(5, 1) && <BPList isBan />}
+              {equalStatus([1, 5], [1, 2]) && <BPList />}
+              {equalStatus(3, 1) && <CsGoNowStatus />}
+            </Route>
+          </Switch>
+          {!!liveList.length && <LiveButton liveList={liveList} />}
         </div>
-        <BPList />
-        <TipTitle title='第一局' />
-        <BoutTitleBar />
-        <CsGoMapImg />
-        <CsGoNowStatus />
-        <div>
-          <BeforeData />
-        </div>
-        <div>
-          <TipTitle />
-          <RoleContent />
-        </div>
+        <Route exact path='/details'>
+          <TabsList
+            gameOver={matchList.status === 2}
+            index={tabIndex}
+            updateIndex={update}
+          />
+        </Route>
       </div>
+      <Switch>
+        <Route path='/details/both'>
+          <div>
+            小局
+          </div>
+        </Route>
+        <Route path='/details'>
+          <div className={styles.paddingBody}>
+            <div style={{ display: tabIndex === 0 ? 'block' : 'none' }}>
+              <PvpAnalyze oddList={matchList.odds_list} />
+            </div>
+            {
+              tabIndex === 1 && <CsGoPage1 matchList={matchList} smid={matchList.smid} />
+            }
+            {
+              tabIndex === 2 && <CsGoPage2 matchList={matchList} smid={matchList.smid} />
+            }
+            {
+              tabIndex === 3 && <CsGoPage3 matchList={matchList} smid={matchList.smid} />
+            }
+          </div>
+        </Route>
+      </Switch>
       <div>
-        <PvpTameState gameId={matchList.game_type_id} />
-        <PvpStatistics />
-        <PvpList />
-        <HistoryPvpList />
-        <FuturePvpList />
-        <OutTame />
+        <div>
+          <div>
+            <RadarChart />
+            <LineChart />
+            <PieChart />
+            <PieChart />
+          </div>
+          <BPList />
+          <TipTitle title='第一局' />
+          <BoutTitleBar />
+          <CsGoMapImg />
+          <CsGoNowStatus />
+          <div>
+            <BeforeData />
+          </div>
+          <div>
+            <TipTitle />
+            <RoleContent />
+          </div>
+        </div>
+        <div>
+          <PvpTameState gameId={matchList.game_type_id} />
+          <PvpStatistics />
+          <PvpList />
+          <HistoryPvpList />
+          <FuturePvpList />
+          <OutTame />
+        </div>
       </div>
     </div>
-  </div>)
+  )
 }
 
 export default connect(function (state) {
