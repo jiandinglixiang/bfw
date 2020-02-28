@@ -9,7 +9,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 
-process.env.PORT = 3033 // 端口号
+process.env.PORT = 3035 // 端口号
 paths.appBuild = resolveApp(`bfw_web_and_mobile_${process.env.REACT_APP_build_url || ''}`) // 修改名字
 paths.servedPath = './'
 // console.log(process.env)

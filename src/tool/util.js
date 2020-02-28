@@ -3,6 +3,8 @@ import defaultImg from '../bfw-mobile/assets/default_team_60.png'
 import BigNumber from 'bignumber.js'
 import 'moment/locale/zh-cn'
 import propTypes from 'prop-types'
+import { useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
 
 moment.locale('zh-cn')
 BigNumber.config({ ROUNDING_MODE: 1 })
@@ -267,4 +269,18 @@ export function objCatch (obj, expected = {}) {
       return expected
     }
   }
+}
+
+export function useSearch () {
+  const location = useLocation()
+  const search = useMemo(function () {
+    try {
+      const params = new URLSearchParams(location.search.slice(1))
+      return Object.fromEntries(params.entries())
+    } catch (err) {
+      console.error('查询参数错误', err)
+      return {}
+    }
+  }, [location.search])
+  return [search, location]
 }

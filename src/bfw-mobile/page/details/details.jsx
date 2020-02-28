@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import HeadBar from '../../components/HeadBar/HeadBar.jsx'
-import { useParams } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import PvpTameState from './PvpTameState/PvpTameState'
 import PvpAnalyze from './PvpAnalyze/PvpAnalyze'
 import PvpStatistics from './PvpStatistics/PvpStatistics'
@@ -11,8 +11,8 @@ import FuturePvpList from './FuturePvpLits/FuturePvpLits'
 import OutTame from './OutTame/OutTame'
 import { store } from '../../redux'
 import { getMatchDetailsAsync } from './store'
-import { diffCatch, PropTypes } from '../../../tool/util.js'
-import AgainstLogoTime from './AgainstLogoTime/AgainstLogoTime.jsx'
+import { diffCatch, PropTypes, useSearch } from '../../../tool/util.js'
+import TopLogoNameScore from './TopLogoNameScore/TopLogoNameScore.jsx'
 import BPList from './BPList/BPList.jsx'
 import BeforeData from './BeforeData/BeforeData.jsx'
 import TipTitle from './TipTitle/TipTitle.jsx'
@@ -27,40 +27,54 @@ import { connect } from 'react-redux'
 import CsGoPage1 from './CsGoPage/CsGoPage1.jsx'
 import CsGoPage2 from './CsGoPage/CsGoPage2.jsx'
 import CsGoPage3 from './CsGoPage/CsGoPage3.jsx'
-import { globalDataInit } from '../../../tool/useData.js'
+import LiveButton from './LiveButton/LiveButton.jsx'
 
-const useGDetails = globalDataInit({
-  index: 0,
-  page: <div />,
-  data: {}
-})
+// const useStatePublic = globalDataInit({
+//   index: 0,
+//   page: <div />,
+//   data: {}
+// })
 
-function equalActive (page, eq) {
-  return page === eq ? styles.active : ''
+function equalActive (index, eq) {
+  return index === eq ? styles.active : ''
 }
 
-function TabsList ({ gameOver }) {
-  const [state, update] = useGDetails()
+export function comparisonUtil (gameId, gameStatus) {
+  // equalStatus
+  return function (id, status) {
+    // id 游戏
+    // status 0未开始1进行中2以结束
+    if (id !== undefined && (id !== gameId || !(Array.isArray(id) && id.includes(gameId)))) {
+      return
+    }
+    if (status !== undefined && (status !== gameStatus || !(Array.isArray(status) && status.includes(gameStatus)))) {
+      return
+    }
+    return true
+  }
+}
+
+function TabsList ({ gameOver, index, updateIndex }) {
   return <div className={styles.tabsList}>
     <div
-      className={equalActive(state.index, 0)}
-      onClick={() => update(Object.assign(state, { index: 0 }))}>
+      className={equalActive(index, 0)}
+      onClick={() => updateIndex(0)}>
       <p>指数分析</p>
     </div>
     <div
-      className={equalActive(state.index, 1)}
-      onClick={() => update(Object.assign(state, { index: 1 }))}>
+      className={equalActive(index, 1)}
+      onClick={() => updateIndex(1)}>
       <p>历史数据</p>
     </div>
     {
       // 已结束
       gameOver ? <div
-        className={equalActive(state.index, 3)}
-        onClick={() => update(Object.assign(state, { index: 3 }))}>
+        className={equalActive(index, 3)}
+        onClick={() => updateIndex(3)}>
         <p>赛果</p>
       </div> : <div
-        className={equalActive(state.index, 2)}
-        onClick={() => update(Object.assign(state, { index: 2 }))}>
+        className={equalActive(index, 2)}
+        onClick={() => updateIndex(2)}>
         <p>赛况</p>
       </div>
     }
@@ -68,61 +82,78 @@ function TabsList ({ gameOver }) {
 }
 
 function Details (props) {
-  const params = useParams()
-  const [tabs] = useGDetails()
-  const { matchName, gameId, smid } = diffCatch(params)({
-    matchName: '加载中...',
-    gameId: 0,
-    smid: 0,
-  })
-  const { matchList } = diffCatch(props)({
+  const [search] = useSearch()
+  const [tabIndex, update] = useState(0)
+  useEffect(() => {
+    store.dispatch(getMatchDetailsAsync(search.smid))
+    window.scrollTo(0, 0)
+  }, [search.smid])
+  const { matchList, liveList } = diffCatch(props)({
+    liveList: [],
     matchList: {
+      game_type_id: 0,
       odds_list: [],
-      poor_economy: {
-        time: 0,
-        gold: 0
-      },
-      team1_more_attr: {
-        other_more_attr: {},
-        players: []
-      },
-      team2_more_attr: {
-        other_more_attr: {},
-        players: []
-      },
-      score: '',
+      score_list: [],
       status: 0 // 状态 0：未开始 1：进行中 2：已结束
     }
   })
+  const equalStatus = comparisonUtil(matchList.game_type_id, matchList.status)
 
-  useEffect(function () {
-    store.dispatch(getMatchDetailsAsync(smid))
-    window.scrollTo(0, 0)
-  }, [smid])
-
-  return <div className={styles.content}>
-    <div className={styles['game-rear-' + gameId]}>
-      <HeadBar title={matchName} />
-      <AgainstLogoTime gameId={gameId} page={tabs.index} matchList={matchList} />
-      <TabsList gameOver={matchList.status === 2} />
-      {false && <BPList isBan />}
-      {false && <BPList />}
-    </div>
-    <div className={styles.paddingBody}>
-      <div style={{ display: tabs.index === 0 ? 'block' : 'none' }}>
-        <PvpAnalyze oddList={matchList.odds_list} />
+  return (<div>
+    <div className={styles['game-rear-' + matchList.game_type_id]}>
+      <HeadBar title={matchList.game_name} />
+      <div style={{
+        paddingTop: '16px',
+        minHeight: '121px'
+      }}>
+        <Switch>
+          <Route path='/details/both'>
+            <TopLogoNameScore matchList={matchList} isBoth />
+            {equalStatus(5, 1) && <BPList isBan />}
+            {equalStatus([1, 5], [1, 2]) && <BPList />}
+            {equalStatus(3, 1) && <CsGoNowStatus />}
+          </Route>
+          <Route path='/details'>
+            <TopLogoNameScore matchList={matchList} />
+            {equalStatus(5, 1) && <BPList isBan />}
+            {equalStatus([1, 5], [1, 2]) && <BPList />}
+            {equalStatus(3, 1) && <CsGoNowStatus />}
+          </Route>
+        </Switch>
+        {!!liveList.length && <LiveButton liveList={liveList} />}
       </div>
-      {
-        tabs.index === 1 && <CsGoPage1 matchList={matchList} smid={smid} />
-      }
-      {
-        tabs.index === 2 && <CsGoPage2 matchList={matchList} smid={smid} />
-      }
-      {
-        tabs.index === 3 && <CsGoPage3 matchList={matchList} smid={smid} />
-      }
+      <Route exact path='/details'>
+        <TabsList
+          gameOver={matchList.status === 2}
+          index={tabIndex}
+          updateIndex={update}
+        />
+      </Route>
     </div>
-    {false && <div>
+    <Switch>
+      <Route path='/details/both'>
+        <div>
+          小局
+        </div>
+      </Route>
+      <Route path='/details'>
+        <div className={styles.paddingBody}>
+          <div style={{ display: tabIndex === 0 ? 'block' : 'none' }}>
+            <PvpAnalyze oddList={matchList.odds_list} />
+          </div>
+          {
+            tabIndex === 1 && <CsGoPage1 matchList={matchList} smid={matchList.smid} />
+          }
+          {
+            tabIndex === 2 && <CsGoPage2 matchList={matchList} smid={matchList.smid} />
+          }
+          {
+            tabIndex === 3 && <CsGoPage3 matchList={matchList} smid={matchList.smid} />
+          }
+        </div>
+      </Route>
+    </Switch>
+    <div>
       <div>
         <div>
           <RadarChart />
@@ -130,13 +161,11 @@ function Details (props) {
           <PieChart />
           <PieChart />
         </div>
-        <AgainstLogoTime />
         <BPList />
         <TipTitle title='第一局' />
         <BoutTitleBar />
         <CsGoMapImg />
         <CsGoNowStatus />
-        <PvpAnalyze />
         <div>
           <BeforeData />
         </div>
@@ -146,23 +175,26 @@ function Details (props) {
         </div>
       </div>
       <div>
-        <PvpTameState gameId={gameId} />
+        <PvpTameState gameId={matchList.game_type_id} />
         <PvpStatistics />
         <PvpList />
         <HistoryPvpList />
         <FuturePvpList />
         <OutTame />
       </div>
-    </div>}
-  </div>
+    </div>
+  </div>)
 }
 
 export default connect(function (state) {
   return {
+    liveList: state.details.liveList,
     matchList: state.details.matchList
   }
 })(Details)
 
 TabsList.propTypes = {
-  gameOver: PropTypes.bool
+  gameOver: PropTypes.bool,
+  index: PropTypes.number,
+  updateIndex: PropTypes.func
 }

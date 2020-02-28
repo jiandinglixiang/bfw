@@ -7,8 +7,13 @@ import defImg2 from '../../../assets/default_teamblue_40.png'
 import { useHistory } from 'react-router-dom'
 
 export function routerDetails (data, history) {
-  history.push(
-    `/details/${data.smid}/${data.game_type_name}/${data.game_name}/${data.host_team_name} VS ${data.guest_team_name}/${data.game_type_id}`)
+  const query = {
+    matchName: data.game_name,
+    gameId: data.game_type_id,
+    smid: data.smid
+  }
+  const arr = Object.entries(query).map(value => `${value[0]}=${value[1]}`)
+  history.push('/details?' + arr.join('&'))
 }
 
 function scoreListReduce (scoreList = []) {

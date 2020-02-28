@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './index.module.scss'
-import { diffCatch, PropTypes, toFixed } from '../../../../tool/util'
+import { diffCatch, PropTypes } from '../../../../tool/util'
 
 function rowItem (data) {
   data = diffCatch(data)({

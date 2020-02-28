@@ -12,7 +12,7 @@ function CsGoNowStatus () {
       </div>
       <div className={styles.nowScore}>9</div> */}
       <div className={styles.teamName}>
-        <p>Isuru </p>
+        <p>Isuru 123</p>
       </div>
       <div className={styles.nowScore2}>
         <p className={styles.colorYellow}>99</p>

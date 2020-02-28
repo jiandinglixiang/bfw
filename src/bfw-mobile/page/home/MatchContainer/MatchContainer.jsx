@@ -66,7 +66,6 @@ function MatchContainer ({
   } else {
     return notStartMatchList.length ? <NotStartedOrOver data={notStartMatchList} /> : <div
       className={styles.withOut}>暂无数据</div>
-
   }
 }
 
