@@ -237,6 +237,9 @@ export function diffCatch2 (obj, ReturnObj) {
   } else if (formType1 === '[object Number]' && formType2 === '[object String]') {
     return toBigNumber(obj).toNumber()
   } else {
+    if (obj) {
+      console.warn('类型不服合!', '实际=', obj, '预期=', ReturnObj)
+    }
     return ReturnObj
   }
 }

@@ -5,7 +5,7 @@ import { PropTypes } from '../../../../tool/util.js'
 
 function LineChart ({ dataArr = [] }) {
   const ref = useRef()
-  useEffect(function () {
+  useEffect(() => {
     // 基于准备好的dom，初始化echarts实例
     const myChart = echarts.init(ref.current)
     // 绘制图表

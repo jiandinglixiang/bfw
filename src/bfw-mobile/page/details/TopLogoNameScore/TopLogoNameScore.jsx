@@ -2,143 +2,18 @@ import React from 'react'
 import styles from './index.module.scss'
 import tianhui from '../../../assets/tianhui_type2.png'
 import yemo from '../../../assets/nightdemon_type2.png'
-import { diffCatch, formatDate, inning, toBigNumber } from '../../../../tool/util.js'
+import redImg from '../../../assets/reateam.png'
+import blueImg from '../../../assets/blueteam.png'
+import { diffCatch, formatDate, inning, PropTypes, toBigNumber } from '../../../../tool/util.js'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
-import dota from '../../../assets/default_teamblue_40.png'
 import firstBlood from '../../../assets/firstblood.png'
 import deckills from '../../../assets/deckills.png'
+import fiveKills from '../../../assets/pentakills.png'
 import { scoreListReduce } from '../../../../bfw-web/page/AnalysisData/components/TameNowStatus'
 import { gameRound } from '../../home/MatchItem/MatchItem.jsx'
-import { comparisonUtil } from '../details.jsx'
-
-/*
-function Underway () {
-  return <div className={styles.content}>
-    <div className={styles.first}>
-      <div className={styles.topLogoIcon1}>
-        <div><img src={yemo} /></div>
-        <div className={styles.logo}><img src={dota} /></div>
-        <b>6</b>
-      </div>
-      <div className={styles.teamName}>
-        <p>Name</p>
-      </div>
-      <div className={styles.aBloodIcon}>
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-      </div>
-    </div>
-    <div className={styles.center}>
-      {/!*    <div className={styles.boutTime}>
-        <p>
-          第二局56:19
-        </p>
-      </div>
-      *!/}
-      {/!*      <div className={styles.overScore}>
-        <p>88</p>
-        <b>-</b>
-        <p>88</p>
-      </div>
-      <div className={styles.overTxt}><p>已结束</p></div>
-      *!/}
-      {/!*      <div className={styles.middle}>
-        <p className={styles.notStarted}><span>未开始</span><span>08:00</span></p>
-      </div> *!/}
-      <div className={styles.middle}>
-        <p className={styles.boutTime}>
-          第二局56:19
-        </p>
-      </div>
-      <div className={styles.low}>
-        <p className={styles.notStarted}><span>2019-12-13</span><span>BO5</span></p>
-      </div>
-      <div className={`${styles.high} ${styles.middle} ${styles.low}`}>
-        <p className={styles.difference}><span>差-11.3</span></p>
-      </div>
-    </div>
-    <div className={styles.last}>
-      <div className={styles.topLogoIcon2}>
-        <b className={styles.colorYellow}>6</b>
-        <div className={styles.logo}><img src={dota} /></div>
-        <div className={styles.icon2}><img src={tianhui} /></div>
-      </div>
-      <div className={styles.teamName}>
-        <p>Name</p>
-      </div>
-      <div className={styles.aBloodIcon}>
-        <img src={dota} />
-        <img src={dota} />
-      </div>
-    </div>
-  </div>
-}
-
-function GameOver () {
-  return <div className={styles.content}>
-    <div className={styles.first}>
-      <div className={styles.topLogoIcon1}>
-        <div><img src={yemo} /></div>
-        <div className={styles.logo}><img src={dota} /></div>
-        <b>6</b>
-      </div>
-      <div className={styles.teamName}>
-        <p>Name</p>
-      </div>
-      <div className={styles.aBloodIcon}>
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-      </div>
-    </div>
-    <div className={styles.center}>
-      {/!*    <div className={styles.boutTime}>
-        <p>
-          第二局56:19
-        </p>
-      </div>
-      *!/}
-      {/!*      <div className={styles.overScore}>
-        <p>88</p>
-        <b>-</b>
-        <p>88</p>
-      </div>
-      <div className={styles.overTxt}><p>已结束</p></div>
-      *!/}
-      {/!*      <div className={styles.middle}>
-        <p className={styles.notStarted}><span>未开始</span><span>08:00</span></p>
-      </div> *!/}
-      <div className={styles.middle}>
-        <p className={styles.boutTime}>
-          第二局56:19
-        </p>
-      </div>
-      <div className={styles.low}>
-        <p className={styles.notStarted}><span>2019-12-13</span><span>BO5</span></p>
-      </div>
-      <div className={`${styles.high} ${styles.middle} ${styles.low}`}>
-        <p className={styles.difference}><span>差-11.3</span></p>
-      </div>
-    </div>
-    <div className={styles.last}>
-      <div className={styles.topLogoIcon2}>
-        <b className={styles.colorYellow}>6</b>
-        <div className={styles.logo}><img src={dota} /></div>
-        <div className={styles.icon2}><img src={tianhui} /></div>
-      </div>
-      <div className={styles.teamName}>
-        <p>Name</p>
-      </div>
-      <div className={styles.aBloodIcon}>
-        <img src={dota} />
-        <img src={dota} />
-      </div>
-    </div>
-  </div>
-}
-*/
+import CsGoNowStatus from '../CsGoNowStatus/CsGoNowStatus.jsx'
+import { useStatePublicBoth } from '../Kotsubone/Kotsubone.jsx'
 
 export function GameOverOrNotStarted (props) {
   const propsVE = diffCatch(props)({
@@ -198,270 +73,129 @@ export function GameOverOrNotStarted (props) {
   </div>
 }
 
-function LogoName ({ matchList, page, right }) {
-  // dota
-  let icon = null
-  let score = null
-  let iconList = null
-  const underway = matchList.status === 1
-  if (underway && [2, 5].includes(page)) {
-    // 显示icon
-    icon = <div className={styles.teamIcon}><img src={right ? yemo : tianhui} /></div>
-  }
-  if (page === 5) {
-    // 进行中或小局页面
-    score = <b>{(matchList.score.split(/:|,/)[right ? 1 : 0]) || 0}</b>
-  } else if (underway) {
-    // 进行中或小局页面
-    score = <b>{(matchList.score.split(/:|,/)[right ? 1 : 0]) || 0}</b>
-  }
-  if ([2, 4].includes(page)) {
-    iconList = <div className={styles.aBloodIcon}>
-      {matchList.is_first_blood > 0 ? <img src={firstBlood} /> : <span />}
-      {matchList.is_ten_kills > 0 ? <img src={deckills} /> : <span />}
-    </div>
-  }
-  if (right) {
-    return <div className={styles.last}>
-      <div className={styles.topLogoIcon2}>
-        {score}
-        <div className={styles.logo}>
-          <img src={matchList.guest_team_logo || defImg2} />
-        </div>
-        {icon}
-      </div>
-      <div className={styles.teamName}>
-        <p style={{
-          paddingLeft: score ? '32px' : '5px',
-          paddingRight: icon ? '32px' : '5px'
-        }}>
-          {matchList.guest_team_name}
-        </p>
-      </div>
-      {iconList}
-    </div>
-  }
-  return <div className={styles.first}>
-    <div className={styles.topLogoIcon1}>
-      {icon}
-      <div className={styles.logo}>
-        <img src={matchList.host_team_logo || defImg1} />
-      </div>
-      {score}
-    </div>
-    <div className={styles.teamName}>
-      <p style={{
-        paddingLeft: icon ? '32px' : 0,
-        paddingRight: score ? '32px' : 0
-      }}>{matchList.host_team_name}
-      </p>
-    </div>
-    {iconList}
+function iconList ({ gameId, sente1, sente2 }) {
+  const iconList = {}
+  iconList.team1 = <div className={styles.aBloodIcon}>
+    {sente1[0] ? <img src={firstBlood} /> : <span />}
+    {sente1[1] ? <img src={gameId === 5 ? deckills : fiveKills} /> : <span />}
   </div>
-}
-
-function notStarted (gameId, matchList) {
-  let time = formatDate(matchList.game_start_time, 'YYYY-MM-DD+HH:mm')
-  time = time.split('+')
-  return <div>
-    <div className={styles.first}>
-      <div className={styles.topLogoIcon1}>
-        <div className={styles.logo}>
-          <img src={dota} />
-        </div>
-      </div>
-      <div className={styles.teamName}>
-        <p>Name</p>
-      </div>
-      <div className={styles.aBloodIcon}>
-        <img src={dota} />
-        <img src={dota} />
-        <img src={dota} />
-      </div>
-    </div>
-    <div className={styles.center}>
-      <div className={styles.middle}>
-        <p className={styles.notStarted}><span>未开始</span><span>{time[1]}</span></p>
-      </div>
-      <div className={styles.low}>
-        <p className={styles.notStarted}><span>{time[0]}</span><span>{matchList.match_rules}</span></p>
-      </div>
-    </div>
-    <div className={styles.last}>
-      <div className={styles.topLogoIcon2}>
-        <b className={styles.colorYellow}>6</b>
-        <div className={styles.logo}><img src={dota} /></div>
-        <div className={styles.icon2}><img src={tianhui} /></div>
-      </div>
-      <div className={styles.teamName}>
-        <p>Name</p>
-      </div>
-      <div className={styles.aBloodIcon}>
-        <img src={dota} />
-        <img src={dota} />
-      </div>
-    </div>
+  iconList.team2 = <div className={styles.aBloodIcon}>
+    {sente2[0] ? <img src={gameId === 5 ? deckills : fiveKills} /> : <span />}
+    {sente2[1] ? <img src={firstBlood} /> : <span />}
   </div>
-}
-
-function underway (gameId, matchList, page) {
-  // let nowRound = matchList.odds_list[matchList.odds_list, length - 1]
-  // nowRound = diffCatch(nowRound)({
-  //   odds: [],
-  //   play_name: [],
-  //   round: ''
-  // })
-  const poorEconomy = toBigNumber(matchList.poor_economy.gold / 1000).toFormat(1)
-  return <div className={styles.center}>
-    <div className={styles.middle}>
-      <p className={page === 4 ? styles.boutOver : styles.boutUnderway}>
-        第一局 56:19
-      </p>
-    </div>
-    {!([0, 1].includes(page)) && <div className={styles.low} />}
-    <div className={styles.low}>
-      <p className={styles.difference}><span>差{poorEconomy}k</span></p>
-    </div>
-  </div>
-}
-
-function gameOver (matchList, page) {
-  const score = matchList.score.split(/:|,/)
-  return <div className={styles.center}>
-    <div className={styles.overScore}>
-      <p>{score[0]}</p>
-      <b>-</b>
-      <p>{score[1]}</p>
-    </div>
-    <div className={styles.overTxt}><p>已结束</p></div>
-  </div>
-}
-
-function CenterStatus ({ gameId, matchList, page }) {
-  if (gameId === 5) {
-    if (matchList.status === 1) {
-      return underway(gameId, matchList, page)
-    } else if (matchList.status === 2) {
-      return gameOver(matchList, page)
-    } else {
-      return notStarted(gameId, matchList, page)
-    }
-  }
-  return null
-}
-
-function teamIcon ({ gameId, page }) {
-  // 赛况显示
-  if ([2, 4].includes(page) && gameId === 5) {
-    return {
-      right: <div className={styles.teamIcon}><img src={tianhui} /></div>,
-      left: <div className={styles.teamIcon}><img src={yemo} /></div>
-    }
-  }
-  return {}
-}
-
-function teamScore ({ gameId, page, matchList }) {
-  // 赛况显示
-  if (gameId === 5 && matchList.status === 1) {
-    const score = matchList.score.split(/:|,/).map(v => parseInt(v))
-    return {
-      right: <b style={{ color: page === 4 && score[1] > score[0] ? styles.colorYellow : styles.colorGray }}>
-        {score[1]}</b>,
-      left: <b style={{ color: page === 4 && score[0] > score[1] ? styles.colorYellow : styles.colorGray }}>
-        {score[0]}</b>,
-    }
-  }
-  return {}
-}
-
-function iconList ({ gameId, page, matchList }) {
-  if (gameId === 5 && [2, 4].includes(page)) {
-    return {
-      left: <div className={styles.aBloodIcon}>
-        {matchList.is_first_blood > 0 ? <img src={firstBlood} /> : <span />}
-        {matchList.is_ten_kills > 0 ? <img src={deckills} /> : <span />}
-      </div>,
-      right: <div className={styles.aBloodIcon}>
-        {matchList.is_ten_kills > 0 ? <img src={deckills} /> : <span />}
-        {matchList.is_first_blood > 0 ? <img src={firstBlood} /> : <span />}
-      </div>,
-    }
-  }
-  return {}
+  return iconList
 }
 
 function GameUnderway (props) {
   const propsVE = diffCatch(props)({
+    isBoth: false,
+    isBottomBoth: false,
     gameId: 0,
     status: 0,
+    underwayBP: false, // false === 进行中 但没有选角色，没有ban
     matchRules: '',
     time: [],
+    round: '',
+    gold: '0.0',
+    csgoMap: '...',
     team1: {
+      camp: 0,
       logo: defImg1,
       name: '...',
-      score: 0
+      score: 0,
+      sente: [],
     },
     team2: {
+      camp: 0,
       logo: defImg2,
       name: '...',
       score: 0,
+      sente: [],
     }
   })
-  return <div />
-  /*  const equalStatus = comparisonUtil(propsVE.gameId, propsVE.status)
-    const teamFaction = teamIcon({
-      gameId,
-      page
+  const isBoth = propsVE.isBoth || propsVE.isBottomBoth
+  const teamFaction = {
+    team1: null,
+    team2: null,
+  }
+  const tameScoreColor = {}
+  let teamSenteIcon = {}
+  // 阵营识别 红方蓝方
+  if (propsVE.team1.camp) {
+    if (propsVE.gameId === 5) {
+      teamFaction.team1 = propsVE.team1.camp === 1 ? yemo : tianhui
+      teamFaction.team2 = propsVE.team2.camp === 1 ? yemo : tianhui
+    } else if (propsVE.gameId === 1) {
+      teamFaction.team1 = propsVE.team1.camp === 1 ? blueImg : redImg
+      teamFaction.team2 = propsVE.team2.camp === 1 ? blueImg : redImg
+    }
+  }
+  if (isBoth) {
+    tameScoreColor.team1 = { color: propsVE.team1.score > propsVE.team2.score ? '#F9DF70' : '#85838F' }
+    tameScoreColor.team2 = { color: propsVE.team2.score > propsVE.team1.score ? '#F9DF70' : '#85838F' }
+  }
+  if ((isBoth || propsVE.underwayBP) && [1, 5].includes(propsVE.gameId)) {
+    // lol dota
+    // 进行中 但没有选角色，没有ban
+    teamSenteIcon = iconList({
+      gameId: propsVE.gameId,
+      sente1: propsVE.team1.sente,
+      sente2: propsVE.team2.sente
     })
-    const score = teamScore({
-      gameId,
-      page,
-      matchList
-    })
-    const iconLists = iconList({
-      gameId,
-      page,
-      matchList
-    })
-    return <div className={styles.content}>
-      <div className={styles.first}>
-        <div className={styles.topLogoIcon1}>
-          {teamFaction.left}
-          <div className={styles.logo}>
-            <img src={matchList.host_team_logo || defImg1} />
-          </div>
-          {score.left}
+  }
+  return <div className={styles.content}>
+    <div className={styles.first}>
+      <div className={styles.topLogoIcon1}>
+        {
+          teamFaction.team1 && <div className={styles.teamIcon}><img src={teamFaction.team1} /></div>
+        }
+        <div className={styles.logo}>
+          <img src={propsVE.team1.logo} />
         </div>
-        <div className={styles.teamName}>
-          <p style={{
-            paddingLeft: teamFaction.left ? '32px' : '5px',
-            paddingRight: score.left ? '32px' : '5px'
-          }}>{matchList.host_team_name}</p>
-        </div>
-        {iconLists.left}
+        <b style={tameScoreColor.team1}>{propsVE.team1.score}</b>
       </div>
-      <CenterStatus gameId={gameId} matchList={matchList} page={page} />
-      <div className={styles.last}>
-        <div className={styles.topLogoIcon2}>
-          {score.right}
-          <div className={styles.logo}>
-            <img src={matchList.guest_team_logo || defImg2} />
-          </div>
-          {teamFaction.right}
-        </div>
-        <div className={styles.teamName}>
-          <p style={{
-            paddingLeft: score.right ? '32px' : '5px',
-            paddingRight: teamFaction.right ? '32px' : '5px'
-          }}>{matchList.guest_team_name}</p>
-        </div>
-        {iconLists.right}
+      <div className={styles.teamName}>
+        <p style={{ padding: teamFaction.team1 ? '0 10px' : '0 32px 0 0' }}>{propsVE.team1.name}</p>
       </div>
-    </div> */
+      {teamSenteIcon.team1}
+    </div>
+    <div className={styles.center}>
+      <div className={styles.high}>
+        <p className={isBoth ? styles.boutOver : styles.boutUnderway}>
+          {propsVE.round} {propsVE.time[0]}
+        </p>
+      </div>
+      {
+        propsVE.underwayBP && <div className={styles.low} />
+      }
+      <div className={styles.low}>
+        {
+          propsVE.gameId === 3 ? (<p>Map: {propsVE.csgoMap}</p>) : (
+            <p className={styles.difference}>
+              <span>差:{propsVE.gold}k</span>
+            </p>)
+        }
+      </div>
+    </div>
+    <div className={styles.last}>
+      <div className={styles.topLogoIcon2}>
+        <b style={tameScoreColor.team1}>{propsVE.team2.score}</b>
+        <div className={styles.logo}>
+          <img src={propsVE.team2.logo} />
+        </div>
+        {
+          teamFaction.team2 && <div className={styles.teamIcon}><img src={teamFaction.team2} /></div>
+        }
+      </div>
+      <div className={styles.teamName}>
+        <p style={{ padding: teamFaction.team2 ? '0 10px' : '0 0 0 32px' }}>{propsVE.team2.name}</p>
+      </div>
+      {teamSenteIcon.team2}
+    </div>
+  </div>
 }
 
-export function statusToTxt (s) {
+function statusToTxt (s) {
   if (s === 1) {
     return '进行中'
   } else if (s === 2) {
@@ -478,114 +212,311 @@ function timeToTxt (time, status) {
   return [`${time2}:${time - time2 * 60}`]
 }
 
-function TopLogoNameScore (props) {
-  const propsVE = diffCatch(props)({
-    isBoth: false,
-    endMatch: {
+function csgoInit (team1, team2, round) {
+  const data = {
+    round: 0,
+    overtime: false, // 加时赛
+    team1: {
+      name: '',
+      score: [],
+      role: [],
+      sente: [],
+      sum: 0
+    },
+    team2: {
+      name: '',
+      score: [],
+      role: [],
+      sente: [],
+      sum: 0
+    }
+  }
+  data.round = round || 0
+  data.overtime = team1.is_over_time > 1 || team2.is_over_time > 1
+  // data.team1.name = team1.team_name
+  // data.team2.name = team2.team_name
+  data.team1.score = [team1.first_half_score, team1.second_half_score]
+  data.team2.score = [team2.first_half_score, team2.second_half_score]
+  data.team1.role = [team1.first_half_role === 'CT', team1.second_half_role === 'CT']
+  data.team2.role = [team2.first_half_role === 'T', team2.second_half_role === 'T']
+  if (data.overtime) {
+    data.team1.score.push(team1.over_time_score)
+    data.team2.score.push(team2.over_time_score)
+    data.team1.role.push(team1.second_half_role === 'CT')
+    data.team2.role.push(team2.second_half_role === 'T')
+  }
+  data.team1.sente = [team1.flag_r1 > 0, team1.flag_w5 > 0, team1.flag_r16 > 0]
+  data.team2.sente = [team2.flag_r1 > 0, team2.flag_w5 > 0, team2.flag_r16 > 0]
+  data.team1.sum = data.team1.score.reduce((a, b) => a + b, 0)
+  data.team2.sum = data.team2.score.reduce((a, b) => a + b, 0)
+  return data
+}
+
+function csgoDataInit (matchList, round) {
+  // csgo 进行中赛况对阵详情数据初始化
+  const matchListVE = diffCatch(matchList)({
+    team1_more_attr: {
+      first_half_score: 0,
+      second_half_score: 0,
+      over_time_score: 0,
+      flag_r1: 0,
+      flag_r16: 0,
+      flag_w5: 0
+    },
+    team2_more_attr: {
+      first_half_score: 0,
+      second_half_score: 0,
+      over_time_score: 0,
+      flag_r1: 0,
+      flag_r16: 0,
+      flag_w5: 0
+    }
+  })
+  const team1 = matchListVE.team1_more_attr
+  const team2 = matchListVE.team2_more_attr
+  return csgoInit(team1, team2, round)
+}
+
+export function csgoBothInit (endMatch) {
+  // csgo 进行中小局，赛果对阵详情数据初始化
+  const endMatchVE = diffCatch(endMatch)({
+    team1: {
+      other_more_attr: {
+        first_half_score: 0,
+        second_half_score: 0,
+        over_time_score: 0,
+        flag_r1: 0,
+        flag_r16: 0,
+        flag_w5: 0
+      }
+    },
+    team2: {
+      other_more_attr: {
+        first_half_score: 0,
+        second_half_score: 0,
+        over_time_score: 0,
+        flag_r1: 0,
+        flag_r16: 0,
+        flag_w5: 0
+      }
+    },
+  })
+  const team1 = endMatchVE.team1.other_more_attr
+  const team2 = endMatchVE.team2.other_more_attr
+  const data = csgoInit(team1, team2, team1.round)
+  data.team1.name = endMatchVE.team1.team_name
+  data.team2.name = endMatchVE.team2.team_name
+  return data
+}
+
+function Both ({ data = {}, endMatch }) {
+  const [endMatchBoth] = useStatePublicBoth()
+  let endMatchVE
+  if (data.isBottomBoth) {
+    endMatchVE = diffCatch(endMatch)({
       poor_economy: {
         gold: 0
       },
       team1: {},
       team2: {},
-    },
-    matchList: {
-      poor_economy: { gold: 0 },
-      score_list: [],
-      score: '',
-      game_start_time: '',
-      team1_more_attr: {
-        other_more_attr: {}
+    })
+  } else {
+    // 小局
+    endMatchVE = diffCatch(endMatchBoth)({
+      poor_economy: {
+        gold: 0
       },
-      team2_more_attr: {
-        other_more_attr: {}
-      }
-    }
-  })
+      team1: {},
+      team2: {},
+    })
+  }
+  // 小局页
+  data.status = endMatchVE.team1.status
+  data.gameId = endMatchVE.team1.game_type_id
+  data.underwayBP = true //  但没有选角色，没有ban
+  data.team1.logo = endMatchVE.team1.team_logo
+  data.team2.logo = endMatchVE.team2.team_logo
+  data.team1.name = endMatchVE.team1.team_name
+  data.team2.name = endMatchVE.team2.team_name
+  data.team1.score = endMatchVE.team1.score
+  data.team2.score = endMatchVE.team2.score
+  data.round = endMatchVE.team1.round && inning(endMatchVE.team1.round)
+  data.time = timeToTxt(endMatchVE.poor_economy.time, data.status)
+  data.gold = toBigNumber(endMatchVE.poor_economy.gold / 1000).toFormat(1)
+  if (data.gameId === 5) {
+    // dota阵营
+    data.team1.camp = endMatchVE.team1.camp && (endMatchVE.team1.camp === 'dire' ? 1 : 2)
+    data.team2.camp = endMatchVE.team2.camp && (endMatchVE.team2.camp === 'dire' ? 1 : 2)
+    // 先手icon bool 数组
+    data.team1.sente = [
+      endMatchVE.team1.other_more_attr.is_first_blood > 0,
+      endMatchVE.team1.other_more_attr.is_ten_kills > 0,
+    ]
+    data.team2.sente = [
+      endMatchVE.team2.other_more_attr.is_ten_kills > 0,
+      endMatchVE.team2.other_more_attr.is_first_blood > 0,
+    ]
+  }
+  if (data.gameId === 1) {
+    data.team1.camp = endMatchVE.team1.camp && (endMatchVE.team1.camp === 'blue' ? 1 : 2)
+    // lol阵营
+    data.team2.camp = endMatchVE.team2.camp && (endMatchVE.team2.camp === 'blue' ? 1 : 2)
+    data.team1.sente = [
+      endMatchVE.team1.other_more_attr.first_kills > 0,
+      endMatchVE.team1.other_more_attr.five_kills > 0,
+    ]
+    data.team2.sente = [
+      endMatchVE.team2.other_more_attr.five_kills > 0,
+      endMatchVE.team2.other_more_attr.first_kills > 0,
+    ]
+  }
+  if (data.gameId === 3) {
+    data.csgoMap = endMatchVE.team1.other_more_attr.map || endMatchVE.team2.other_more_attr.map
+    // 小局数据
+    const scgoData = csgoBothInit(endMatchVE)
+    return <div>
+      <GameUnderway {...data} />
+      <CsGoNowStatus {...scgoData} />
+    </div>
+  }
+  return <GameUnderway {...data} />
+}
+
+function TopLogoNameScore (props) {
   const data = {
+    isBoth: props.isBoth,
+    isBottomBoth: props.isBottomBoth,
     gameId: 0,
     status: 0,
     matchRules: '',
     time: [],
     round: '',
     gold: 0,
-    team1: {},
-    team2: {}
-  }
-  const equalStatus = comparisonUtil(data.gameId, data.status)
-
-  if (propsVE.isBoth) {
-    // 小局页
-    data.status = propsVE.endMatch.team1.status
-    data.gameId = propsVE.endMatch.team1.game_type_id
-    data.team1.logo = propsVE.endMatch.team1.team_logo
-    data.team2.logo = propsVE.endMatch.team2.team_logo
-    data.team1.name = propsVE.endMatch.team1.team_name
-    data.team2.name = propsVE.endMatch.team2.team_name
-    data.team1.score = propsVE.endMatch.team1.score
-    data.team2.score = propsVE.endMatch.team2.score
-    if (data.gameId === 5) {
-      data.team1.camp = propsVE.endMatch.team1.camp === 'dire'
-      // 阵营
-      data.team2.camp = propsVE.endMatch.team2.camp === 'dire'
-    } else if (data.gameId === 1) {
-      data.team1.camp = propsVE.endMatch.team1.camp === 'blue'
-      // 阵营
-      data.team2.camp = propsVE.endMatch.team2.camp === 'blue'
+    csgoMap: '...',
+    underwayBP: false, // 进行中 但没有选角色，没有ban
+    team1: {
+      camp: 0,
+      sente: [],
+      name: '',
+      logo: '',
+      score: 0,
+    },
+    team2: {
+      camp: 0,
+      sente: [],
+      name: '',
+      logo: '',
+      score: 0,
     }
-
-    data.round = propsVE.endMatch.team1.round && inning(propsVE.endMatch.team1.round)
-    data.time = timeToTxt(propsVE.endMatch.poor_economy.time, data.status)
-    data.gold = toBigNumber(propsVE.endMatch.poor_economy.gold / 1000).toFormat(1)
-  } else {
-    // 详情页
-    data.status = propsVE.matchList.status
-    data.gameId = propsVE.matchList.game_type_id
-    data.team1.logo = propsVE.matchList.host_team_logo
-    data.team1.name = propsVE.matchList.host_team_name
-    data.team2.logo = propsVE.matchList.guest_team_logo
-    data.team2.name = propsVE.matchList.guest_team_name
-    if (data.status === 1) {
-      // 进行中
-      const score = scoreListReduce(propsVE.matchList.score_list)
-      data.team1.score = score[0]
-      data.team2.score = score[1]
-      if (data.gameId === 5) {
-        data.team1.camp = propsVE.matchList.team1_more_attr.other_more_attr.camp === 'dire'
-        // 阵营dire天辉
-        data.team2.camp = propsVE.matchList.team2_more_attr.other_more_attr.camp === 'dire'
-      } else if (data.gameId === 1) {
-        data.team1.camp = propsVE.matchList.team1_more_attr.other_more_attr.camp === 'blue'
-        // 阵营蓝方
-        data.team2.camp = propsVE.matchList.team2_more_attr.other_more_attr.camp === 'blue'
+  }
+  const propsVE = diffCatch(props)({
+    matchList: {
+      poor_economy: { gold: 0 },
+      score_list: [],
+      score: '',
+      game_type_id: 0,
+      game_start_time: 0,
+      team1_more_attr: {
+        other_more_attr: {},
+        players: [],
+        ban: []
+      },
+      team2_more_attr: {
+        other_more_attr: {},
+        players: [],
+        ban: []
       }
-      data.round = gameRound(propsVE.matchList.score_list, propsVE.matchList.round_total)
-      data.time = timeToTxt(propsVE.matchList.poor_economy.time, data.status)
-      data.gold = toBigNumber(propsVE.matchList.poor_economy.gold / 1000).toFormat(1)
-    }
+    },
+    endMatch: {}
+  })
+  if (props.isBoth || props.isBottomBoth) {
+    return <Both data={data} endMatch={propsVE.endMatch} />
   }
+  // 非小局 详情页
+  data.status = propsVE.matchList.status
+  data.gameId = propsVE.matchList.game_type_id
+  data.team1.logo = propsVE.matchList.host_team_logo
+  data.team1.name = propsVE.matchList.host_team_name
+  data.team2.logo = propsVE.matchList.guest_team_logo
+  data.team2.name = propsVE.matchList.guest_team_name
 
-  if (data.status === 1 || propsVE.isBoth) {
+  if (data.status === 1) {
+    // 非小局 进行中
+    const score = scoreListReduce(propsVE.matchList.score_list)
+    data.team1.score = score[0]
+    data.team2.score = score[1]
+    data.round = gameRound(propsVE.matchList.score_list, propsVE.matchList.round_total)
+    data.time = timeToTxt(propsVE.matchList.poor_economy.time, data.status)
+    data.gold = toBigNumber(propsVE.matchList.poor_economy.gold / 1000).toFormat(1)
+    data.underwayBP = !!(propsVE.matchList.team1_more_attr.players.length ||
+      propsVE.matchList.team1_more_attr.ban.length ||
+      propsVE.matchList.team2_more_attr.players.length ||
+      propsVE.matchList.team2_more_attr.ban.length)
+    // 进行中 但没有选角色，没有ban
+    if (data.gameId === 5) {
+      // 非小局 进行中 游戏dota
+      data.team1.camp = propsVE.matchList.team1_more_attr.other_more_attr.camp && (propsVE.matchList.team1_more_attr.other_more_attr.camp === 'dire' ? 1 : 2)
+      // 阵营dire=天辉
+      data.team2.camp = propsVE.matchList.team2_more_attr.other_more_attr.camp && (propsVE.matchList.team2_more_attr.other_more_attr.camp === 'dire' ? 1 : 2)
+      // 先手icon bool 数组
+      data.team1.sente = [
+        propsVE.matchList.team1_more_attr.other_more_attr.is_first_blood > 0,
+        propsVE.matchList.team1_more_attr.other_more_attr.is_ten_kills > 0,
+      ]
+      data.team2.sente = [
+        propsVE.matchList.team2_more_attr.other_more_attr.is_ten_kills > 0,
+        propsVE.matchList.team2_more_attr.other_more_attr.is_first_blood > 0,
+      ]
+    }
+    if (data.gameId === 1) {
+      // 非小局 进行中 游戏lol
+      data.team1.camp = propsVE.matchList.team1_more_attr.other_more_attr.camp && (propsVE.matchList.team1_more_attr.other_more_attr.camp === 'blue' ? 1 : 2)
+      // 阵营blue=蓝方
+      data.team2.camp = propsVE.matchList.team2_more_attr.other_more_attr.camp && (propsVE.matchList.team2_more_attr.other_more_attr.camp === 'blue' ? 1 : 2)
+      data.team1.sente = [
+        propsVE.matchList.team1_more_attr.other_more_attr.first_kills > 0,
+        propsVE.matchList.team1_more_attr.other_more_attr.five_kills > 0,
+      ]
+      data.team2.sente = [
+        propsVE.matchList.team2_more_attr.other_more_attr.five_kills > 0,
+        propsVE.matchList.team2_more_attr.other_more_attr.first_kills > 0,
+      ]
+    }
+    if (data.gameId === 3) {
+      // csgo 显示
+      data.csgoMap = propsVE.matchList.team1_more_attr.other_more_attr.map || propsVE.matchList.team2_more_attr.other_more_attr.map
+      const scgoData = csgoDataInit(propsVE.matchList, propsVE.matchList.score_list)
+      return <div>
+        <GameUnderway {...data} />
+        <CsGoNowStatus {...scgoData} />
+      </div>
+    }
     return <GameUnderway {...data} />
   }
   if (data.status === 0) {
     // 未开始
-    (() => {
-      let time = formatDate(propsVE.matchList.game_start_time, 'YYYY-MM-DD+HH:mm')
-      time = time.split('+')
-      data.time = time
-    })()
+    if (propsVE.matchList.game_start_time) {
+      const notStarTime = formatDate(propsVE.matchList.game_start_time, 'YYYY-MM-DD+HH:mm')
+      data.time = notStarTime.split('+')
+    }
     data.matchRules = propsVE.matchList.match_rules
-  } else {
-    // 已结束其他
-    (() => {
-      const scoreArr = propsVE.matchList.score.split(/:|,/)
-      data.team1.score = scoreArr[0]
-      data.team2.score = scoreArr[1]
-    })()
+    return <GameOverOrNotStarted {...data} />
   }
+  // 已结束其他
+  const OverScoreArr = propsVE.matchList.score.split(/:|,/)
+  data.team1.score = OverScoreArr[0]
+  data.team2.score = OverScoreArr[1]
   return <GameOverOrNotStarted {...data} />
 }
 
 export default TopLogoNameScore
 
-TopLogoNameScore.propTypes = {}
+TopLogoNameScore.propTypes = {
+  isBoth: PropTypes.bool,
+  isBottomBoth: PropTypes.bool
+}
+
+Both.propTypes = {
+  data: PropTypes.object,
+  endMatch: PropTypes.object
+}

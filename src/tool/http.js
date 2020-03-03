@@ -17,13 +17,15 @@ const headers = new Headers()
 // headers.append('Content-Type', 'application/json; charset=utf-8')
 
 function responseInit (response) {
-  if (response.ok) {
-    try {
-      return response.json()
-    } catch (e) {
+  try {
+    if (response.ok) {
+      return response.json().then(value => {
+        return value.data
+      })
+    } else {
       return Promise.reject(response)
     }
-  } else {
+  } catch (e) {
     return Promise.reject(response)
   }
 }

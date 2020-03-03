@@ -10,9 +10,9 @@ import HistoryPvpList from '../HistoryPvpList/HistoryPvpList.jsx'
 import FuturePvpList from '../FuturePvpLits/FuturePvpLits.jsx'
 import OutTame from '../OutTame/OutTame.jsx'
 
-function CsGoPage1 (props) {
+function Page1 (props) {
   // 历史数据
-  const { matchList, smid, confrontation, historyConfrontation, matchAnalysis } = diffCatch(props)({
+  const propsVe = diffCatch(props)({
     smid: 0,
     confrontation: [],
     historyConfrontation: [],
@@ -20,12 +20,19 @@ function CsGoPage1 (props) {
     matchList: {}
   })
   useEffect(function () {
-    store.dispatch(getMatchAnalysisAsync(smid))
-  }, [smid])
+    store.dispatch(getMatchAnalysisAsync(propsVe.smid))
+  }, [propsVe.smid])
 
   return <div>
-    <PvpStatistics matchList={matchList} confrontation={confrontation} historyConfrontation={historyConfrontation} />
-    <BeforeData matchAnalysis={matchAnalysis} matchList={matchList} />
+    <PvpStatistics
+      matchList={propsVe.matchList}
+      confrontation={propsVe.confrontation}
+      historyConfrontation={propsVe.historyConfrontation}
+    />
+    <BeforeData
+      matchAnalysis={propsVe.matchAnalysis}
+      matchList={propsVe.matchList}
+    />
     <PvpList />
     <HistoryPvpList />
     <FuturePvpList />
@@ -41,4 +48,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps)(CsGoPage1)
+export default connect(mapStateToProps)(Page1)

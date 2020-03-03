@@ -1,4 +1,5 @@
 .container {
+  min-height: 90px;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -37,7 +38,7 @@
   flex-flow: row nowrap;
   align-items: center;
 
-  img {
+  img, span {
     width: 15px;
     height: 15px;
     padding: 1px 1px 0 1px;
@@ -50,7 +51,7 @@
 .flanks1 .senteIcon {
   justify-content: flex-end;
 
-  img {
+  img, span {
     margin-right: 0;
     margin-left: 5px;
   }

@@ -15,7 +15,7 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  min-height: 32px;
+  min-height: 50px;
 
   .logo {
     flex: 1 1 auto;
@@ -34,27 +34,12 @@
     line-height: 1;
     font-size: 25px;
   }
-}
 
-.topLogoIcon1 {
   .teamIcon {
     width: 32px;
     height: 32px;
     align-self: flex-start;
-
-    img {
-      width: 21px;
-      height: 28px;
-    }
-  }
-}
-
-.topLogoIcon2 {
-  .teamIcon {
-    width: 32px;
-    height: 32px;
-    align-self: flex-start;
-    text-align: right;
+    text-align: center;
 
     img {
       width: 21px;
@@ -75,6 +60,7 @@
   height: 25px;
 
   p {
+    padding: 0 32px;
     width: 100%;
     line-height: 25px;
     font-size: 14px;
@@ -94,6 +80,7 @@
   justify-content: center;
 
   span, img {
+    flex: 0 0 auto;
     width: 15px;
     height: 15px;
     padding: 1px;
@@ -102,7 +89,7 @@
   }
 
   *:nth-child(1n+2) {
-    margin-left: 2px;
+    margin-left: 3px;
   }
 }
 

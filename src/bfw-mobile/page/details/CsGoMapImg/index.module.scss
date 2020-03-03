@@ -166,7 +166,9 @@
   thead tr {
     background: rgba(216, 154, 98, 0.6);
   }
+}
 
+.csgoTableBlue, .csgoTableYellow {
   tfoot div {
     // 上半场下半场
     width: 50%;
@@ -182,7 +184,6 @@
 
 .mapRight {
   height: 40px;
-  background: rgba(22, 21, 26, 0.3);
   padding-right: 15px;
   padding-top: 15px;
   line-height: 25px;
@@ -193,11 +194,14 @@
   text-overflow: ellipsis;
   overflow: hidden;
   border-radius: 4px;
+  background-image: url("../../../assets/Map_cache.png");
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 .mapCenter {
   height: 40px;
-  background: rgba(22, 21, 26, 0.3);
   padding: 0 15px;
   line-height: 40px;
   font-size: 16px;
@@ -206,6 +210,46 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  background-image: url("../../../assets/Map_cache.png");
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.csgoMap-cache {
+  background-image: url("../../../assets/Map_cache.png");
+}
+
+.csgoMap-cobblestone {
+  background-image: url("../../../assets/Map_cobblestone.png");
+}
+
+.csgoMap-dust2 {
+  background-image: url("../../../assets/Map_dust2.png");
+}
+
+.csgoMap-inferno {
+  background-image: url("../../../assets/Map_inferno.png");
+}
+
+.csgoMap-mirage {
+  background-image: url("../../../assets/Map_mirage.png");
+}
+
+.csgoMap-muke {
+  background-image: url("../../../assets/Map_nuke.png");
+}
+
+.csgoMap-overpass {
+  background-image: url("../../../assets/Map_overpass.png");
+}
+
+.csgoMap-train {
+  background-image: url("../../../assets/Map_train.png");
+}
+
+.csgoMap-vertigo {
+  background-image: url("../../../assets/Map_vertigo.png");
 }
 
 .extraTimeTxt {

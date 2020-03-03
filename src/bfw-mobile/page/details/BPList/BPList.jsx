@@ -21,8 +21,8 @@ function BPList (props) {
       <div>
         {
           !propsVe.team1.length ? noneAny : propsVe.team1.map(function (value, index) {
-            if (value.avatar) {
-              return <img key={index} src={value.avatar} />
+            if (value.hero_logo) {
+              return <img key={index} src={value.hero_logo} />
             }
             return <span key={index} />
           })
@@ -32,8 +32,8 @@ function BPList (props) {
       <div>
         {
           !propsVe.team2.length ? noneAny : propsVe.team2.map(function (value, index) {
-            if (value.avatar) {
-              return <img key={index} src={value.avatar} />
+            if (value.hero_logo) {
+              return <img key={index} src={value.hero_logo} />
             }
             return <span key={index} />
           })
