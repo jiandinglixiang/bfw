@@ -1,15 +1,18 @@
-import React from 'react'
-import { diffCatch } from '../../../../tool/util'
+import React, { useEffect } from 'react'
+import { diffCatch, useSearch } from '../../../../tool/util'
 import TipTitle from '../TipTitle/TipTitle.jsx'
 import LineChart from '../LineChart/LineChart.jsx'
-import { OneMember, TeamSing } from '../OneMember/OneMember.jsx'
-import def1 from '../../../assets/default_teamred_40.png'
-import def2 from '../../../assets/default_teamblue_40.png'
-import tianhui from '../../../assets/tianhui.png'
-import yemo from '../../../assets/yemo.png'
-import Kotsubone, { useStatePublicBoth } from '../Kotsubone/Kotsubone.jsx'
 import CsGoMapImg from '../CsGoMapImg/CsGoMapImg.jsx'
 import RadarChart from '../RadarChart/RadarChart.jsx'
+import TopLogoNameScore from '../TopLogoNameScore/TopLogoNameScore.jsx'
+import styles from '../index.module.scss'
+import http from '../../../../tool/http.js'
+import { store } from '../../../redux.js'
+import { setMatchResult } from '../store.js'
+import { connect } from 'react-redux'
+import { comparisonUtil } from '../details.jsx'
+import { Member } from './Page2.jsx'
+import HeadBar from '../../../components/HeadBar/HeadBar.jsx'
 
 function bothInit () {
 
@@ -21,45 +24,70 @@ function matchAction () {
 
 function BothPage (props) {
   // 历史数据
-  const [endMatch] = useStatePublicBoth()
-  const propsVe = diffCatch(endMatch)({
-    poor_economy: {},
-    team1: {},
-    team2: {},
-    battle_data: {},
-    real_history: {}
+  const [search] = useSearch()
+  const searchVE = diffCatch(search)({
+    round: 0,
+    gameName: '',
+    smid: ''
   })
-  const realPlayers = []
-  return <div>
-    <TipTitle title='对战战队数据' />
-    <div style={{ height: '10px' }} />
-    <LineChart dataArr={propsVe.matchResult.economic_curve_list} />
-    <TipTitle title='对战战队数据' />
-    <div style={{ height: '10px' }} />
-    <LineChart dataArr={propsVe.matchResult.economic_curve_list} />
-    <TipTitle title='对战实时成员数据' />
-    <div style={{ height: '10px' }} />
-    <RadarChart />
-    <TeamSing
-      sing={tianhui}
-      logo={propsVe.matchList.host_team_logo || def1}
-      name={propsVe.matchList.host_team_name}
-    />
-    <OneMember data={realPlayers[0]} />
-    <TeamSing
-      sing={yemo}
-      logo={propsVe.matchList.guest_team_logo || def2}
-      name={propsVe.matchList.guest_team_name}
-    />
-    <OneMember data={realPlayers[1]} blueTeam />
-    <Kotsubone
-      endMatch={propsVe.matchResult.match_list.end_match}
-    />
-    <div>
-      csgo
-      <CsGoMapImg />
-    </div>
-  </div>
+  const propsVE = diffCatch(props)({
+    matchResult: {
+      match_list: {
+        end_match: [],
+      }
+    }
+  })
+  useEffect(() => {
+    if (!propsVE.matchResult.match_list.end_match.length) {
+      http.getMatchData(searchVE.smid, searchVE.round).then((value) => {
+        store.dispatch(setMatchResult({ matchResult: value }))
+      })
+    }
+  }, [searchVE.smid, searchVE.round, propsVE.matchResult.match_list.end_match.length])
+
+  const endMatch = propsVE.matchResult.match_list.end_match.find(value => {
+    const valueVE = diffCatch(value)({ team1: { round: 0 } })
+    return valueVE.team1.round === searchVE.round
+  })
+
+  const endMatchVE = diffCatch(endMatch)({
+    team1: {},
+    team2: {}
+  })
+  const equalStatus = comparisonUtil(endMatchVE.team1.game_type_id, endMatchVE.team1.status)
+  const tipTile = ['对战战队数据', '对战成员数据']
+  if (endMatchVE.team1.game_type_id === 3) {
+    // csgo
+    tipTile[0] = '对战交锋数据'
+  }
+  return (
+    <div className={styles['game-rear-' + endMatchVE.team1.game_type_id]}>
+      <HeadBar title={searchVE.gameName} />
+      <TopLogoNameScore isBoth endMatch={endMatchVE} />
+      {equalStatus([0, 1, 3, 5], [0, 1]) && <TipTitle title={tipTile[0]} />}
+      {equalStatus([1, 5], [0, 1]) && <LineChart isBoth endMatch={endMatchVE} />}
+      {equalStatus([1, 5], [0, 1]) && (<TipTitle title={tipTile[1]} />)}
+      <RadarChart />
+      {
+        equalStatus([1, 5], [0, 1]) && (
+          <Member
+            matchList={propsVE.matchList}
+            matchResult={propsVE.matchResult}
+          />)
+      }
+      {equalStatus(3, [0, 1]) && (
+        <CsGoMapImg
+          matchList={propsVE.matchList}
+          matchResult={propsVE.matchResult}
+        />
+      )}
+    </div>)
 }
 
-export default BothPage
+function mapStateToProps (state) {
+  return {
+    matchResult: state.details.matchResult
+  }
+}
+
+export default connect(mapStateToProps)(BothPage)

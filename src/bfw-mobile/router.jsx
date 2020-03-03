@@ -10,6 +10,7 @@ import Mine from './page/mine/mine.jsx'
 import Login from './page/mine/login/Login.jsx'
 import ChangePassword from './page/mine/changePassword/ChangePassword.jsx'
 import About from './page/about/about.jsx'
+import BothPage from './page/details/DetailsPage/BothPage.jsx'
 
 document.querySelector('#meta-index').content = 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no'
 
@@ -30,6 +31,7 @@ function Router () {
   return <HashRouter>
     <Switch>
       <Route exact path='/'><MoreRouter1 /></Route>
+      <Route path='/details/both'><BothPage /></Route>
       <Route path='/details'><Details /></Route>
       <Route path='/changePassword'><ChangePassword /></Route>
       <Route path='/about'><About /></Route>

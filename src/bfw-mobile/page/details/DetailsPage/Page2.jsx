@@ -15,7 +15,7 @@ import Kotsubone from '../Kotsubone/Kotsubone.jsx'
 import CsGoMapImg from '../CsGoMapImg/CsGoMapImg.jsx'
 import { comparisonUtil } from '../details.jsx'
 
-function Member (propsVe, realPlayers) {
+export function Member (propsVe, realPlayers) {
   // 成员列表
   return <div>
     <TeamSing
@@ -31,10 +31,6 @@ function Member (propsVe, realPlayers) {
     />
     <OneMember data={realPlayers[1]} blueTeam />
   </div>
-}
-
-function title1 () {
-
 }
 
 function Page2 (props) {
@@ -58,14 +54,17 @@ function Page2 (props) {
       store.dispatch(setMatchResult({ matchResult: value }))
     })
   }, [propsVE.smid, scoreListLen])
-  let tipTile = ['对战实时战队数据', '对战实时成员数据']
+  const tipTile = ['对战实时战队数据', '对战实时成员数据']
   if (propsVE.matchList.game_type_id === 3) {
     // csgo
-    tipTile = ['对战实时交锋数据']
+    tipTile[0] = '对战实时交锋数据'
   }
   return <div>
     {equalStatus([0, 1, 3, 5], [0, 1]) && <TipTitle title={tipTile[0]} />}
-    {equalStatus([1, 5], [0, 1]) && <LineChart dataArr={propsVE.matchResult.economic_curve_list} />}
+    {equalStatus([1, 5], [0, 1]) && <LineChart
+      matchList={propsVE.matchList}
+      matchResult={propsVE.matchResult}
+    />}
     {equalStatus([1, 5], [0, 1]) && (<TipTitle title={tipTile[1]} />)}
     {
       equalStatus([1, 5], [0, 1]) && (

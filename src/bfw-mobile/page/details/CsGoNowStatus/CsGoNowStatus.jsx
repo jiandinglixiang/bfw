@@ -48,7 +48,9 @@ function CsGoNowStatus (props) {
             <p>{propsVE.team1.name}</p>
           </div>,
           <div className={styles.nowScore2} key='1'>
-            <p className={styles.colorYellow}>{propsVE.team1.sum}</p>
+            <p className={
+              propsVE.team1.sum > propsVE.team2.sum ? styles.colorYellow : styles.colorGray
+            }>{propsVE.team1.sum}</p>
           </div>
         ]
       }
@@ -100,7 +102,9 @@ function CsGoNowStatus (props) {
       {
         propsVE.isBottomBoth && [
           <div className={styles.nowScore2} key='1'>
-            <p className={styles.colorYellow}>{propsVE.team2.sum}</p>
+            <p className={
+              propsVE.team2.sum > propsVE.team1.sum ? styles.colorYellow : styles.colorGray
+            }>{propsVE.team2.sum}</p>
           </div>,
           <div className={styles.teamName} key='0'>
             <p>{propsVE.team2.name}</p>

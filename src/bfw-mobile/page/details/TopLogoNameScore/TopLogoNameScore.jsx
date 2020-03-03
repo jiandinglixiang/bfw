@@ -14,6 +14,7 @@ import { scoreListReduce } from '../../../../bfw-web/page/AnalysisData/component
 import { gameRound } from '../../home/MatchItem/MatchItem.jsx'
 import CsGoNowStatus from '../CsGoNowStatus/CsGoNowStatus.jsx'
 import { useStatePublicBoth } from '../Kotsubone/Kotsubone.jsx'
+import BPList from '../BPList/BPList.jsx'
 
 export function GameOverOrNotStarted (props) {
   const propsVE = diffCatch(props)({
@@ -382,6 +383,111 @@ function Both ({ data = {}, endMatch }) {
   return <GameUnderway {...data} />
 }
 
+function Match ({ data = {}, matchList }) {
+  matchList = diffCatch(matchList)({
+    poor_economy: { gold: 0 },
+    score_list: [],
+    score: '',
+    game_type_id: 0,
+    game_start_time: 0,
+    team1_more_attr: {
+      other_more_attr: {},
+      players: [],
+      ban: []
+    },
+    team2_more_attr: {
+      other_more_attr: {},
+      players: [],
+      ban: []
+    }
+  })
+  // 非小局 详情页
+  data.status = matchList.status
+  data.gameId = matchList.game_type_id
+  data.team1.logo = matchList.host_team_logo
+  data.team1.name = matchList.host_team_name
+  data.team2.logo = matchList.guest_team_logo
+  data.team2.name = matchList.guest_team_name
+  if (data.status === 1) {
+    // 非小局 进行中
+    const score = scoreListReduce(matchList.score_list)
+    data.team1.score = score[0]
+    data.team2.score = score[1]
+    data.round = gameRound(matchList.score_list, matchList.round_total)
+    data.time = timeToTxt(matchList.poor_economy.time, data.status)
+    data.gold = toBigNumber(matchList.poor_economy.gold / 1000).toFormat(1)
+    data.underwayBP = !!(matchList.team1_more_attr.players.length ||
+      matchList.team1_more_attr.ban.length ||
+      matchList.team2_more_attr.players.length ||
+      matchList.team2_more_attr.ban.length)
+    // 进行中 但没有选角色，没有ban
+    if (data.gameId === 5) {
+      // 非小局 进行中 游戏dota
+      data.team1.camp = matchList.team1_more_attr.other_more_attr.camp && (matchList.team1_more_attr.other_more_attr.camp === 'dire' ? 1 : 2)
+      // 阵营dire=天辉
+      data.team2.camp = matchList.team2_more_attr.other_more_attr.camp && (matchList.team2_more_attr.other_more_attr.camp === 'dire' ? 1 : 2)
+      // 先手icon bool 数组
+      data.team1.sente = [
+        matchList.team1_more_attr.other_more_attr.is_first_blood > 0,
+        matchList.team1_more_attr.other_more_attr.is_ten_kills > 0,
+      ]
+      data.team2.sente = [
+        matchList.team2_more_attr.other_more_attr.is_ten_kills > 0,
+        matchList.team2_more_attr.other_more_attr.is_first_blood > 0,
+      ]
+      return (
+        <div>
+          <GameUnderway {...data} />
+          <BPList isBan team1={matchList.team1_more_attr.ban} team2={matchList.team2_more_attr.ban} />
+          <BPList team1={matchList.team1_more_attr.players} team2={matchList.team2_more_attr.players} />
+        </div>)
+    }
+    if (data.gameId === 1) {
+      // 非小局 进行中 游戏lol
+      data.team1.camp = matchList.team1_more_attr.other_more_attr.camp && (matchList.team1_more_attr.other_more_attr.camp === 'blue' ? 1 : 2)
+      // 阵营blue=蓝方
+      data.team2.camp = matchList.team2_more_attr.other_more_attr.camp && (matchList.team2_more_attr.other_more_attr.camp === 'blue' ? 1 : 2)
+      data.team1.sente = [
+        matchList.team1_more_attr.other_more_attr.first_kills > 0,
+        matchList.team1_more_attr.other_more_attr.five_kills > 0,
+      ]
+      data.team2.sente = [
+        matchList.team2_more_attr.other_more_attr.five_kills > 0,
+        matchList.team2_more_attr.other_more_attr.first_kills > 0,
+      ]
+      return (
+        <div>
+          <GameUnderway {...data} />
+          <BPList team1={matchList.team1_more_attr.players} team2={matchList.team2_more_attr.players} />
+        </div>)
+    }
+    if (data.gameId === 3) {
+      // csgo 显示
+      data.csgoMap = matchList.team1_more_attr.other_more_attr.map || matchList.team2_more_attr.other_more_attr.map
+      const scgoData = csgoDataInit(matchList, matchList.score_list)
+      return <div>
+        <GameUnderway {...data} />
+        <CsGoNowStatus {...scgoData} />
+      </div>
+    }
+    return <GameUnderway {...data} />
+  }
+  if (data.status === 0) {
+    // 未开始
+    if (matchList.game_start_time) {
+      const notStarTime = formatDate(matchList.game_start_time, 'YYYY-MM-DD+HH:mm')
+      data.time = notStarTime.split('+')
+    }
+    data.matchRules = matchList.match_rules
+    return <GameUnderway {...data} />
+  }
+  // data.status === 2已结束其他
+  const OverScoreArr = matchList.score.split(/:|,/)
+  data.team1.score = OverScoreArr[0]
+  data.team2.score = OverScoreArr[1]
+  return <GameUnderway {...data} />
+}
+
 function TopLogoNameScore (props) {
   const data = {
     isBoth: props.isBoth,
@@ -410,103 +516,14 @@ function TopLogoNameScore (props) {
     }
   }
   const propsVE = diffCatch(props)({
-    matchList: {
-      poor_economy: { gold: 0 },
-      score_list: [],
-      score: '',
-      game_type_id: 0,
-      game_start_time: 0,
-      team1_more_attr: {
-        other_more_attr: {},
-        players: [],
-        ban: []
-      },
-      team2_more_attr: {
-        other_more_attr: {},
-        players: [],
-        ban: []
-      }
-    },
+    matchList: {},
     endMatch: {}
   })
-  if (props.isBoth || props.isBottomBoth) {
+  if (data.isBoth || data.isBottomBoth) {
+    // 小局顶部/小局单场
     return <Both data={data} endMatch={propsVE.endMatch} />
   }
-  // 非小局 详情页
-  data.status = propsVE.matchList.status
-  data.gameId = propsVE.matchList.game_type_id
-  data.team1.logo = propsVE.matchList.host_team_logo
-  data.team1.name = propsVE.matchList.host_team_name
-  data.team2.logo = propsVE.matchList.guest_team_logo
-  data.team2.name = propsVE.matchList.guest_team_name
-
-  if (data.status === 1) {
-    // 非小局 进行中
-    const score = scoreListReduce(propsVE.matchList.score_list)
-    data.team1.score = score[0]
-    data.team2.score = score[1]
-    data.round = gameRound(propsVE.matchList.score_list, propsVE.matchList.round_total)
-    data.time = timeToTxt(propsVE.matchList.poor_economy.time, data.status)
-    data.gold = toBigNumber(propsVE.matchList.poor_economy.gold / 1000).toFormat(1)
-    data.underwayBP = !!(propsVE.matchList.team1_more_attr.players.length ||
-      propsVE.matchList.team1_more_attr.ban.length ||
-      propsVE.matchList.team2_more_attr.players.length ||
-      propsVE.matchList.team2_more_attr.ban.length)
-    // 进行中 但没有选角色，没有ban
-    if (data.gameId === 5) {
-      // 非小局 进行中 游戏dota
-      data.team1.camp = propsVE.matchList.team1_more_attr.other_more_attr.camp && (propsVE.matchList.team1_more_attr.other_more_attr.camp === 'dire' ? 1 : 2)
-      // 阵营dire=天辉
-      data.team2.camp = propsVE.matchList.team2_more_attr.other_more_attr.camp && (propsVE.matchList.team2_more_attr.other_more_attr.camp === 'dire' ? 1 : 2)
-      // 先手icon bool 数组
-      data.team1.sente = [
-        propsVE.matchList.team1_more_attr.other_more_attr.is_first_blood > 0,
-        propsVE.matchList.team1_more_attr.other_more_attr.is_ten_kills > 0,
-      ]
-      data.team2.sente = [
-        propsVE.matchList.team2_more_attr.other_more_attr.is_ten_kills > 0,
-        propsVE.matchList.team2_more_attr.other_more_attr.is_first_blood > 0,
-      ]
-    }
-    if (data.gameId === 1) {
-      // 非小局 进行中 游戏lol
-      data.team1.camp = propsVE.matchList.team1_more_attr.other_more_attr.camp && (propsVE.matchList.team1_more_attr.other_more_attr.camp === 'blue' ? 1 : 2)
-      // 阵营blue=蓝方
-      data.team2.camp = propsVE.matchList.team2_more_attr.other_more_attr.camp && (propsVE.matchList.team2_more_attr.other_more_attr.camp === 'blue' ? 1 : 2)
-      data.team1.sente = [
-        propsVE.matchList.team1_more_attr.other_more_attr.first_kills > 0,
-        propsVE.matchList.team1_more_attr.other_more_attr.five_kills > 0,
-      ]
-      data.team2.sente = [
-        propsVE.matchList.team2_more_attr.other_more_attr.five_kills > 0,
-        propsVE.matchList.team2_more_attr.other_more_attr.first_kills > 0,
-      ]
-    }
-    if (data.gameId === 3) {
-      // csgo 显示
-      data.csgoMap = propsVE.matchList.team1_more_attr.other_more_attr.map || propsVE.matchList.team2_more_attr.other_more_attr.map
-      const scgoData = csgoDataInit(propsVE.matchList, propsVE.matchList.score_list)
-      return <div>
-        <GameUnderway {...data} />
-        <CsGoNowStatus {...scgoData} />
-      </div>
-    }
-    return <GameUnderway {...data} />
-  }
-  if (data.status === 0) {
-    // 未开始
-    if (propsVE.matchList.game_start_time) {
-      const notStarTime = formatDate(propsVE.matchList.game_start_time, 'YYYY-MM-DD+HH:mm')
-      data.time = notStarTime.split('+')
-    }
-    data.matchRules = propsVE.matchList.match_rules
-    return <GameOverOrNotStarted {...data} />
-  }
-  // 已结束其他
-  const OverScoreArr = propsVE.matchList.score.split(/:|,/)
-  data.team1.score = OverScoreArr[0]
-  data.team2.score = OverScoreArr[1]
-  return <GameOverOrNotStarted {...data} />
+  return <Match data={data} matchList={propsVE.matchList} />
 }
 
 export default TopLogoNameScore
@@ -515,7 +532,10 @@ TopLogoNameScore.propTypes = {
   isBoth: PropTypes.bool,
   isBottomBoth: PropTypes.bool
 }
-
+Match.propTypes = {
+  data: PropTypes.object,
+  matchList: PropTypes.object
+}
 Both.propTypes = {
   data: PropTypes.object,
   endMatch: PropTypes.object

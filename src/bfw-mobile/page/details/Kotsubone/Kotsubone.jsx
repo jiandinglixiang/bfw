@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { diffCatch, inning } from '../../../../tool/util.js'
+import { diffCatch, inning, useSearch } from '../../../../tool/util.js'
 import TipTitle from '../TipTitle/TipTitle.jsx'
 import BoutTitleBar from '../BoutTitleBar/BoutTitleBar.jsx'
 import BPList from '../BPList/BPList.jsx'
@@ -8,7 +8,7 @@ import TopLogoNameScore, { csgoBothInit } from '../TopLogoNameScore/TopLogoNameS
 import { globalDataInit } from '../../../../tool/useData.js'
 import { comparisonUtil } from '../details.jsx'
 import CsGoNowStatus from '../CsGoNowStatus/CsGoNowStatus.jsx'
-import styles from './index.module.scss'
+import csgoStyles from '../CsGoMapImg/index.module.scss'
 
 export const useStatePublicBoth = globalDataInit({
   poor_economy: [],
@@ -75,13 +75,10 @@ function BothItem2 (props) {
     }
   })
   const scgoData = csgoBothInit(propsVE.endMatch)
+  const csMap = propsVE.endMatch.team1.other_more_attr.map
   return (
     <div>
-      <p className={styles.mapCenter}>
-        {
-          propsVE.endMatch.team1.other_more_attr.map
-        }
-      </p>
+      <p className={`${csgoStyles.mapCenter} ${csgoStyles['csgoMap-' + csMap]}`}>{csMap}</p>
       <div style={{
         backgroundColor: '#203457',
         padding: '0 2%'
@@ -95,20 +92,29 @@ function BothItem2 (props) {
 function Kotsubone (props) {
   // 赛况/赛果 列表
   const history = useHistory()
+  const [search] = useSearch()
+
   const propsVE = diffCatch(props)({
     matchList: {}, // 赛程
-    matchResult: {} // 赛况赛果
+    matchResult: {
+      match_list: {
+        end_match: []
+      }
+    } // 赛况赛果
   })
-  const [bothData, updateBothData] = useStatePublicBoth()
 
   function goBoth (value) {
-    updateBothData(value)
-    history.push('/details/both')
+    const query = new URLSearchParams()
+    query.append('smid', search.smid)
+    query.append('round', value.team1.round)
+    query.append('gameName', propsVE.matchList.game_name)
+    history.push('/details/both?' + query.toString())
   }
 
+  const endMatch = propsVE.matchResult.match_list.end_match
   return <ul>
     {
-      propsVE.endMatch.map((value, index) => {
+      endMatch.map((value, index) => {
         const valueVE = diffCatch(value)({
           team1: {
             game_type_id: 0,

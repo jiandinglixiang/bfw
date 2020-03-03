@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import HeadBar from '../../components/HeadBar/HeadBar.jsx'
-import { Route, Switch } from 'react-router-dom'
 import styles from './index.module.scss'
 import { store } from '../../redux'
 import { getMatchDetailsAsync } from './store'
 import { diffCatch, PropTypes, useSearch } from '../../../tool/util.js'
 import TopLogoNameScore from './TopLogoNameScore/TopLogoNameScore.jsx'
-import BPList from './BPList/BPList.jsx'
 import { connect } from 'react-redux'
 import Page0 from './DetailsPage/Page0.jsx'
 import Page1 from './DetailsPage/Page1.jsx'
 import Page2 from './DetailsPage/Page2.jsx'
 import LiveButton from './LiveButton/LiveButton.jsx'
-import BothPage from './DetailsPage/BothPage.jsx'
 
 function equalActive (index, eq) {
   return index === eq ? styles.active : ''
@@ -70,69 +67,39 @@ function Details (props) {
   const { matchList, liveList } = diffCatch(props)({
     liveList: [],
     matchList: {
+      game_name: '',
       game_type_id: 0,
       odds_list: [],
       score_list: [],
       status: 0 // 状态 0：未开始 1：进行中 2：已结束
     }
   })
-  const equalStatus = comparisonUtil(matchList.game_type_id, matchList.status)
-
   return (
-    <div>
-      <div className={styles['game-rear-' + matchList.game_type_id]}>
-        <HeadBar title={matchList.game_name} />
-        <div style={{
-          paddingTop: '16px',
-          minHeight: '121px'
-        }}>
-          <Switch>
-            <Route path='/details/both'>
-              <TopLogoNameScore isBoth />
-              {equalStatus(5, 1) && <BPList isBan />}
-              {equalStatus([1, 5], 1) && <BPList />}
-            </Route>
-            <Route path='/details'>
-              <TopLogoNameScore matchList={matchList} />
-              {equalStatus(5, 1) && <BPList isBan />}
-              {equalStatus([1, 5], [1, 2]) && <BPList />}
-            </Route>
-          </Switch>
-          {!!liveList.length && <LiveButton liveList={liveList} />}
-        </div>
-        <Route exact path='/details'>
-          <TabsList
-            gameOver={matchList.status === 2}
-            index={tabIndex}
-            updateIndex={update}
-          />
-        </Route>
+    <div className={styles['game-rear-' + matchList.game_type_id]}>
+      <HeadBar title={matchList.game_name} />
+      <div style={{
+        paddingTop: '16px',
+        minHeight: '121px'
+      }}>
+        <TopLogoNameScore matchList={matchList} />
+        {!!liveList.length && <LiveButton liveList={liveList} />}
       </div>
-      <Switch>
-        <Route path='/details/both'>
-          <BothPage
-            gameId={matchList.game_type_id}
-            smid={matchList.smid}
-            isBoth
-          />
-        </Route>
-        <Route path='/details'>
-          <div className={styles.paddingBody}>
-            <div style={{ display: tabIndex === 0 ? 'block' : 'none' }}>
-              <Page0 oddList={matchList.odds_list} />
-            </div>
-            {
-              tabIndex === 1 && <Page1 matchList={matchList} smid={matchList.smid} />
-            }
-            {
-              tabIndex === 2 && <Page2
-                matchList={matchList}
-                smid={matchList.smid}
-              />
-            }
-          </div>
-        </Route>
-      </Switch>
+      <TabsList
+        gameOver={matchList.status === 2}
+        index={tabIndex}
+        updateIndex={update}
+      />
+      <div className={styles.paddingBody}>
+        <div style={{ display: tabIndex === 0 ? 'block' : 'none' }}>
+          <Page0 oddList={matchList.odds_list} />
+        </div>
+        {
+          tabIndex === 1 && <Page1 matchList={matchList} smid={matchList.smid} />
+        }
+        {
+          tabIndex === 2 && <Page2 matchList={matchList} smid={matchList.smid} />
+        }
+      </div>
     </div>
   )
 }
