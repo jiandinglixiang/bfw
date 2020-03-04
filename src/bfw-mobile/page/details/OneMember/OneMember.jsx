@@ -228,9 +228,11 @@ export function OneMember (props) {
         host_team_logo: def1,
         guest_team_logo: def2,
         team1_more_attr: {
+          other_more_attr: {},
           players: []
         },
         team2_more_attr: {
+          other_more_attr: {},
           players: []
         }
       },
@@ -286,9 +288,9 @@ export function OneMember (props) {
     {
       [0, 1, 2, 3, 4].map(function (val) {
         if (gameId === 5) {
-          return <MemberList key={val} value={team1.list[val]} blueTeam isBoth={propsVE.isBoth} />
+          return <MemberList key={val} value={team2.list[val]} blueTeam isBoth={propsVE.isBoth} />
         }
-        return <MemberListLol key={val} value={team1.list[val]} blueTeam isBoth={propsVE.isBoth} />
+        return <MemberListLol key={val} value={team2.list[val]} blueTeam isBoth={propsVE.isBoth} />
       })
     }
   </div>

@@ -65,13 +65,19 @@ function LineChart (props) {
 
   useEffect(() => {
     // 基于准备好的dom，初始化echarts实例
+    let maxGold = 12
     const data = curveList.map(value => {
       const valueVE = diffCatch(value)({
         time: 0,
         gold: 0
       })
-      return [valueVE.time / 60, valueVE.gold / 1000]
+      const max = valueVE.gold / 1000
+      if (max > maxGold) {
+        maxGold = max
+      }
+      return [parseInt(valueVE.time / 60), max]
     })
+    maxGold = parseInt(maxGold / 6) * 6 + 6
     // 绘制图表[x,y]
     const chartOption = {
       backgroundColor: '#06051A',
@@ -104,7 +110,7 @@ function LineChart (props) {
             })
             const [x, y] = paramsVE.data
             const tm1 = parseInt(x)
-            const tm2 = x * 60 - tm1 * 60
+            const tm2 = parseInt(x * 60 - tm1 * 60)
             const top = toBigNumber(y).toFormat(1)
             return `${tm1}:${tm2} 经济差 ${top}k`
           } catch (e) {
@@ -161,8 +167,8 @@ function LineChart (props) {
           type: 'value',
           splitNumber: 5,
           interval: 6,
-          min: -60,
-          max: 60,
+          min: -maxGold,
+          max: maxGold,
           axisLabel: {
             margin: 20,
             formatter: '{value} K',
@@ -194,8 +200,8 @@ function LineChart (props) {
           position: 'right',
           splitNumber: 5,
           interval: 6,
-          min: -60,
-          max: 60,
+          min: -maxGold,
+          max: maxGold,
           axisLabel: {
             show: false
           },
@@ -232,14 +238,14 @@ function LineChart (props) {
       ],
       visualMap: [
         {
-          show: true,
+          show: false,
           type: 'piecewise',
-          dimension: 1,
-          splitNumber: 61,
+          dimension: 0,
+          // splitNumber: 6,
           pieces: [
             {
               min: -99999,
-              max: -2,
+              max: 0,
               color: '#E12727'
             }
           ],

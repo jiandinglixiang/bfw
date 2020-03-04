@@ -309,37 +309,21 @@ export function csgoBothInit (endMatch) {
 }
 
 function Both ({ data = {}, endMatch }) {
-  let endMatchVE
-  if (data.isBottomBoth) {
-    endMatchVE = diffCatch(endMatch)({
-      poor_economy: {
-        gold: 0
-      },
-      team1: {
-        players: [],
-        ban: []
-      },
-      team2: {
-        players: [],
-        ban: []
-      },
-    })
-  } else {
-    // 小局
-    endMatchVE = diffCatch(endMatch)({
-      poor_economy: {
-        gold: 0
-      },
-      team1: {
-        players: [],
-        ban: []
-      },
-      team2: {
-        players: [],
-        ban: []
-      },
-    })
-  }
+  // let endMatchVE
+  // 小局
+  const endMatchVE = diffCatch(endMatch)({
+    poor_economy: {
+      gold: 0
+    },
+    team1: {
+      players: [],
+      ban: []
+    },
+    team2: {
+      players: [],
+      ban: []
+    },
+  })
   // 小局页
   data.status = endMatchVE.team1.status
   data.gameId = endMatchVE.team1.game_type_id
@@ -350,7 +334,7 @@ function Both ({ data = {}, endMatch }) {
   data.team2.name = endMatchVE.team2.team_name
   data.team1.score = endMatchVE.team1.score
   data.team2.score = endMatchVE.team2.score
-  data.round = endMatchVE.team1.round && inning(endMatchVE.team1.round)
+  data.round = !data.isBottomBoth && endMatchVE.team1.round && inning(endMatchVE.team1.round)
   data.time = timeToTxt(endMatchVE.poor_economy.time, data.status)
   data.gold = toBigNumber(endMatchVE.poor_economy.gold / 1000).toFormat(1)
   if (data.gameId === 5) {

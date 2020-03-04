@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './index.module.scss'
 import tttt from '../../../assets/terrorists.png'
 import ctct from '../../../assets/counter.png'
-import { diffCatch } from '../../../../tool/util.js'
+import { diffCatch, PropTypes, toBigNumber } from '../../../../tool/util.js'
 
 function backColor (num) {
   if (num > 20) {
@@ -19,6 +19,191 @@ function hpInit (num) {
     return num
   }
   return 100
+}
+
+function BothTable ({ team2Table, team1Table }) {
+  return (
+    <>
+      <table className={styles.csgoTableBlue}>
+        <thead>
+          <tr>
+            <th><p>UOL</p></th>
+            <th><p>HS%</p></th>
+            <th><p>KAST</p></th>
+            <th><p>K-D</p></th>
+            <th><p>FK driff</p></th>
+            <th><p>Rating<br /> 2.0</p></th>
+            <th><p>K/D/A</p></th>
+            <th><p>ADR</p></th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            team1Table.map((value, key) => {
+              const valueVE = diffCatch(value)({
+                hs: 0,
+                kills: 0,
+                deaths: 0,
+              })
+              const hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1)
+              return (
+                <tr key={key}>
+                  <td><p>{valueVE.name}</p></td>
+                  <td><p>{valueVE.hs}/{hskpi}</p></td>
+                  <td><p>-</p></td>
+                  <td><p>{valueVE.kills - valueVE.deaths}</p></td>
+                  <td>{valueVE.fk_diff}</td>
+                  <td><p>{valueVE.rating}</p></td>
+                  <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
+                  <td><p>{valueVE.damage_pr_round}</p></td>
+                </tr>
+              )
+            })
+          }
+          {
+            !team1Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
+          }
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>
+              <div />
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <table className={styles.csgoTableYellow}>
+        <thead>
+          <tr>
+            <th><p>UOL</p></th>
+            <th><p>HS%</p></th>
+            <th><p>KAST</p></th>
+            <th><p>K-D</p></th>
+            <th><p>FK driff</p></th>
+            <th><p>Rating<br /> 2.0</p></th>
+            <th><p>K/D/A</p></th>
+            <th><p>ADR</p></th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            team2Table.map((value, key) => {
+              const valueVE = diffCatch(value)({
+                hs: 0,
+                kills: 0,
+                deaths: 0,
+              })
+              const hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1)
+              return (
+                <tr key={key}>
+                  <td><p>{valueVE.name}</p></td>
+                  <td><p>{valueVE.hs}/{hskpi}</p></td>
+                  <td><p>-</p></td>
+                  <td><p>{valueVE.kills - valueVE.deaths}</p></td>
+                  <td>{valueVE.fk_diff}</td>
+                  <td><p>{valueVE.rating}</p></td>
+                  <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
+                  <td><p>{valueVE.damage_pr_round}</p></td>
+                </tr>
+              )
+            })
+          }
+          {
+            !team2Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
+          }
+        </tbody>
+      </table>
+    </>
+  )
+}
+
+function MatchTable ({ team2Table, team1Table }) {
+  return (<>
+    <table className={styles.csgoTableBlue}>
+      <thead>
+        <tr>
+          <th><p>UOL</p></th>
+          <th className={styles.alignItemsLeft}><p>血量</p></th>
+          <th><p>K/D/A</p></th>
+          <th><p>武器</p></th>
+          <th><p>护甲</p></th>
+          <th><p>$</p></th>
+          <th><p>ADR</p></th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          team1Table.map((value, key) => {
+            const valueVE = diffCatch(value)({ hp: 0 })
+            return (
+              <tr key={key} className={valueVE.hp > 0 ? styles.gameOver : ''}>
+                <td><p>{valueVE.name}</p></td>
+                <td className={styles.alignItemsLeft}>
+                  <p className={styles.bigTxt}>{valueVE.hp}</p>
+                  <div
+                    className={styles.haemalStrandIcon}
+                    style={{
+                      backgroundColor: backColor(valueVE.hp),
+                      width: hpInit(valueVE.hp)
+                    }} />
+                </td>
+                <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
+                <td><img src={valueVE.weapon_logo} /></td>
+                <td><img src={valueVE.equipment_logo} /></td>
+                <td><p className={styles.bigTxt}>{valueVE.money}</p></td>
+                <td><p>{valueVE.damage_pr_round}</p></td>
+              </tr>
+            )
+          })
+        }
+        {
+          !team1Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
+        }
+      </tbody>
+    </table>
+    <table className={styles.csgoTableYellow}>
+      <thead>
+        <tr>
+          <th><p>UOL</p></th>
+          <th className={styles.alignItemsLeft}><p>血量</p></th>
+          <th><p>K/D/A</p></th>
+          <th><p>武器</p></th>
+          <th><p>护甲</p></th>
+          <th><p>$</p></th>
+          <th><p>ADR</p></th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          team2Table.map((value, key) => {
+            const valueVE = diffCatch(value)({ hp: 0 })
+            return (
+              <tr key={key} className={valueVE.hp > 0 ? styles.gameOver : ''}>
+                <td><p>{valueVE.name}</p></td>
+                <td className={styles.alignItemsLeft}>
+                  <p className={styles.bigTxt}>{valueVE.hp}</p>
+                  <div
+                    className={styles.haemalStrandIcon}
+                    style={{
+                      backgroundColor: backColor(valueVE.hp),
+                      width: hpInit(valueVE.hp)
+                    }} />
+                </td>
+                <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
+                <td><img src={valueVE.weapon_logo} /></td>
+                <td><img src={valueVE.equipment_logo} /></td>
+                <td><p className={styles.bigTxt}>{valueVE.money}</p></td>
+                <td><p>{valueVE.damage_pr_round}</p></td>
+              </tr>
+            )
+          })
+        }
+        {
+          !team2Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
+        }
+      </tbody>
+    </table>
+  </>)
 }
 
 function CsGoMapImg (props) {
@@ -151,115 +336,15 @@ function CsGoMapImg (props) {
       realHistory.second.team1.icon.push(val.logo)
     }
   })
-  // 上下半场
+
   const one = diffCatch(team1Table[0])({ map: '' })
 
   return <div>
     <div style={{ height: '10px' }} />
     <p className={`${styles.mapRight} ${styles['csgoMap-' + one.map]}`}>{one.map}</p>
     {overtime && <p className={styles.extraTimeTxt}>加时赛</p>}
-    <table className={styles.csgoTableBlue}>
-      <thead>
-        <tr>
-          <th><p>UOL</p></th>
-          <th className={styles.alignItemsLeft}><p>血量</p></th>
-          <th><p>K/D/A</p></th>
-          <th><p>武器</p></th>
-          <th><p>护甲</p></th>
-          <th><p>$</p></th>
-          <th><p>ADR</p></th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          team1Table.map((value, key) => {
-            const valueVE = diffCatch(value)({ hp: 0 })
-            return (
-              <tr key={key} className={valueVE.hp > 0 ? styles.gameOver : ''}>
-                <td><p>{valueVE.name}</p></td>
-                <td className={styles.alignItemsLeft}>
-                  <p className={styles.bigTxt}>{valueVE.hp}</p>
-                  <div
-                    className={styles.haemalStrandIcon}
-                    style={{
-                      backgroundColor: backColor(valueVE.hp),
-                      width: hpInit(valueVE.hp)
-                    }} />
-                </td>
-                <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
-                <td><img src={valueVE.weapon_logo} /></td>
-                <td><img src={valueVE.equipment_logo} /></td>
-                <td><p className={styles.bigTxt}>{valueVE.money}</p></td>
-                <td><p>{valueVE.damage_pr_round}</p></td>
-              </tr>
-            )
-          })
-        }
-        {
-          !team1Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
-        }
-      </tbody>
-      {
-        propsVE.isBoth && <tfoot>
-          <tr>
-            <td>
-              <div />
-            </td>
-          </tr>
-        </tfoot>
-      }
-    </table>
-    <table className={styles.csgoTableYellow}>
-      <thead>
-        <tr>
-          <th><p>UOL</p></th>
-          <th className={styles.alignItemsLeft}><p>血量</p></th>
-          <th><p>K/D/A</p></th>
-          <th><p>武器</p></th>
-          <th><p>护甲</p></th>
-          <th><p>$</p></th>
-          <th><p>ADR</p></th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          team2Table.map((value, key) => {
-            const valueVE = diffCatch(value)({ hp: 0 })
-            return (
-              <tr key={key} className={valueVE.hp > 0 ? styles.gameOver : ''}>
-                <td><p>{valueVE.name}</p></td>
-                <td className={styles.alignItemsLeft}>
-                  <p className={styles.bigTxt}>{valueVE.hp}</p>
-                  <div
-                    className={styles.haemalStrandIcon}
-                    style={{
-                      backgroundColor: backColor(valueVE.hp),
-                      width: hpInit(valueVE.hp)
-                    }} />
-                </td>
-                <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
-                <td><img src={valueVE.weapon_logo} /></td>
-                <td><img src={valueVE.equipment_logo} /></td>
-                <td><p className={styles.bigTxt}>{valueVE.money}</p></td>
-                <td><p>{valueVE.damage_pr_round}</p></td>
-              </tr>
-            )
-          })
-        }
-        {
-          !team2Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
-        }
-      </tbody>
-      {
-        propsVE.isBoth && <tfoot>
-          <tr>
-            <td>
-              <div className={styles.singLeft} />
-            </td>
-          </tr>
-        </tfoot>
-      }
-    </table>
+    {propsVE.isBoth ? <BothTable team1Table={team1Table} team2Table={team2Table} /> : <MatchTable
+      team1Table={team1Table} team2Table={team2Table} />}
     <div style={{ height: '10px' }} />
     <div className={styles.operatingRecord}>
       <div className={styles.topTitle}>
@@ -331,3 +416,12 @@ function CsGoMapImg (props) {
 }
 
 export default CsGoMapImg
+
+MatchTable.propTypes = {
+  team2Table: PropTypes.array,
+  team1Table: PropTypes.array
+}
+BothTable.propTypes = {
+  team2Table: PropTypes.array,
+  team1Table: PropTypes.array
+}
