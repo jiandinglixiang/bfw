@@ -95,6 +95,10 @@
     justify-content: flex-start;
     margin-top: 1px;
     background: rgba(22, 69, 129, 0.6);
+    min-height: 30px;
+    .gameOver {
+      background-color: rgba(6, 5, 26, 0.6);
+    }
   }
 
   tbody tr:last-child {

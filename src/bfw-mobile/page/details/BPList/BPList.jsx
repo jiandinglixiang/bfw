@@ -16,13 +16,14 @@ function BPList (props) {
     <span key='5' />,
     propsVe.isBan && <span key='0' />
   ]
+  const key = propsVe.isBan ? 'avatar' : 'hero_logo'
   return <div>
     <div className={styles.BPlist}>
       <div>
         {
           !propsVe.team1.length ? noneAny : propsVe.team1.map(function (value, index) {
-            if (value.hero_logo) {
-              return <img key={index} src={value.hero_logo} />
+            if (value[key]) {
+              return <img key={index} src={value[key]} />
             }
             return <span key={index} />
           })
@@ -32,8 +33,8 @@ function BPList (props) {
       <div>
         {
           !propsVe.team2.length ? noneAny : propsVe.team2.map(function (value, index) {
-            if (value.hero_logo) {
-              return <img key={index} src={value.hero_logo} />
+            if (value[key]) {
+              return <img key={index} src={value[key]} />
             }
             return <span key={index} />
           })

@@ -6,32 +6,10 @@ import { store } from '../../../redux.js'
 import { setMatchResult } from '../store.js'
 import TipTitle from '../TipTitle/TipTitle.jsx'
 import LineChart from '../LineChart/LineChart.jsx'
-import { OneMember, TeamSing } from '../OneMember/OneMember.jsx'
-import def1 from '../../../assets/default_teamred_40.png'
-import def2 from '../../../assets/default_teamblue_40.png'
-import tianhui from '../../../assets/tianhui.png'
-import yemo from '../../../assets/yemo.png'
+import { OneMember } from '../OneMember/OneMember.jsx'
 import Kotsubone from '../Kotsubone/Kotsubone.jsx'
 import CsGoMapImg from '../CsGoMapImg/CsGoMapImg.jsx'
 import { comparisonUtil } from '../details.jsx'
-
-export function Member (propsVe, realPlayers) {
-  // 成员列表
-  return <div>
-    <TeamSing
-      sing={tianhui}
-      logo={propsVe.matchList.host_team_logo || def1}
-      name={propsVe.matchList.host_team_name}
-    />
-    <OneMember data={realPlayers[0]} />
-    <TeamSing
-      sing={yemo}
-      logo={propsVe.matchList.guest_team_logo || def2}
-      name={propsVe.matchList.guest_team_name}
-    />
-    <OneMember data={realPlayers[1]} blueTeam />
-  </div>
-}
 
 function Page2 (props) {
   // 历史数据
@@ -49,11 +27,13 @@ function Page2 (props) {
   })
   const equalStatus = comparisonUtil(propsVE.matchList.game_type_id, propsVE.matchList.status)
   const scoreListLen = propsVE.matchList.score_list.length
+
   useEffect(() => {
     http.getMatchData(propsVE.smid, scoreListLen).then((value) => {
       store.dispatch(setMatchResult({ matchResult: value }))
     })
-  }, [propsVE.smid, scoreListLen])
+  }, [propsVE.smid])
+
   const tipTile = ['对战实时战队数据', '对战实时成员数据']
   if (propsVE.matchList.game_type_id === 3) {
     // csgo
@@ -68,7 +48,7 @@ function Page2 (props) {
     {equalStatus([1, 5], [0, 1]) && (<TipTitle title={tipTile[1]} />)}
     {
       equalStatus([1, 5], [0, 1]) && (
-        <Member
+        <OneMember
           matchList={propsVE.matchList}
           matchResult={propsVE.matchResult}
         />)

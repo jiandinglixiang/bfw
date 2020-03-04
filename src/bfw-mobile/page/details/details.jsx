@@ -61,8 +61,21 @@ function Details (props) {
   const [search] = useSearch()
   const [tabIndex, update] = useState(0)
   useEffect(() => {
-    store.dispatch(getMatchDetailsAsync(search.smid))
+    let time = null
+
+    function timeOuting () {
+      store.dispatch(getMatchDetailsAsync(search.smid)).finally(function () {
+        time = setTimeout(timeOuting, 5000)
+      })
+    }
+
+    store.dispatch(getMatchDetailsAsync(search.smid)).finally(function () {
+      time = setTimeout(timeOuting, 5000)
+    })
     window.scrollTo(0, 0)
+    return function () {
+      clearTimeout(time)
+    }
   }, [search.smid])
   const { matchList, liveList } = diffCatch(props)({
     liveList: [],

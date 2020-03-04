@@ -88,7 +88,7 @@ function PvpList ({ twoSidesConfrontation = [] }) {
 }
 
 PvpList.propTypes = {
-  twoSidesConfrontation: PropTypes.array
+  twoSidesConfrontation: PropTypes.any
 }
 export default connect(function (state) {
   return {

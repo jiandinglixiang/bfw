@@ -5,6 +5,7 @@ import { diffCatch, formatDate, inning, PropTypes, toBigNumber } from '../../../
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
 import { useHistory } from 'react-router-dom'
+import { gameRound } from '../MatchItem/MatchItem.jsx'
 
 export function routerDetails (data, history) {
   const query = {
@@ -53,8 +54,8 @@ function UnderwayDota ({ gameData }) {
   const moreAttr2 = gameData.team2_more_attr.other_more_attr
 
   const inningsTime = useMemo(() => {
-    const nowInnings = inning(parseInt(gameData.round))
-    const timeTxt = gameData.poor_economy.time / 60
+    const nowInnings = gameRound(gameData.score_list, gameData.round_total)
+    const timeTxt = parseInt(gameData.poor_economy.time / 60)
     return timeTxt ? `${nowInnings} ${timeTxt}’` : nowInnings
   }, [gameData.round, gameData.poor_economy.time])
 

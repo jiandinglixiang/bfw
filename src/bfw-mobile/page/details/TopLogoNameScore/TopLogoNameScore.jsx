@@ -2,8 +2,8 @@ import React from 'react'
 import styles from './index.module.scss'
 import tianhui from '../../../assets/tianhui_type2.png'
 import yemo from '../../../assets/nightdemon_type2.png'
-import redImg from '../../../assets/reateam.png'
-import blueImg from '../../../assets/blueteam.png'
+import redImg from '../../../assets/redteam_type2.png'
+import blueImg from '../../../assets/blueteam_type2(1).png'
 import { diffCatch, formatDate, inning, PropTypes, toBigNumber } from '../../../../tool/util.js'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
@@ -13,7 +13,6 @@ import fiveKills from '../../../assets/pentakills.png'
 import { scoreListReduce } from '../../../../bfw-web/page/AnalysisData/components/TameNowStatus'
 import { gameRound } from '../../home/MatchItem/MatchItem.jsx'
 import CsGoNowStatus from '../CsGoNowStatus/CsGoNowStatus.jsx'
-import { useStatePublicBoth } from '../Kotsubone/Kotsubone.jsx'
 import BPList from '../BPList/BPList.jsx'
 
 export function GameOverOrNotStarted (props) {
@@ -122,15 +121,14 @@ function GameUnderway (props) {
   const tameScoreColor = {}
   let teamSenteIcon = {}
   // 阵营识别 红方蓝方
-  if (propsVE.team1.camp) {
-    if (propsVE.gameId === 5) {
-      teamFaction.team1 = propsVE.team1.camp === 1 ? yemo : tianhui
-      teamFaction.team2 = propsVE.team2.camp === 1 ? yemo : tianhui
-    } else if (propsVE.gameId === 1) {
-      teamFaction.team1 = propsVE.team1.camp === 1 ? blueImg : redImg
-      teamFaction.team2 = propsVE.team2.camp === 1 ? blueImg : redImg
-    }
+  if (propsVE.gameId === 5) {
+    teamFaction.team1 = propsVE.team1.camp === 'dire' ? yemo : tianhui
+    teamFaction.team2 = propsVE.team1.camp === 'dire' ? tianhui : yemo
+  } else if (propsVE.gameId === 1) {
+    teamFaction.team1 = propsVE.team1.camp === 'blue' ? blueImg : redImg
+    teamFaction.team2 = propsVE.team1.camp === 'blue' ? redImg : blueImg
   }
+
   if (isBoth) {
     tameScoreColor.team1 = { color: propsVE.team1.score > propsVE.team2.score ? '#F9DF70' : '#85838F' }
     tameScoreColor.team2 = { color: propsVE.team2.score > propsVE.team1.score ? '#F9DF70' : '#85838F' }
@@ -180,7 +178,7 @@ function GameUnderway (props) {
     </div>
     <div className={styles.last}>
       <div className={styles.topLogoIcon2}>
-        <b style={tameScoreColor.team1}>{propsVE.team2.score}</b>
+        <b style={tameScoreColor.team2}>{propsVE.team2.score}</b>
         <div className={styles.logo}>
           <img src={propsVE.team2.logo} />
         </div>
@@ -311,24 +309,35 @@ export function csgoBothInit (endMatch) {
 }
 
 function Both ({ data = {}, endMatch }) {
-  const [endMatchBoth] = useStatePublicBoth()
   let endMatchVE
   if (data.isBottomBoth) {
     endMatchVE = diffCatch(endMatch)({
       poor_economy: {
         gold: 0
       },
-      team1: {},
-      team2: {},
+      team1: {
+        players: [],
+        ban: []
+      },
+      team2: {
+        players: [],
+        ban: []
+      },
     })
   } else {
     // 小局
-    endMatchVE = diffCatch(endMatchBoth)({
+    endMatchVE = diffCatch(endMatch)({
       poor_economy: {
         gold: 0
       },
-      team1: {},
-      team2: {},
+      team1: {
+        players: [],
+        ban: []
+      },
+      team2: {
+        players: [],
+        ban: []
+      },
     })
   }
   // 小局页
@@ -372,6 +381,7 @@ function Both ({ data = {}, endMatch }) {
     ]
   }
   if (data.gameId === 3) {
+    // csgo
     data.csgoMap = endMatchVE.team1.other_more_attr.map || endMatchVE.team2.other_more_attr.map
     // 小局数据
     const scgoData = csgoBothInit(endMatchVE)
@@ -380,11 +390,21 @@ function Both ({ data = {}, endMatch }) {
       <CsGoNowStatus {...scgoData} />
     </div>
   }
+  if (!data.isBottomBoth && data.gameId === 5) {
+    return (
+      <div>
+        <GameUnderway {...data} />
+        <BPList isBan team1={endMatchVE.team1.ban} team2={endMatchVE.team2.ban} />
+        <BPList team1={endMatchVE.team1.players} team2={endMatchVE.team2.players} />
+      </div>
+    )
+  }
   return <GameUnderway {...data} />
 }
 
 function Match ({ data = {}, matchList }) {
   matchList = diffCatch(matchList)({
+    status: 0,
     poor_economy: { gold: 0 },
     score_list: [],
     score: '',
@@ -479,13 +499,13 @@ function Match ({ data = {}, matchList }) {
       data.time = notStarTime.split('+')
     }
     data.matchRules = matchList.match_rules
-    return <GameUnderway {...data} />
+    return <GameOverOrNotStarted {...data} />
   }
   // data.status === 2已结束其他
   const OverScoreArr = matchList.score.split(/:|,/)
   data.team1.score = OverScoreArr[0]
   data.team2.score = OverScoreArr[1]
-  return <GameUnderway {...data} />
+  return <GameOverOrNotStarted {...data} />
 }
 
 function TopLogoNameScore (props) {

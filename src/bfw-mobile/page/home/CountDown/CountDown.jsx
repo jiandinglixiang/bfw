@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
 function CountDown ({ cbk }) {
-  const [ss, setSS] = useState(10)
+  const [ss, setSS] = useState(5)
   useEffect(function () {
     let t = null
 
@@ -12,7 +12,7 @@ function CountDown ({ cbk }) {
       setSS(ti => {
         if (!ti) {
           cbk()
-          return 10
+          return 5
         }
         return ti - 1
       })
