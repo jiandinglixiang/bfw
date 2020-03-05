@@ -45,10 +45,10 @@ export function GameOverOrNotStarted (props) {
       propsVE.status === 0 ? (
         <div className={styles.center}>
           <div className={styles.middle}>
-            <p className={styles.notStarted}><span>未开始</span><span>{propsVE.time[1]}</span></p>
+            <p className={styles.notStarted}><span>未开始</span> {propsVE.time[1] && <span>{propsVE.time[1]}</span>}</p>
           </div>
           <div className={styles.low}>
-            <p className={styles.notStarted}><span>{propsVE.time[0]}</span><span>{propsVE.matchRules}</span></p>
+            <p className={styles.notStarted}><span>{propsVE.time[0]}</span> <span>{propsVE.matchRules}</span></p>
           </div>
         </div>
       ) : (
@@ -393,7 +393,7 @@ function Match ({ data = {}, matchList }) {
     score_list: [],
     score: '',
     game_type_id: 0,
-    game_start_time: 0,
+    game_start_time: '',
     team1_more_attr: {
       other_more_attr: {},
       players: [],

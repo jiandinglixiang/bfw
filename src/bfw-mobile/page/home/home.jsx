@@ -12,14 +12,9 @@ import MatchContainer from './MatchContainer/MatchContainer'
 import { PropTypes } from '../../../tool/util'
 import TryCatch from '../../components/TryCatch/TryCatch.jsx'
 
+export const fixedTopClass = styles.fixedTop
 function Home (props) {
-  const {
-    width,
-    height,
-    notice,
-    bannerList,
-    dispatch,
-  } = props
+  const { notice, bannerList, dispatch, } = props
   const { gameId } = useParams()
   useEffect(function () {
     dispatch(getGameKindAsync()).then(state => {
@@ -29,13 +24,7 @@ function Home (props) {
       }
     })
   }, [gameId, dispatch])
-  const autoStyle = {
-    width: `${width}px`,
-    minHeight: `${height}px`,
-  }
-  return <div
-    style={autoStyle}
-    className={styles.content}>
+  return <div>
     <div className={styles.fixedTop}>
       <div>
         <HeadBar
@@ -60,8 +49,6 @@ function Home (props) {
 }
 
 Home.propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
   notice: PropTypes.string,
   bannerList: PropTypes.array,
   dispatch: PropTypes.func,
@@ -69,8 +56,6 @@ Home.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    width: state.device.width,
-    height: state.device.height,
     notice: state.home.notice,
     bannerList: state.home.bannerList,
   }

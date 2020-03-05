@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 import React from 'react'
 import { PropTypes } from '../../../tool/util'
 
-export const fixedTopClass = styles.content
+export const fixedTopContentClass = styles.content
 
 function MatchTitle ({ gameName = '' }) {
   try {

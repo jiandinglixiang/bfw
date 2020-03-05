@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import PvpTitle from '../PvpTitle/PvpTitle'
 import styles from '../PvpList/index.module.scss'
 import def from '../../../assets/default_team_60.png'
-import { diffCatch, formatDate, PropTypes } from '../../../../tool/util'
+import { diffCatch, formatDate, PropTypes, useSearch } from '../../../../tool/util'
 import styles2 from './index.module.scss'
 import { connect } from 'react-redux'
 
@@ -13,11 +13,18 @@ export function TameNameLogo ({ name, logo, mode }) {
   </div>
 }
 
-function initItem (value, index) {
-  const valueVe = diffCatch(value)({
-    confrontation: {},
-    win: {}
+function ListItem (props) {
+  const [search] = useSearch()
+  const { gameId } = diffCatch(search)({
+    gameId: 0
   })
+  const { value } = diffCatch(props)({
+    value: {
+      confrontation: {},
+      win: {}
+    }
+  })
+  const valueVe = value
   const scoreArr = (valueVe.score || '').split(/:|,/)
   let scoreE = <span>暂无</span>
   if (scoreArr.length) {
@@ -27,9 +34,47 @@ function initItem (value, index) {
       <span className={scoreArr[1] > scoreArr[0] ? styles.winScore : ''}>{scoreArr[1]}</span>
     </p>
   }
+  if (gameId === 2) {
+    return (
+      <li>
+        <div>
+          <img src={valueVe.confrontation.icon || def} alt='' />
+          <p>{valueVe.confrontation.name}</p>
+        </div>
+        <div className={styles.longRow}>
+          <p>{valueVe.match_name}</p>
+          <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
+        </div>
+        <div>
+          <img src={valueVe.win.icon || def} alt='' />
+          <p>{valueVe.win.name}</p>
+        </div>
+      </li>
+    )
+  }
+  if (gameId === 3) {
+    return (
+      <li>
+        <div>
+          <img src={valueVe.confrontation.icon || def} alt='' />
+          <p>{valueVe.confrontation.name}</p>
+        </div>
+        <div className={styles.longRow}>
+          <p>{valueVe.match_name}</p>
+          <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
+        </div>
+        <div>
+          {scoreE}
+        </div>
+        <div>
+          <img src={valueVe.win.icon || def} alt='' />
+          <p>{valueVe.win.name}</p>
+        </div>
+      </li>
+    )
+  }
   const time = parseInt(valueVe.game_duration_time / 60)
-
-  return <li className={styles.bodyItem} key={index}>
+  return <li className={styles.bodyItem}>
     <div>
       <img src={valueVe.confrontation.icon || def} alt='' />
       <p>{valueVe.confrontation.name}</p>
@@ -51,17 +96,46 @@ function initItem (value, index) {
   </li>
 }
 
-function initList (list, len, more, showMore) {
-  if (len) {
-    return <ul className={`${styles.publicClass} ${styles.compactRow}`}>
+function Title () {
+  const [search] = useSearch()
+  const { gameId } = diffCatch(search)({
+    gameId: 0
+  })
+  if (gameId === 2) {
+    return (
       <li className={styles.contentTitle}>
         <div>对阵</div>
         <div className={styles.longRow}>联赛</div>
-        <div>时长</div>
         <div>胜负</div>
-        <div>击杀比</div>
       </li>
-      {list.map(initItem)}
+    )
+  }
+  if (gameId === 3) {
+    return (
+      <li className={styles.contentTitle}>
+        <div>对阵</div>
+        <div className={styles.longRow}>联赛</div>
+        <div>回合比分</div>
+        <div>胜负</div>
+      </li>
+    )
+  }
+  return (
+    <li className={styles.contentTitle}>
+      <div>对阵</div>
+      <div className={styles.longRow}>联赛</div>
+      <div>时长</div>
+      <div>胜负</div>
+      <div>击杀比</div>
+    </li>
+  )
+}
+
+function initList (list, len, more, showMore) {
+  if (len) {
+    return <ul className={`${styles.publicClass} ${styles.compactRow}`}>
+      <Title />
+      {list.map((value, index) => <ListItem key={index} value={value} />)}
       {
         !more && len > 5 ? <li className={styles.moreList} onClick={() => showMore(!more)}>
           点击展开更多比赛

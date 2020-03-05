@@ -65,11 +65,13 @@ function Details (props) {
 
     function timeOuting () {
       store.dispatch(getMatchDetailsAsync(search.smid)).finally(function () {
+        clearTimeout(time)
         time = setTimeout(timeOuting, 5000)
       })
     }
 
     store.dispatch(getMatchDetailsAsync(search.smid)).finally(function () {
+      clearTimeout(time)
       time = setTimeout(timeOuting, 5000)
     })
     window.scrollTo(0, 0)
@@ -102,7 +104,7 @@ function Details (props) {
         index={tabIndex}
         updateIndex={update}
       />
-      <div className={styles.paddingBody}>
+      <div className={styles.paddingBody + ' ' + styles.paddingBody2}>
         <div style={{ display: tabIndex === 0 ? 'block' : 'none' }}>
           <Page0 oddList={matchList.odds_list} />
         </div>

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { Modal } from 'antd-mobile'
 import { PropTypes } from '../../../tool/util.js'
 import { connect } from 'react-redux'
+import { Image } from 'echarts/src/util/graphic.js'
 
 function Mine (props) {
   const { width, height, } = props

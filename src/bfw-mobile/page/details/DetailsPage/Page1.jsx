@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { diffCatch } from '../../../../tool/util'
+import { diffCatch, useSearch } from '../../../../tool/util'
 import PvpStatistics from '../PvpStatistics/PvpStatistics.jsx'
 import { store } from '../../../redux.js'
 import { getMatchAnalysisAsync } from '../store.js'
@@ -12,16 +12,16 @@ import OutTame from '../OutTame/OutTame.jsx'
 
 function Page1 (props) {
   // 历史数据
+  const [search] = useSearch()
   const propsVe = diffCatch(props)({
-    smid: 0,
     confrontation: [],
     historyConfrontation: [],
     matchAnalysis: [],
     matchList: {}
   })
   useEffect(function () {
-    store.dispatch(getMatchAnalysisAsync(propsVe.smid))
-  }, [propsVe.smid])
+    store.dispatch(getMatchAnalysisAsync(search.smid))
+  }, [search.smid])
 
   return <div>
     <PvpStatistics

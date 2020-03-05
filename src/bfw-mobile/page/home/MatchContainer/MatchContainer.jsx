@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import InPlay from '../InPlay'
-import { fixedTopClass } from '../../../components/MatchTitle/MatchTitle'
-import fixedTop from '../index.module.scss'
+import { fixedTopContentClass } from '../../../components/MatchTitle/MatchTitle'
 import { connect } from 'react-redux'
 import { PropTypes } from '../../../../tool/util'
 import styles from './index.module.scss'
 import NotStartedOrOver from '../NotStartedOrOver/NotStartedOrOver.jsx'
+import { fixedTopClass } from '../home.jsx'
 
 let time = null
 let nodeList = [] // dom集合
@@ -14,10 +14,10 @@ let topDistance = 0
 function scrollFun () {
   // console.log(time, nodeList)
   if (!nodeList.length) {
-    nodeList = document.querySelectorAll(`.${fixedTopClass}`)
+    nodeList = document.querySelectorAll(`.${fixedTopContentClass}`)
   }
   if (!topDistance) {
-    topDistance = document.querySelector(`.${fixedTop.fixedTop}`).clientHeight + 134
+    topDistance = document.querySelector(`.${fixedTopClass}`).clientHeight + 134
   }
   const scrollTop = (document.documentElement.scrollTop ||
     document.body.scrollTop) + topDistance

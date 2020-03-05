@@ -3,16 +3,23 @@ import PvpTitle from '../PvpTitle/PvpTitle'
 import styles from './index.module.scss'
 import def from '../../../assets/default_team_60.png'
 import { connect } from 'react-redux'
-import { diffCatch, formatDate, formatDate2, PropTypes } from '../../../../tool/util'
+import { diffCatch, formatDate, useSearch } from '../../../../tool/util'
 
-function initList (value, index) {
-  const valueVe = diffCatch(value)({
-    team2_score: 0,
-    team1_score: 0,
-    team2_info: {},
-    team1_info: {},
-    game_duration_time: 0
+function ListItem (props) {
+  const [search] = useSearch()
+  const { gameId } = diffCatch(search)({
+    gameId: 0
   })
+  const { value } = diffCatch(props)({
+    value: {
+      team2_score: 0,
+      team1_score: 0,
+      team2_info: {},
+      team1_info: {},
+      game_duration_time: 0
+    }
+  })
+  const valueVe = value
   let winLogo = <div><span>平</span></div>
   let winScore = <div><span>暂无</span></div>
   if (valueVe.team1_score * 1 > valueVe.team2_score * 1) {
@@ -40,40 +47,95 @@ function initList (value, index) {
       </p>
     </div>
   }
+  if (gameId === 2) {
+    return (
+      <li>
+        <div className={styles.longRow}>
+          <p>{valueVe.match_name}</p>
+          <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
+        </div>
+        {winLogo}
+      </li>
+    )
+  }
+  if (gameId === 3) {
+    return (
+      <li className={styles.bodyItem}>
+        <div className={styles.longRow}>
+          <p>{valueVe.match_name}</p>
+          <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
+        </div>
+        {winScore}
+        {winLogo}
+      </li>
+    )
+  }
   const time = parseInt(valueVe.game_duration_time / 60)
-  return <li className={styles.bodyItem} key={index}>
-    <div className={styles.longRow}>
-      <p>{valueVe.match_name}</p>
-      <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
-    </div>
-    <div>{time}'{valueVe.game_duration_time - (time ? time * 60 : 0)}</div>
-    {winLogo}
-    {winScore}
-  </li>
+  return (
+    <li className={styles.bodyItem}>
+      <div className={styles.longRow}>
+        <p>{valueVe.match_name}</p>
+        <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
+      </div>
+      <div>{time}'{valueVe.game_duration_time - (time ? time * 60 : 0)}</div>
+      {winLogo}
+      {winScore}
+    </li>)
 }
 
-function PvpList ({ twoSidesConfrontation = [] }) {
+function Title () {
+  const [search] = useSearch()
+  const { gameId } = diffCatch(search)({
+    gameId: 0
+  })
+  if (gameId === 2) {
+    return (
+      <li className={styles.contentTitle}>
+        <div className={styles.longRow}>赛事/时间</div>
+        <div>胜负</div>
+      </li>
+    )
+  }
+  if (gameId === 3) {
+    return (
+      <li className={styles.contentTitle}>
+        <div className={styles.longRow}>赛事/时间</div>
+        <div>回合比分</div>
+        <div>胜负</div>
+      </li>
+    )
+  }
+  return (
+    <li className={styles.contentTitle}>
+      <div className={styles.longRow}>赛事/时间</div>
+      <div>时长</div>
+      <div>胜负</div>
+      <div>击杀比</div>
+    </li>
+  )
+}
+
+function PvpList (props) {
   const [more, showMore] = useState(false)
+  const { twoSidesConfrontation } = diffCatch(props)({
+    twoSidesConfrontation: []
+  })
   const list = useMemo(function () {
     if (more) {
       return twoSidesConfrontation
     }
     return twoSidesConfrontation.length > 5 ? twoSidesConfrontation.slice(0, 5) : twoSidesConfrontation
   }, [twoSidesConfrontation, more])
-  try {
-    return <div className={styles.content}>
+
+  return (
+    <div className={styles.content}>
       <PvpTitle title='双方对阵列表' />
       <ul className={styles.publicClass}>
         {
-          list.length ? <li className={styles.contentTitle}>
-            <div className={styles.longRow}>赛事/时间</div>
-            <div>时长</div>
-            <div>胜负</div>
-            <div>击杀比</div>
-          </li> : <li className={styles.noneAnyOne} />
+          list.length ? <Title /> : <li className={styles.noneAnyOne} />
         }
         {
-          list.map(initList)
+          list.map((value, index) => <ListItem value={value} key={index} />)
         }
         {
           !more && twoSidesConfrontation.length > 5 ? <li className={styles.moreList} onClick={() => showMore(!more)}>
@@ -81,14 +143,11 @@ function PvpList ({ twoSidesConfrontation = [] }) {
           </li> : null
         }
       </ul>
-    </div>
-  } catch (e) {
-    return <div className={`${styles.content} ${styles.noneAnyOne}`} />
-  }
+    </div>)
 }
 
 PvpList.propTypes = {
-  twoSidesConfrontation: PropTypes.any
+  // twoSidesConfrontation: PropTypes.any
 }
 export default connect(function (state) {
   return {
