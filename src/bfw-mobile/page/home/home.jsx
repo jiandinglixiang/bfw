@@ -11,7 +11,6 @@ import TabsContainer from './TabsContainer/TabsContainer'
 import MatchContainer from './MatchContainer/MatchContainer'
 import { PropTypes } from '../../../tool/util'
 import TryCatch from '../../components/TryCatch/TryCatch.jsx'
-
 export const fixedTopClass = styles.fixedTop
 function Home (props) {
   const { notice, bannerList, dispatch, } = props

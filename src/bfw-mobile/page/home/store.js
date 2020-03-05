@@ -44,7 +44,7 @@ export function getGameKindAsync () {
   }
 }
 
-export function getKindDataAsync (id, time) {
+export function getKindDataAsync (id, time, noId) {
   return async function (dispatch, getState) {
     const schedule = await http.getHomeSchedule(id, time)
     if (!schedule) return
@@ -55,6 +55,7 @@ export function getKindDataAsync (id, time) {
       totalNumber: schedule.total_number,
       kindId: id,
       time,
+      noId: noId
     }
     dispatch(setKindData(data))
     return getState()
@@ -132,7 +133,9 @@ const current = {
             action.kindId, action.time)
         }
         data.time = action.time
-        data.kindId = action.kindId
+        if (!action.noId) {
+          data.kindId = action.kindId
+        }
         if (state.showType[`${data.kindId || state.kindId}-${data.time || state.time}`] === undefined) {
           data.showType = f1(state.showType, 0, data.kindId || state.kindId, data.time || state.time) // 默认赛程
         }

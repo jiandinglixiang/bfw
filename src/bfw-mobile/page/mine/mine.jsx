@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { Modal } from 'antd-mobile'
 import { PropTypes } from '../../../tool/util.js'
 import { connect } from 'react-redux'
-import { Image } from 'echarts/src/util/graphic.js'
+import { Divs, Image, Pars, Text } from '../../components/BasicsHtml/BasicsHtml.jsx'
 
 function Mine (props) {
   const { width, height, } = props
@@ -16,24 +16,24 @@ function Mine (props) {
     backgroundColor: ' #06051A'
   }
   const [showModal, changShow] = useState(false)
-  return <div style={autoWidth}>
-    <div className={styles.topHead}>
-      <img src={defaultImg} />
-      <div><p>PDD没有人鱼线</p><span /></div>
-    </div>
-    <div className={styles.listLink}>
+  return <Divs style={autoWidth}>
+    <Divs className={styles.topHead}>
+      <Image src={defaultImg} />
+      <Divs><Pars>PDD没有人鱼线</Pars><Text /></Divs>
+    </Divs>
+    <Divs className={styles.listLink}>
       <Link to='/'>
-        <img className={styles.leftIcon} src={password} />
-        <p>修改密码</p>
+        <Image className={styles.leftIcon} src={password} />
+        <Pars>修改密码</Pars>
         <span />
       </Link>
 
       <Link to='/'>
-        <img className={styles.leftIcon} src={password} />
-        <p>关于我们</p>
+        <Image className={styles.leftIcon} src={password} />
+        <Pars>关于我们</Pars>
         <span />
       </Link>
-    </div>
+    </Divs>
     <button
       className={styles.loginOut}
       onClick={() => changShow(!showModal)}
@@ -43,15 +43,15 @@ function Mine (props) {
       visible={showModal}
       transparent
       onClose={() => changShow(!showModal)}>
-      <div className={styles.modalBody}>
-        <p>确认退出账户吗？</p>
-        <div>
+      <Divs className={styles.modalBody}>
+        <Pars>确认退出账户吗？</Pars>
+        <Divs>
           <button onClick={() => changShow(!showModal)}>取消</button>
           <button>清空</button>
-        </div>
-      </div>
+        </Divs>
+      </Divs>
     </Modal>
-  </div>
+  </Divs>
 }
 
 Mine.propTypes = {

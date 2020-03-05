@@ -11,15 +11,16 @@ import { store } from '../../../redux'
 import { getKindDataAsync, setShowType } from '../store'
 import moment from 'moment'
 import CountDown from '../CountDown/CountDown'
+import { Divs, Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function onTabClick (kindId) {
   // 切换游戏
-  store.dispatch(getKindDataAsync(kindId * 1, dayName[1]))
+  return store.dispatch(getKindDataAsync(kindId * 1, dayName[1]))
 }
 
 function onTimeClick (kindId, time) {
   // 切换今天明天后天
-  store.dispatch(getKindDataAsync(kindId, time))
+  store.dispatch(getKindDataAsync(kindId, time, true))
 }
 
 function onShowTypeClick (showType) {
@@ -42,6 +43,7 @@ function TabsContainer (props) {
     time,
     showType
   } = props
+  const [gameIndex, updateGameIndex] = useState(0)
   const [menuState, setMenuState] = useState(0)
   const [pickerTime, setPickerTime] = useState(new Date(Date.now()))
   useEffect(function () {
@@ -50,73 +52,69 @@ function TabsContainer (props) {
       setMenuState(1)
     }
   }, [width, gameKind])
-  try {
-    return <div className={styles.content}>
-      <div
-        className={`${styles.navBar}  ${menuState === 2
-          ? styles.showAll
-          : ''}`}>
-        <div
-          className={styles.menuContent}>
-          {
-            gameKind.map((value, x) => {
-              const className = `${styles.dayName} ${toBigNumber(value.id)
-                .isEqualTo(kindId) ? styles.activeButton : ''}`
-              return <div
+
+  return <div className={styles.content}>
+    <Divs className={[styles.navBar, menuState === 2 && styles.showAll]}>
+      <div className={styles.menuContent}>
+        {
+          gameKind.map((value, x) => {
+            return (
+              <Divs
                 key={x}
+                className={[styles.dayName, x === gameIndex && styles.activeButton]}
                 onClick={() => {
                   if (menuState === 2) setMenuState(1)
                   onTabClick(value.id)
-                }}
-                className={className}>{value.game_name}</div>
-            })
-          }
-        </div>
-        {menuState ? <img
-          onClick={() => setMenuState(s => s === 1 ? 2 : 1)}
-          className={`${styles.showMenu} ${menuState === 1
-            ? ''
-            : styles.rotateIcon}`} src={menuDown}
-          alt='' /> : null}
+                  updateGameIndex(x)
+                }}>
+                {value.game_name}
+              </Divs>)
+          })
+        }
       </div>
-      <div className={styles.dayOpt}>
-        <div className={styles.dayList}>
-          <div
-            onClick={() => onShowTypeClick(0)}
-            className={`${styles.noStart} ${showType === 0 ? styles.activeButton : ''}`}>
-            <p>
-              <span>赛程</span>
-            </p>
-          </div>
-          <div
-            onClick={() => onShowTypeClick(1)}
-            className={`${styles.starting} ${showType === 1 ? styles.activeButton : ''}`}>
-            <p>
-              <span>进行中</span>
-            </p>
-          </div>
-          <div
-            onClick={() => onShowTypeClick(2)}
-            className={`${styles.endOver} ${showType === 2 ? styles.activeButton : ''}`}>
-            <p><span>赛果</span></p>
-          </div>
-          {time === dayName[1] ? <CountDown cbk={() => onTimeClick(kindId, time)} /> : null}
-        </div>
-        <div className={styles.showMenu}>
-          <DatePicker
-            mode='date'
-            title='选者日期'
-            value={pickerTime}
-            onChange={(value) => onSelect(setPickerTime, kindId, value)}
-          >
-            <PickerCustom />
-          </DatePicker>
-        </div>
+      {!!menuState && (
+        <Image
+          onClick={() => setMenuState(s => s === 1 ? 2 : 1)}
+          className={[styles.showMenu, menuState !== 1 && styles.rotateIcon]}
+          src={menuDown}
+        />
+      )}
+    </Divs>
+    <div className={styles.dayOpt}>
+      <div className={styles.dayList}>
+        <Divs
+          onClick={() => onShowTypeClick(0)}
+          className={[styles.noStart, showType === 0 && styles.activeButton]}>
+          <p>
+            <span>赛程</span>
+          </p>
+        </Divs>
+        <Divs
+          onClick={() => onShowTypeClick(1)}
+          className={[styles.starting, showType === 1 && styles.activeButton]}>
+          <p>
+            <span>进行中</span>
+          </p>
+        </Divs>
+        <Divs
+          onClick={() => onShowTypeClick(2)}
+          className={[styles.endOver, showType === 2 && styles.activeButton]}>
+          <p><span>赛果</span></p>
+        </Divs>
+        {time === dayName[1] && <CountDown cbk={() => onTimeClick(kindId, time)} />}
+      </div>
+      <div className={styles.showMenu}>
+        <DatePicker
+          mode='date'
+          title='选者日期'
+          value={pickerTime}
+          onChange={(value) => onSelect(setPickerTime, kindId, value)}
+        >
+          <PickerCustom />
+        </DatePicker>
       </div>
     </div>
-  } catch (e) {
-    return <div className={styles.content} />
-  }
+  </div>
 }
 
 function mapStateToProps (state) {
@@ -140,3 +138,11 @@ CarouselPic.propTypes = {
 }
 
 export default connect(mapStateToProps)(TabsContainer)
+
+TabsContainer.propTypes = {
+  gameKind: PropTypes.any,
+  kindId: PropTypes.any,
+  showType: PropTypes.any,
+  time: PropTypes.any,
+  width: PropTypes.any
+}

@@ -9,7 +9,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 
-process.env.PORT = 3035 // 端口号
+process.env.PORT = 3030 // 端口号
 paths.appBuild = resolveApp(`bfw_web_and_mobile_${process.env.REACT_APP_build_url || ''}`) // 修改名字
 paths.servedPath = './'
 // console.log(process.env)
@@ -20,7 +20,7 @@ function addDevServer () {
     // 代理
     config.proxy = {
       '/dev': {
-        target: 'http://129.226.129.226:9501', // prod
+        target: 'http://101.37.205.228:9501', // prod
         changeOrigin: true,
         pathRewrite: { '^/dev': '/' },
       },
