@@ -20,7 +20,7 @@ function addDevServer () {
     // 代理
     config.proxy = {
       '/dev': {
-        target: 'http://101.37.205.228:9501', // prod
+        target: 'http://scoreapitest.firebulls.net', // prod
         changeOrigin: true,
         pathRewrite: { '^/dev': '/' },
       },

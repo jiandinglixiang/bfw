@@ -2,7 +2,7 @@ import { diffCatch, searchFormat } from './util'
 
 let baseURL = '/'
 if (process.env.REACT_APP_build_url === 'test') {
-  baseURL = 'http://101.37.205.228:9501'
+  baseURL = 'http://scoreapitest.firebulls.net'
   // 打包测试地址
 } else if (process.env.REACT_APP_build_url === 'prod') {
   baseURL = 'https://scoreapi.firebulls.net'
