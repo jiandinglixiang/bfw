@@ -5,7 +5,7 @@ import 'moment/locale/zh-cn'
 import propTypes from 'prop-types'
 import { useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
-// import 'babel-plugin-import/lib/index.js'
+
 moment.locale('zh-cn')
 BigNumber.config({ ROUNDING_MODE: 1 })
 
@@ -274,11 +274,21 @@ export function objCatch (obj, expected = {}) {
   }
 }
 
+function fromEntries (arr) {
+  return arr.reduce(function (obj, val) {
+    obj[val[0]] = val[1]
+    return obj
+  }, {})
+}
+
 export function useSearch () {
   const location = useLocation()
   const search = useMemo(function () {
     try {
       const params = new URLSearchParams(location.search.slice(1))
+      if (!Object.fromEntries) {
+        return fromEntries([...params.entries()])
+      }
       return Object.fromEntries(params.entries())
     } catch (err) {
       console.error('查询参数错误', err)
