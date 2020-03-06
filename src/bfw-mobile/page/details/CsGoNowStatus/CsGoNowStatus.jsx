@@ -37,9 +37,9 @@ function CsGoNowStatus (props) {
     <div className={styles.flanks1}>
       {!propsVE.isBottomBoth && [
         <div className={styles.senteIcon} key='0'>
-          {propsVE.team1.sente[0] ? <Image src={killsix} /> : <span />}
+          {propsVE.team1.sente[0] ? <Image src={killone} /> : <span />}
           {propsVE.team1.sente[1] ? <Image src={kill5} /> : <span />}
-          {propsVE.team1.sente[2] ? <Image src={killone} /> : <span />}
+          {propsVE.team1.sente[2] ? <Image src={killsix} /> : <span />}
         </div>,
         <div className={styles.nowScore} key='1'>{propsVE.team1.sum}</div>
       ]}

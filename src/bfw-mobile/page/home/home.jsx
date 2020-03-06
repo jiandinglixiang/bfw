@@ -23,19 +23,22 @@ function Home (props) {
       }
     })
   }, [dispatch])
-  return <div>
-    <div className={styles.fixedTop1}>
-      <div>
-        <HeadBar title={<Image src={logo} height='16' />} hideBack />
-        <NoticeBar txt={notice} />
+
+  return (
+    <div>
+      <div className={styles.fixedTop1}>
+        <div>
+          <HeadBar title={<Image src={logo} height='16' />} hideBack />
+          <NoticeBar txt={notice} />
+        </div>
       </div>
+      <CarouselPic carouseMap={bannerList} />
+      <TabsContainer />
+      <TryCatch>
+        <MatchContainer />
+      </TryCatch>
     </div>
-    <CarouselPic carouseMap={bannerList} />
-    <TabsContainer />
-    <TryCatch>
-      <MatchContainer />
-    </TryCatch>
-  </div>
+  )
 }
 
 Home.propTypes = {
@@ -54,5 +57,4 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps,
   function (dispatch) {
     return { dispatch }
-  },
-)(Home)
+  })(Home)

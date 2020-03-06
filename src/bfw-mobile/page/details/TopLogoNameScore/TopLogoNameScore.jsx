@@ -79,8 +79,8 @@ function iconList ({ gameId, sente1, sente2 }) {
     {sente1[1] ? <Image src={gameId === 5 ? deckills : fiveKills} /> : <span />}
   </div>
   iconList.team2 = <div className={styles.aBloodIcon}>
-    {sente2[0] ? <Image src={gameId === 5 ? deckills : fiveKills} /> : <span />}
-    {sente2[1] ? <Image src={firstBlood} /> : <span />}
+    {sente2[0] ? <Image src={firstBlood} /> : <span />}
+    {sente2[1] ? <Image src={gameId === 5 ? deckills : fiveKills} /> : <span />}
   </div>
   return iconList
 }
@@ -350,8 +350,8 @@ function Both ({ data = {}, endMatch }) {
       endMatchVE.team1.other_more_attr.is_ten_kills > 0,
     ]
     data.team2.sente = [
-      endMatchVE.team2.other_more_attr.is_ten_kills > 0,
       endMatchVE.team2.other_more_attr.is_first_blood > 0,
+      endMatchVE.team2.other_more_attr.is_ten_kills > 0,
     ]
   }
   if (data.gameId === 1) {
@@ -363,8 +363,8 @@ function Both ({ data = {}, endMatch }) {
       endMatchVE.team1.other_more_attr.five_kills > 0,
     ]
     data.team2.sente = [
-      endMatchVE.team2.other_more_attr.five_kills > 0,
       endMatchVE.team2.other_more_attr.first_kills > 0,
+      endMatchVE.team2.other_more_attr.five_kills > 0,
     ]
   }
   if (data.gameId === 3) {
@@ -440,8 +440,8 @@ function Match ({ data = {}, matchList }) {
         matchList.team1_more_attr.other_more_attr.is_ten_kills > 0,
       ]
       data.team2.sente = [
-        matchList.team2_more_attr.other_more_attr.is_ten_kills > 0,
         matchList.team2_more_attr.other_more_attr.is_first_blood > 0,
+        matchList.team2_more_attr.other_more_attr.is_ten_kills > 0,
       ]
       return (
         <div>
@@ -460,8 +460,8 @@ function Match ({ data = {}, matchList }) {
         matchList.team1_more_attr.other_more_attr.five_kills > 0,
       ]
       data.team2.sente = [
-        matchList.team2_more_attr.other_more_attr.five_kills > 0,
         matchList.team2_more_attr.other_more_attr.first_kills > 0,
+        matchList.team2_more_attr.other_more_attr.five_kills > 0,
       ]
       return (
         <div>

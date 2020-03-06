@@ -17,15 +17,6 @@ export function routerDetails (data, history) {
   history.push('/details?' + arr.join('&'))
 }
 
-function scoreListReduce (scoreList = []) {
-  return scoreList.reduce(function (sum, top = {}) {
-    // 计算进行中总比分  使首页比分取值同步
-    sum[0] = (top.team1 || 0) + sum[0]
-    sum[1] = (top.team2 || 0) + sum[1]
-    return sum
-  }, [0, 0])
-}
-
 function LeftTime ({ gameData = {} }) {
   return <p className={styles.leftTime}>
     <Image src={strating} />
@@ -114,8 +105,8 @@ function UnderwayDota (props) {
       <div className={styles.nameAndKill2}>
         <p>{gameData.guest_team_name}</p>
         <div>
-          <span className={moreAttr2.is_ten_kills > 0 ? styles.kill10Icon : ''} />
           <span className={moreAttr2.is_first_blood > 0 ? styles.firstBloodIcon : ''} />
+          <span className={moreAttr2.is_ten_kills > 0 ? styles.kill10Icon : ''} />
         </div>
       </div>
     </div>
@@ -186,9 +177,9 @@ function UnderwayCsGo (props) {
       <div className={styles.nameAndKill}>
         <p>{gameData.host_team_name}</p>
         <div>
-          <span className={moreAttr1.flag_r16 > 0 ? styles.csgoSixtgun : ''} />
-          <span className={moreAttr1.flag_w5 > 0 ? styles.csgo5 : ''} />
           <span className={moreAttr1.flag_r1 > 0 ? styles.csgoFirstgun : ''} />
+          <span className={moreAttr1.flag_w5 > 0 ? styles.csgo5 : ''} />
+          <span className={moreAttr1.flag_r16 > 0 ? styles.csgoSixtgun : ''} />
         </div>
       </div>
       <div className={styles.teamLogo}>
@@ -255,7 +246,7 @@ function UnderwayLol (props) {
     const nowInnings = inning(gameData.current_round || 1)
     const timeTxt = parseInt(gameData.poor_economy.time / 60)
     return timeTxt ? `${nowInnings} ${timeTxt}’` : nowInnings
-  }, [gameData.round, gameData.poor_economy.time])
+  }, [gameData.poor_economy.time, gameData.current_round])
 
   const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
   const isBlue = useMemo(() => {
@@ -292,8 +283,8 @@ function UnderwayLol (props) {
       <div className={styles.nameAndKill2}>
         <p>{gameData.guest_team_name}</p>
         <div>
-          <span className={moreAttr2.five_kills > 0 ? styles.kill5Icon : ''} />
           <span className={moreAttr2.first_kills > 0 ? styles.firstBloodIcon : ''} />
+          <span className={moreAttr2.five_kills > 0 ? styles.kill5Icon : ''} />
         </div>
       </div>
     </div>
