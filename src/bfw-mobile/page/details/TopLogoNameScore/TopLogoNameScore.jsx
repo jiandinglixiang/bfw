@@ -10,8 +10,6 @@ import defImg2 from '../../../assets/default_teamblue_40.png'
 import firstBlood from '../../../assets/firstblood.png'
 import deckills from '../../../assets/deckills.png'
 import fiveKills from '../../../assets/pentakills.png'
-import { scoreListReduce } from '../../../../bfw-web/page/AnalysisData/components/TameNowStatus'
-import { gameRound } from '../../home/MatchItem/MatchItem.jsx'
 import CsGoNowStatus from '../CsGoNowStatus/CsGoNowStatus.jsx'
 import BPList from '../BPList/BPList.jsx'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
@@ -96,7 +94,7 @@ function GameUnderway (props) {
     underwayBP: false, // false === 进行中 但没有选角色，没有ban
     matchRules: '',
     time: [],
-    round: '',
+    round: 0,
     gold: '0.0',
     csgoMap: '...',
     team1: {
@@ -231,7 +229,7 @@ function csgoInit (team1, team2, round) {
       sum: 0
     }
   }
-  data.round = round || 0
+  data.round = round
   data.overtime = team1.is_over_time > 1 || team2.is_over_time > 1
   // data.team1.name = team1.team_name
   // data.team2.name = team2.team_name
@@ -252,9 +250,10 @@ function csgoInit (team1, team2, round) {
   return data
 }
 
-function csgoDataInit (matchList, round) {
+function csgoDataInit (matchList) {
   // csgo 进行中赛况对阵详情数据初始化
   const matchListVE = diffCatch(matchList)({
+    current_round: 0,
     team1_more_attr: {
       first_half_score: 0,
       second_half_score: 0,
@@ -274,7 +273,7 @@ function csgoDataInit (matchList, round) {
   })
   const team1 = matchListVE.team1_more_attr
   const team2 = matchListVE.team2_more_attr
-  return csgoInit(team1, team2, round)
+  return csgoInit(team1, team2, matchListVE.current_round)
 }
 
 export function csgoBothInit (endMatch) {
@@ -415,10 +414,10 @@ function Match ({ data = {}, matchList }) {
   data.team2.name = matchList.guest_team_name
   if (data.status === 1) {
     // 非小局 进行中
-    const score = scoreListReduce(matchList.score_list)
+    const score = matchList.score.split(/,|:/)
     data.team1.score = score[0]
     data.team2.score = score[1]
-    data.round = gameRound(matchList.score_list, matchList.round_total)
+    data.round = inning(matchList.current_round)
     data.time = timeToTxt(matchList.poor_economy.time, data.status)
     data.gold = toBigNumber(matchList.poor_economy.gold / 1000).toFormat(1)
     data.underwayBP = !!(matchList.team1_more_attr.players.length ||
@@ -469,7 +468,7 @@ function Match ({ data = {}, matchList }) {
     if (data.gameId === 3) {
       // csgo 显示
       data.csgoMap = matchList.team1_more_attr.other_more_attr.map || matchList.team2_more_attr.other_more_attr.map
-      const scgoData = csgoDataInit(matchList, matchList.score_list)
+      const scgoData = csgoDataInit(matchList)
       return <div>
         <GameUnderway {...data} />
         <CsGoNowStatus {...scgoData} />

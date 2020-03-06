@@ -166,7 +166,7 @@ function LineChart (props) {
         {
           type: 'value',
           splitNumber: 5,
-          interval: 6,
+          interval: parseInt(maxGold / 3),
           min: -maxGold,
           max: maxGold,
           axisLabel: {
@@ -199,7 +199,7 @@ function LineChart (props) {
           type: 'value',
           position: 'right',
           splitNumber: 5,
-          interval: 6,
+          interval: parseInt(maxGold / 3),
           min: -maxGold,
           max: maxGold,
           axisLabel: {
