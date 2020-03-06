@@ -66,11 +66,11 @@ function BothItem2 (props) {
       team1: {
         game_type_id: 0,
         other_more_attr: {},
-        players: {}
+        players: []
       },
       team2: {
         other_more_attr: {},
-        players: {}
+        players: []
       }
     }
   })
