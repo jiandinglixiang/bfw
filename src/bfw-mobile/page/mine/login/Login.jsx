@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import password from '../../../assets/modify_password.png'
 import welcome from '../../../assets/mine_welcome_word.png'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function Countdown () {
   return <button className={styles.countdown} disabled>
@@ -95,7 +96,7 @@ function LoginView (props) {
     </div>
   } else {
     return <div className={styles.loginButton}>
-      <img src={welcome} />
+      <Image src={welcome} />
       <button>登陆/注册</button>
     </div>
   }
@@ -115,7 +116,7 @@ function Login (props) {
     }} />
     <div className={styles.linkBottom}>
       <Link to='/'>
-        <img className={styles.leftIcon} src={password} />
+        <Image className={styles.leftIcon} src={password} />
         <p>关于我们</p>
         <span />
       </Link>

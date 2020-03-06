@@ -7,6 +7,7 @@ import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
 import firstBlood from '../../../assets/firstblood.png'
 import deckills from '../../../assets/deckills.png'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function KotsuboneItem (props) {
   const { endMatchVe } = diffCatch(props)({
@@ -41,16 +42,16 @@ function KotsuboneItem (props) {
   return <div className={styles.content}>
     <div className={styles.first}>
       <div className={styles.topLogoIcon1}>
-        <div className={styles.teamIcon}><img src={yemo} /></div>
-        <div className={styles.logo}><img src={endMatchVe.team1.team_logo || defImg1} /></div>
+        <div className={styles.teamIcon}><Image src={yemo} /></div>
+        <div className={styles.logo}><Image src={endMatchVe.team1.team_logo || defImg1} /></div>
         <b>{endMatchVe.team1.score}</b>
       </div>
       <div className={styles.teamName}>
         <p>{endMatchVe.team1.team_name}</p>
       </div>
       <div className={styles.aBloodIcon}>
-        {endMatchVe.team1.other_more_attr.s_first_blood > 0 ? <img src={firstBlood} /> : <span />}
-        {endMatchVe.team1.other_more_attr.is_ten_kills > 0 ? <img src={deckills} /> : <span />}
+        {endMatchVe.team1.other_more_attr.s_first_blood > 0 ? <Image src={firstBlood} /> : <span />}
+        {endMatchVe.team1.other_more_attr.is_ten_kills > 0 ? <Image src={deckills} /> : <span />}
       </div>
     </div>
     <div className={styles.center}>
@@ -66,15 +67,15 @@ function KotsuboneItem (props) {
     <div className={styles.last}>
       <div className={styles.topLogoIcon2}>
         <b className={styles.colorYellow}>{endMatchVe.team2.score}</b>
-        <div className={styles.logo}><img src={endMatchVe.team2.team_logo || defImg2} /></div>
-        <div className={styles.teamIcon}><img src={tianhui} /></div>
+        <div className={styles.logo}><Image src={endMatchVe.team2.team_logo || defImg2} /></div>
+        <div className={styles.teamIcon}><Image src={tianhui} /></div>
       </div>
       <div className={styles.teamName}>
         <p>{endMatchVe.team2.team_name}</p>
       </div>
       <div className={styles.aBloodIcon}>
-        {endMatchVe.team2.other_more_attr.is_ten_kills > 0 ? <img src={deckills} /> : <span />}
-        {endMatchVe.team2.other_more_attr.is_first_blood > 0 ? <img src={firstBlood} /> : <span />}
+        {endMatchVe.team2.other_more_attr.is_ten_kills > 0 ? <Image src={deckills} /> : <span />}
+        {endMatchVe.team2.other_more_attr.is_first_blood > 0 ? <Image src={firstBlood} /> : <span />}
       </div>
     </div>
   </div>

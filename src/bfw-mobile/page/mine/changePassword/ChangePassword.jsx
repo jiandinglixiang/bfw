@@ -1,11 +1,12 @@
 import React from 'react'
 import styles from './index.module.scss'
 import nevBar from '../../../assets/nav_back.png'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function ChangePassword () {
   return <div>
     <div className={styles.heardNav}>
-      <img src={nevBar} />
+      <Image src={nevBar} />
       <div>修改密码</div>
       <div>保存</div>
     </div>

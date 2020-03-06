@@ -14,6 +14,7 @@ import { scoreListReduce } from '../../../../bfw-web/page/AnalysisData/component
 import { gameRound } from '../../home/MatchItem/MatchItem.jsx'
 import CsGoNowStatus from '../CsGoNowStatus/CsGoNowStatus.jsx'
 import BPList from '../BPList/BPList.jsx'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 export function GameOverOrNotStarted (props) {
   const propsVE = diffCatch(props)({
@@ -35,7 +36,7 @@ export function GameOverOrNotStarted (props) {
   return <div className={styles.content}>
     <div className={styles.first}>
       <div className={styles.topLogoIcon1}>
-        <div className={styles.logo}><img src={propsVE.team1.logo} /></div>
+        <div className={styles.logo}><Image src={propsVE.team1.logo} /></div>
       </div>
       <div className={styles.teamName}>
         <p>{propsVE.team1.name}</p>
@@ -64,7 +65,7 @@ export function GameOverOrNotStarted (props) {
     }
     <div className={styles.last}>
       <div className={styles.topLogoIcon2}>
-        <div className={styles.logo}><img src={propsVE.team2.logo} /></div>
+        <div className={styles.logo}><Image src={propsVE.team2.logo} /></div>
       </div>
       <div className={styles.teamName}>
         <p>{propsVE.team2.name}</p>
@@ -76,12 +77,12 @@ export function GameOverOrNotStarted (props) {
 function iconList ({ gameId, sente1, sente2 }) {
   const iconList = {}
   iconList.team1 = <div className={styles.aBloodIcon}>
-    {sente1[0] ? <img src={firstBlood} /> : <span />}
-    {sente1[1] ? <img src={gameId === 5 ? deckills : fiveKills} /> : <span />}
+    {sente1[0] ? <Image src={firstBlood} /> : <span />}
+    {sente1[1] ? <Image src={gameId === 5 ? deckills : fiveKills} /> : <span />}
   </div>
   iconList.team2 = <div className={styles.aBloodIcon}>
-    {sente2[0] ? <img src={gameId === 5 ? deckills : fiveKills} /> : <span />}
-    {sente2[1] ? <img src={firstBlood} /> : <span />}
+    {sente2[0] ? <Image src={gameId === 5 ? deckills : fiveKills} /> : <span />}
+    {sente2[1] ? <Image src={firstBlood} /> : <span />}
   </div>
   return iconList
 }
@@ -146,10 +147,10 @@ function GameUnderway (props) {
     <div className={styles.first}>
       <div className={styles.topLogoIcon1}>
         {
-          teamFaction.team1 && <div className={styles.teamIcon}><img src={teamFaction.team1} /></div>
+          teamFaction.team1 && <div className={styles.teamIcon}><Image src={teamFaction.team1} /></div>
         }
         <div className={styles.logo}>
-          <img src={propsVE.team1.logo} />
+          <Image src={propsVE.team1.logo} />
         </div>
         <b style={tameScoreColor.team1}>{propsVE.team1.score}</b>
       </div>
@@ -180,10 +181,10 @@ function GameUnderway (props) {
       <div className={styles.topLogoIcon2}>
         <b style={tameScoreColor.team2}>{propsVE.team2.score}</b>
         <div className={styles.logo}>
-          <img src={propsVE.team2.logo} />
+          <Image src={propsVE.team2.logo} />
         </div>
         {
-          teamFaction.team2 && <div className={styles.teamIcon}><img src={teamFaction.team2} /></div>
+          teamFaction.team2 && <div className={styles.teamIcon}><Image src={teamFaction.team2} /></div>
         }
       </div>
       <div className={styles.teamName}>

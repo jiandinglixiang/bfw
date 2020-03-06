@@ -4,6 +4,7 @@ import liveBtnOn from '../../../assets/btn_live_on.png'
 import { Icon, Modal } from 'antd-mobile'
 import styles from './index.module.scss'
 import { diffCatch } from '../../../../tool/util.js'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function onPress (value) {
   window.open(value.live_h5_url || value.live_url, '_blank')
@@ -11,7 +12,7 @@ function onPress (value) {
 
 // {
 //   liveList.length ? <ModalButton liveList={liveList} />
-//     : <img src={liveBtnOff} width='80' height='30' />
+//     : <Image src={liveBtnOff} width='80' height='30' />
 // }
 function LiveButton (props) {
   const [show, changShow] = useState(true)
@@ -20,7 +21,7 @@ function LiveButton (props) {
   })
   return (
     <div style={{ textAlign: 'center' }}>
-      <img onClick={() => changShow(!show)} src={liveBtnOn} width='80' height='30' />
+      <Image onClick={() => changShow(!show)} src={liveBtnOn} width='80' height='30' />
       <Modal
         visible={show}
         transparent

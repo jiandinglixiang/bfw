@@ -8,16 +8,17 @@ import tianhui from '../../../assets/tianhui.png'
 import yemo from '../../../assets/yemo.png'
 import reateam from '../../../assets/reateam.png'
 import blueteam from '../../../assets/blueteam.png'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 export function TeamSing (props) {
   // 标题
   const { sing, logo, name } = props
   return <div className={style.teamSing}>
     <div>
-      <img src={sing} />
+      <Image src={sing} />
     </div>
     <div>
-      <img src={logo} />
+      <Image src={logo} />
       <p>{name}</p>
     </div>
   </div>
@@ -54,9 +55,9 @@ function MemberList (props) {
   return <div className={style.oneMember}>
     <div>
       <div className={big}>
-        {value.logo ? <img src={value.logo} /> : <span />}
-        <img src={value.hero_logo || (blueTeam ? def2 : def1)} />
-        <img src={exch} onClick={() => setBig(big ? '' : style.twoBig)} />
+        {value.logo ? <Image src={value.logo} /> : <span />}
+        <Image src={value.hero_logo || (blueTeam ? def2 : def1)} />
+        <Image src={exch} onClick={() => setBig(big ? '' : style.twoBig)} />
       </div>
       <p>{value.name}</p>
     </div>
@@ -96,7 +97,7 @@ function MemberList (props) {
           {
             item.map((val, index) => {
               if (val.img) {
-                return <img key={index} src={val.img} />
+                return <Image key={index} src={val.img} />
               }
               return <span key={index} />
             })
@@ -132,9 +133,9 @@ function MemberListLol (props) {
   return <div className={style.oneMember}>
     <div>
       <div className={big}>
-        {propsVE.value.logo ? <img src={propsVE.value.logo} /> : <span />}
-        <img src={propsVE.value.hero_logo || (propsVE.blueTeam ? def2 : def1)} />
-        <img src={exch} onClick={() => setBig(big ? '' : style.twoBig)} />
+        {propsVE.value.logo ? <Image src={propsVE.value.logo} /> : <span />}
+        <Image src={propsVE.value.hero_logo || (propsVE.blueTeam ? def2 : def1)} />
+        <Image src={exch} onClick={() => setBig(big ? '' : style.twoBig)} />
       </div>
       <p>{propsVE.value.name}</p>
     </div>
@@ -159,7 +160,7 @@ function MemberListLol (props) {
           {
             item.map((val, index) => {
               if (val.img) {
-                return <img key={index} src={val.img} />
+                return <Image key={index} src={val.img} />
               }
               return <span key={index} />
             })

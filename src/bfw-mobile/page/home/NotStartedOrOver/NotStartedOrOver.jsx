@@ -8,6 +8,7 @@ import defImg2 from '../../../assets/default_teamblue_40.png'
 import TryCatch from '../../../components/TryCatch/TryCatch.jsx'
 import { routerDetails } from '../Underway/Underway.jsx'
 import { useHistory } from 'react-router-dom'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function ScheduleBody (props) {
   const { gameData = {}, isOver = false } = props
@@ -39,13 +40,13 @@ function ScheduleBody (props) {
     <div className={styles.teamPvp}>
       <div className={styles.leftName}>
         <p>{gameData.host_team_name}</p>
-        <img src={gameData.host_team_logo || defImg1} />
+        <Image src={gameData.host_team_logo || defImg1} />
       </div>
       <div className={styles.center}>
         {pvpStatus}
       </div>
       <div className={styles.rightName}>
-        <img src={gameData.guest_team_logo || defImg2} />
+        <Image src={gameData.guest_team_logo || defImg2} />
         <p>{gameData.guest_team_name}</p>
       </div>
     </div>

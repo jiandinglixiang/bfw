@@ -11,7 +11,10 @@ import TabsContainer from './TabsContainer/TabsContainer'
 import MatchContainer from './MatchContainer/MatchContainer'
 import { PropTypes } from '../../../tool/util'
 import TryCatch from '../../components/TryCatch/TryCatch.jsx'
+import { Image } from '../../components/BasicsHtml/BasicsHtml.jsx'
+
 export const fixedTopClass = styles.fixedTop
+
 function Home (props) {
   const { notice, bannerList, dispatch, } = props
   const { gameId } = useParams()
@@ -27,7 +30,7 @@ function Home (props) {
     <div className={styles.fixedTop}>
       <div>
         <HeadBar
-          title={<img src={logo} height='16' alt='logo' />}
+          title={<Image src={logo} height='16' alt='logo' />}
           hideBack
         />
         <NoticeBar

@@ -1,10 +1,14 @@
 import React, { useMemo, useState } from 'react'
 import { PropTypes } from '../../../tool/util.js'
 
+function filterBool (x) {
+  return !!x
+}
+
 function useMemo2 (className) {
   return useMemo(function () {
     if (className && Array.isArray(className)) {
-      return className.filter(v => !!v).join(' ')
+      return className.filter(filterBool).join(' ')
     }
     return className
   }, [className])
@@ -12,6 +16,9 @@ function useMemo2 (className) {
 
 export function Divs (props = {}) {
   const className = useMemo2(props.className)
+  if (props.hide) {
+    return null
+  }
   return (
     <div {...props} className={className}>
       {props.children}
@@ -21,6 +28,9 @@ export function Divs (props = {}) {
 
 export function Pars (props = {}) {
   const className = useMemo2(props.className)
+  if (props.hide) {
+    return null
+  }
   return (
     <p {...props} className={className}>
       {props.children}
@@ -30,6 +40,9 @@ export function Pars (props = {}) {
 
 export function Text (props = {}) {
   const className = useMemo2(props.className)
+  if (props.hide) {
+    return null
+  }
   return (
     <span {...props} className={className}>
       {props.children}
@@ -40,15 +53,23 @@ export function Text (props = {}) {
 export function Image (props = {}) {
   const className = useMemo2(props.className)
   const isArray = Array.isArray(props.src)
-  const [src, updateSrc] = useState(isArray ? props.src[0] : props.src)
+  const [src, updateSrc] = useState(isArray ? props.src.filter(filterBool) : props.src)
+  if (props.hide) {
+    return null
+  }
   return (
     <img
       {...props}
       className={className}
       src={src}
+      alt=''
       onError={() => {
-        if (isArray && props.src[1]) {
-          updateSrc(props.src[1])
+        // 如果发生错误显示图片数组SRC之后的
+        if (isArray) {
+          const index = props.src.indexOf(src)
+          if (index !== -1 && props.src[index + 1]) {
+            updateSrc(props.src[index + 1])
+          }
         }
       }}
     />
@@ -56,6 +77,7 @@ export function Image (props = {}) {
 }
 
 Divs.propTypes = {
+  hide: PropTypes.bool,
   children: PropTypes.any,
   className: PropTypes.oneOfType([
     PropTypes.string,
@@ -64,6 +86,7 @@ Divs.propTypes = {
 }
 Pars.propTypes = {
   children: PropTypes.any,
+  hide: PropTypes.bool,
   className: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.array
@@ -71,6 +94,7 @@ Pars.propTypes = {
 }
 Text.propTypes = {
   children: PropTypes.any,
+  hide: PropTypes.bool,
   className: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.array
@@ -78,6 +102,7 @@ Text.propTypes = {
 }
 Image.propTypes = {
   children: PropTypes.any,
+  hide: PropTypes.bool,
   className: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.array

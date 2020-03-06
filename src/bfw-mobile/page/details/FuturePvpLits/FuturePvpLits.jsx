@@ -6,13 +6,14 @@ import { TameNameLogo } from '../HistoryPvpList/HistoryPvpList'
 import styles from '../PvpList/index.module.scss'
 import { connect } from 'react-redux'
 import { formatDate2, objCatch, PropTypes } from '../../../../tool/util'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function initList (value, index) {
   const confrontation = objCatch(value)('confrontation')
 
   return <li className={styles.bodyItem} key={index}>
     <div>
-      <img src={confrontation.icon || def} alt='' />
+      <Image src={confrontation.icon || def} alt='' />
       <p>{confrontation.name}</p>
     </div>
     <div className={styles.longRow}>

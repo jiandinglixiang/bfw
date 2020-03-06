@@ -4,6 +4,7 @@ import styles from './index.module.scss'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
 import { diffCatch } from '../../../../tool/util.js'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function BeforeData (props) {
   const propsVe = diffCatch(props)({
@@ -31,16 +32,16 @@ function BeforeData (props) {
       </div>
       <div className={styles.rowList}>
         <div>
-          <img src={propsVe.matchList.host_team_logo || defImg1} />
+          <Image src={propsVe.matchList.host_team_logo || defImg1} />
           <p>{propsVe.matchList.host_team_name}</p>
         </div>
         <div>
-          <img src={info1Ve.team_natural_info.icon || defImg1} />
+          <Image src={info1Ve.team_natural_info.icon || defImg1} />
           <p className={styles.gray}>---%</p>
           <p>{info1Ve.team_natural_info.full_name || '--'}</p>
         </div>
         <div>
-          <img src={info1Ve.team_restrain_info.icon || defImg1} />
+          <Image src={info1Ve.team_restrain_info.icon || defImg1} />
           <p className={styles.green}>---%</p>
           <p>{info1Ve.team_restrain_info.name || '--'}</p>
         </div>
@@ -52,16 +53,16 @@ function BeforeData (props) {
       </div>
       <div className={styles.rowList}>
         <div>
-          <img src={propsVe.matchList.guest_team_logo || defImg2} />
+          <Image src={propsVe.matchList.guest_team_logo || defImg2} />
           <p>{propsVe.matchList.guest_team_name}</p>
         </div>
         <div>
-          <img src={info2Ve.team_natural_info.icon || defImg1} />
+          <Image src={info2Ve.team_natural_info.icon || defImg1} />
           <p className={styles.yellow}>---%</p>
           <p>{info2Ve.team_natural_info.full_name || '--'}</p>
         </div>
         <div>
-          <img src={info2Ve.team_restrain_info.icon || defImg1} />
+          <Image src={info2Ve.team_restrain_info.icon || defImg1} />
           <p className={styles.green}>---%</p>
           <p>{info2Ve.team_restrain_info.name || '--'}</p>
         </div>

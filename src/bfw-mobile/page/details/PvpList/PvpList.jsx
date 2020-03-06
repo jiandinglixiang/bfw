@@ -4,6 +4,7 @@ import styles from './index.module.scss'
 import def from '../../../assets/default_team_60.png'
 import { connect } from 'react-redux'
 import { diffCatch, formatDate, useSearch } from '../../../../tool/util'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function ListItem (props) {
   const [search] = useSearch()
@@ -24,7 +25,7 @@ function ListItem (props) {
   let winScore = <div><span>暂无</span></div>
   if (valueVe.team1_score * 1 > valueVe.team2_score * 1) {
     winLogo = <div>
-      <img src={valueVe.team1_info.icon || def} alt='' />
+      <Image src={valueVe.team1_info.icon || def} alt='' />
       <p>{valueVe.team1_info.name}</p>
     </div>
     winScore = <div>
@@ -36,7 +37,7 @@ function ListItem (props) {
     </div>
   } else if (valueVe.team2_score * 1 > valueVe.team1_score * 1) {
     winLogo = <div>
-      <img src={valueVe.team2_info.icon || def} alt='' />
+      <Image src={valueVe.team2_info.icon || def} alt='' />
       <p>{valueVe.team2_info.name}</p>
     </div>
     winScore = <div>

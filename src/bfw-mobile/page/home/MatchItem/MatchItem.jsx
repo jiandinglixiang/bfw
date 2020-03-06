@@ -4,6 +4,7 @@ import React, { useMemo } from 'react'
 import defLogo from '../../../assets/default_team_60.png'
 import { formatDate2, initOddAndLogoMobile, inning, PropTypes, } from '../../../../tool/util'
 import { scoreListReduce } from '../../../../bfw-web/page/AnalysisData/components/TameNowStatus'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 export function gameRound (scoreList, roundTotal) {
   try {
@@ -66,7 +67,7 @@ function MatchItem (props) {
       onClick={() => routerDetails(data, history)}>
       <div className={styles.matchState}>
         <div className={styles.leftName}>
-          <img src={data.icon || defLogo} alt='' />
+          <Image src={data.icon || defLogo} alt='' />
           <p>{data.game_name || '加载中...'}</p>
         </div>
         <div className={styles.centerData}>
@@ -86,7 +87,7 @@ function MatchItem (props) {
           className={styles.tameName}
           style={{ textAlign: 'right' }}>{tameData[0].name}</p>
         <div className={styles.logOdds}>
-          <img src={tameData[0].logo || defLogo} alt='' />
+          <Image src={tameData[0].logo || defLogo} alt='' />
           <p className={styles.odds}>{tameData[0].odds || '-'}</p>
         </div>
         <div className={styles.centerBody}>
@@ -96,7 +97,7 @@ function MatchItem (props) {
           <p className={styles.odds}>指数</p>
         </div>
         <div className={styles.logOdds}>
-          <img src={tameData[1].logo || defLogo} alt='' />
+          <Image src={tameData[1].logo || defLogo} alt='' />
           <p className={styles.odds}>{tameData[1].odds || '-'}</p>
         </div>
         <p className={styles.tameName}>{tameData[1].name}</p>

@@ -6,6 +6,7 @@ import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
 import { useHistory } from 'react-router-dom'
 import { gameRound } from '../MatchItem/MatchItem.jsx'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 export function routerDetails (data, history) {
   const query = {
@@ -29,7 +30,7 @@ function scoreListReduce (scoreList = []) {
 function LeftTime ({ gameData = {} }) {
   const timeTxt = formatDate(gameData.game_start_time, 'HH:mm')
   return <p className={styles.leftTime}>
-    <img src={strating} />
+    <Image src={strating} />
     <span>{gameData.match_rules}</span>
     <span>{timeTxt}</span>
   </p>
@@ -43,7 +44,7 @@ function FullScore ({ scoreList = [] }) {
 function HeroList ({ arrIcon = [] }) {
   return [0, 1, 2, 3, 4].map(index => {
     if (arrIcon[index] && arrIcon[index].hero_logo) {
-      return <img key={index} src={arrIcon[index].hero_logo} />
+      return <Image key={index} src={arrIcon[index].hero_logo} />
     }
     return <span key={index} />
   })
@@ -57,7 +58,7 @@ function UnderwayDota ({ gameData }) {
     const nowInnings = gameRound(gameData.score_list, gameData.round_total)
     const timeTxt = parseInt(gameData.poor_economy.time / 60)
     return timeTxt ? `${nowInnings} ${timeTxt}’` : nowInnings
-  }, [gameData.round, gameData.poor_economy.time])
+  }, [gameData])
 
   const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
 
@@ -79,14 +80,14 @@ function UnderwayDota ({ gameData }) {
         </div>
       </div>
       <div className={styles.teamLogo}>
-        <img src={gameData.host_team_logo || defImg1} />
+        <Image src={gameData.host_team_logo || defImg1} />
       </div>
       <div className={styles.matchScore}>
         <FullScore scoreList={gameData.score_list} />
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}>
-        <img src={gameData.guest_team_logo || defImg2} />
+        <Image src={gameData.guest_team_logo || defImg2} />
       </div>
       <div className={styles.nameAndKill2}>
         <p>{gameData.guest_team_name}</p>
@@ -146,14 +147,14 @@ function UnderwayCsGo ({ gameData }) {
         </div>
       </div>
       <div className={styles.teamLogo}>
-        <img src={gameData.host_team_logo || defImg1} />
+        <Image src={gameData.host_team_logo || defImg1} />
       </div>
       <div className={styles.matchScore}>
         <p><span>1</span><span>-</span><span>1</span></p>
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}>
-        <img src={gameData.guest_team_logo || defImg2} />
+        <Image src={gameData.guest_team_logo || defImg2} />
       </div>
       <div className={styles.nameAndKill2}>
         <p>{gameData.guest_team_name}</p>
@@ -211,14 +212,14 @@ function UnderwayLol ({ gameData }) {
         </div>
       </div>
       <div className={styles.teamLogo}>
-        <img src={gameData.host_team_logo || defImg1} />
+        <Image src={gameData.host_team_logo || defImg1} />
       </div>
       <div className={styles.matchScore}>
         <FullScore scoreList={gameData.score_list} />
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}>
-        <img src={gameData.guest_team_logo || defImg2} />
+        <Image src={gameData.guest_team_logo || defImg2} />
       </div>
       <div className={styles.nameAndKill2}>
         <p>{gameData.guest_team_name}</p>
@@ -258,12 +259,12 @@ function UnderwayKoa ({ gameData }) {
     </div>
     <div className={styles.formation}>
       <p className={styles.teamName1}>{gameData.host_team_name}</p>
-      <div className={styles.teamLogo}><img src={gameData.host_team_logo || defImg1} /></div>
+      <div className={styles.teamLogo}><Image src={gameData.host_team_logo || defImg1} /></div>
       <div className={styles.matchScore}>
         <FullScore scoreList={gameData.score_list} />
         <p>全局比分</p>
       </div>
-      <div className={styles.teamLogo}><img src={gameData.guest_team_logo || defImg1} /></div>
+      <div className={styles.teamLogo}><Image src={gameData.guest_team_logo || defImg1} /></div>
       <p className={styles.teamName2}>{gameData.guest_team_name}</p>
     </div>
   </div>

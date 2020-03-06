@@ -39,15 +39,16 @@ export function globalDataInit (InitialValue) {
 
   return function () {
     const value = useState(0)
+    const func = value[1]
     useEffect(function () {
       const size = dispatch.size
-      dispatch.set(dispatch.size, value[1])
+      dispatch.set(dispatch.size, func)
       console.log('加载', size)
       return function () {
         dispatch.delete(size)
         console.log('卸载', size)
       }
-    }, [value[1]])
+    }, [func])
     // 返回值/修改函数/节流修改函数（100毫秒）
     return {
       state,

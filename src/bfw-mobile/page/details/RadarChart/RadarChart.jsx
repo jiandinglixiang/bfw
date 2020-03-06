@@ -4,6 +4,7 @@ import def2 from '../../../assets/default_teamblue_40.png'
 import echarts from 'echarts'
 import styles from './index.module.scss'
 import { diffCatch } from '../../../../tool/util.js'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function RadarChart (props = {}) {
   const propsVE = diffCatch(props)({
@@ -163,7 +164,7 @@ function RadarChart (props = {}) {
   return <div className={styles.container}>
     <div className={styles.left}>
       <div>
-        <img src={propsVE.endMatch.team1.team_logo} />
+        <Image src={propsVE.endMatch.team1.team_logo} />
         <p>{propsVE.endMatch.team1.team_name}</p>
       </div>
       <p>总等级:{propsVE.endMatch.battle_data.team1.level}</p>
@@ -180,7 +181,7 @@ function RadarChart (props = {}) {
     <div className={styles.right}>
       <div>
         <p dir='rtl'>{propsVE.endMatch.team2.team_name}</p>
-        <img src={propsVE.endMatch.team2.team_logo} />
+        <Image src={propsVE.endMatch.team2.team_logo} />
       </div>
       <p>{propsVE.endMatch.battle_data.team2.level}:总等级 </p>
       <p>{propsVE.endMatch.battle_data.team2.kills}:总击杀 </p>

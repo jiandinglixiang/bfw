@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './index.module.scss'
 import { diffCatch } from '../../../../tool/util.js'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function BPList (props) {
   const propsVe = diffCatch(props)({
@@ -23,7 +24,7 @@ function BPList (props) {
         {
           !propsVe.team1.length ? noneAny : propsVe.team1.map(function (value, index) {
             if (value[key]) {
-              return <img key={index} src={value[key]} />
+              return <Image key={index} src={value[key]} />
             }
             return <span key={index} />
           })
@@ -34,7 +35,7 @@ function BPList (props) {
         {
           !propsVe.team2.length ? noneAny : propsVe.team2.map(function (value, index) {
             if (value[key]) {
-              return <img key={index} src={value[key]} />
+              return <Image key={index} src={value[key]} />
             }
             return <span key={index} />
           })

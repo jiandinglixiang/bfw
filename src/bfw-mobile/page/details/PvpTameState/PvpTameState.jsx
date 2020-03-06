@@ -9,6 +9,7 @@ import def from '../../../assets/default_team_60.png'
 import { connect } from 'react-redux'
 import { gameRound } from '../../home/MatchItem/MatchItem'
 import { scoreListReduce } from '../../../../bfw-web/page/AnalysisData/components/TameNowStatus'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 const alert = Modal.alert
 const alertStyle = {
@@ -22,7 +23,7 @@ function liveClick (liveList) {
     const alertCopy = alert('',
       <div className={styles.alertTitle}>
         <span>请选择直播源</span>
-        <img src={closeIcon} onClick={() => alertCopy.close()} alt='' />
+        <Image src={closeIcon} onClick={() => alertCopy.close()} alt='' />
       </div>,
       liveList.map(value => {
         return {
@@ -76,13 +77,13 @@ function PvpTameState ({ gameId, matchList, liveList }) {
       </div>
       <div className={styles.centerTameName}>
         <p className={styles.name} style={{ textAlign: 'right' }}>{matchList.host_team_name}</p>
-        <img className={styles.logo} src={matchList.host_team_logo || def} alt='' />
+        <Image className={styles.logo} src={matchList.host_team_logo || def} alt='' />
         <div className={styles.pvpScore}>
           <p>{scoreArr[0]}</p>
           <p>{dis}</p>
           <p>{scoreArr[1]}</p>
         </div>
-        <img className={styles.logo} src={matchList.guest_team_logo || def} alt='' />
+        <Image className={styles.logo} src={matchList.guest_team_logo || def} alt='' />
         <p className={styles.name}>{matchList.guest_team_name}</p>
       </div>
       <p className={styles.bottomDate}>
@@ -92,10 +93,10 @@ function PvpTameState ({ gameId, matchList, liveList }) {
       </p>
       {
         liveList.length
-          ? <img
+          ? <Image
             onClick={() => liveClick(liveList)} src={liveBtnOn} width='80' height='30'
             alt='' />
-          : <img src={liveBtnOff} width='80' height='30' alt='' />
+          : <Image src={liveBtnOff} width='80' height='30' alt='' />
       }
     </div>
   } catch (e) {

@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import tttt from '../../../assets/terrorists.png'
 import ctct from '../../../assets/counter.png'
 import { diffCatch, PropTypes, toBigNumber } from '../../../../tool/util.js'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function backColor (num) {
   if (num > 20) {
@@ -148,8 +149,8 @@ function MatchTable ({ team2Table, team1Table }) {
                     }} />
                 </td>
                 <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
-                <td><img src={valueVE.weapon_logo} /></td>
-                <td><img src={valueVE.equipment_logo} /></td>
+                <td><Image src={valueVE.weapon_logo} /></td>
+                <td><Image src={valueVE.equipment_logo} /></td>
                 <td><p className={styles.bigTxt}>{valueVE.money}</p></td>
                 <td><p>{valueVE.damage_pr_round}</p></td>
               </tr>
@@ -190,8 +191,8 @@ function MatchTable ({ team2Table, team1Table }) {
                     }} />
                 </td>
                 <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
-                <td><img src={valueVE.weapon_logo} /></td>
-                <td><img src={valueVE.equipment_logo} /></td>
+                <td><Image src={valueVE.weapon_logo} /></td>
+                <td><Image src={valueVE.equipment_logo} /></td>
                 <td><p className={styles.bigTxt}>{valueVE.money}</p></td>
                 <td><p>{valueVE.damage_pr_round}</p></td>
               </tr>
@@ -322,14 +323,14 @@ function CsGoMapImg (props) {
     realHistory.second.team1.logo = propsVE.matchList.host_team_logo
     realHistory.second.team2.logo = propsVE.matchList.guest_team_logo
   }
-  first.map(function (val) {
+  first.forEach(function (val) {
     if (val.team_role === realHistory.first.team1.role) {
       realHistory.first.team1.icon.push(val.logo)
     } else {
       realHistory.first.team2.icon.push(val.logo)
     }
   })
-  second.map(function (val) {
+  second.forEach(function (val) {
     if (val.team_role === realHistory.second.team2.role) {
       realHistory.second.team2.icon.push(val.logo)
     } else {
@@ -348,32 +349,34 @@ function CsGoMapImg (props) {
     <div style={{ height: '10px' }} />
     <div className={styles.operatingRecord}>
       <div className={styles.topTitle}>
-        <img src={realHistory.first.team1.role === 'CT' ? ctct : tttt} />
+        <Image src={realHistory.first.team1.role === 'CT' ? ctct : tttt} />
         <b>{realHistory.first.team1.score}</b>
         <p>上半场</p>
         <b>{realHistory.first.team2.score}</b>
-        <img src={realHistory.first.team2.role === 'T' ? tttt : ctct} />
+        <Image src={realHistory.first.team2.role === 'T' ? tttt : ctct} />
       </div>
       <div className={styles.teamRed}>
-        <img src={realHistory.first.team1.logo} />
+        <Image src={realHistory.first.team1.logo} />
         <div className={styles.hodlRight}>
           {
             realHistory.first.team1.icon.map((val, index) => {
               if (val) {
-                return <img src={val} key={index} />
+                return <Image src={val} key={index} />
               }
+              return null
             })
           }
         </div>
       </div>
       <div className={styles.teamBlue}>
-        <img src={realHistory.first.team2.logo} />
+        <Image src={realHistory.first.team2.logo} />
         <div>
           {
             realHistory.first.team2.icon.map((val, index) => {
               if (val) {
-                return <img src={val} key={index} />
+                return <Image src={val} key={index} />
               }
+              return null
             })
           }
         </div>
@@ -381,32 +384,34 @@ function CsGoMapImg (props) {
     </div>
     <div className={styles.operatingRecord}>
       <div className={styles.topTitle}>
-        <img src={realHistory.second.team1.role === 'T' ? tttt : ctct} />
+        <Image src={realHistory.second.team1.role === 'T' ? tttt : ctct} />
         <b>{realHistory.second.team1.score}</b>
         <p>下半场</p>
         <b>{realHistory.second.team2.score}</b>
-        <img src={realHistory.second.team2.role === 'CT' ? ctct : tttt} />
+        <Image src={realHistory.second.team2.role === 'CT' ? ctct : tttt} />
       </div>
       <div className={styles.teamRed}>
-        <img src={realHistory.second.team1.logo} />
+        <Image src={realHistory.second.team1.logo} />
         <div className={styles.hodlRight}>
           {
             realHistory.second.team1.icon.map((val, index) => {
               if (val) {
-                return <img src={val} key={index} />
+                return <Image src={val} key={index} />
               }
+              return null
             })
           }
         </div>
       </div>
       <div className={styles.teamBlue}>
-        <img src={realHistory.second.team2.logo} />
+        <Image src={realHistory.second.team2.logo} />
         <div>
           {
             realHistory.second.team2.icon.map((val, index) => {
               if (val) {
-                return <img src={val} key={index} />
+                return <Image src={val} key={index} />
               }
+              return null
             })
           }
         </div>

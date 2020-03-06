@@ -5,10 +5,11 @@ import def from '../../../assets/default_team_60.png'
 import { diffCatch, formatDate, PropTypes, useSearch } from '../../../../tool/util'
 import styles2 from './index.module.scss'
 import { connect } from 'react-redux'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 export function TameNameLogo ({ name, logo, mode }) {
   return <div className={`${styles2.tameNameLogo} ${mode ? styles2.background2 : ''}`}>
-    <img src={logo || def} alt='' />
+    <Image src={logo || def} alt='' />
     <p>{name || '加载中...'}</p>
   </div>
 }
@@ -38,7 +39,7 @@ function ListItem (props) {
     return (
       <li>
         <div>
-          <img src={valueVe.confrontation.icon || def} alt='' />
+          <Image src={valueVe.confrontation.icon || def} alt='' />
           <p>{valueVe.confrontation.name}</p>
         </div>
         <div className={styles.longRow}>
@@ -46,7 +47,7 @@ function ListItem (props) {
           <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
         </div>
         <div>
-          <img src={valueVe.win.icon || def} alt='' />
+          <Image src={valueVe.win.icon || def} alt='' />
           <p>{valueVe.win.name}</p>
         </div>
       </li>
@@ -56,7 +57,7 @@ function ListItem (props) {
     return (
       <li>
         <div>
-          <img src={valueVe.confrontation.icon || def} alt='' />
+          <Image src={valueVe.confrontation.icon || def} alt='' />
           <p>{valueVe.confrontation.name}</p>
         </div>
         <div className={styles.longRow}>
@@ -67,7 +68,7 @@ function ListItem (props) {
           {scoreE}
         </div>
         <div>
-          <img src={valueVe.win.icon || def} alt='' />
+          <Image src={valueVe.win.icon || def} alt='' />
           <p>{valueVe.win.name}</p>
         </div>
       </li>
@@ -76,7 +77,7 @@ function ListItem (props) {
   const time = parseInt(valueVe.game_duration_time / 60)
   return <li className={styles.bodyItem}>
     <div>
-      <img src={valueVe.confrontation.icon || def} alt='' />
+      <Image src={valueVe.confrontation.icon || def} alt='' />
       <p>{valueVe.confrontation.name}</p>
     </div>
     <div className={styles.longRow}>
@@ -87,7 +88,7 @@ function ListItem (props) {
       {time}'{valueVe.game_duration_time - (time ? time * 60 : 0)}
     </div>
     <div>
-      <img src={valueVe.win.icon || def} alt='' />
+      <Image src={valueVe.win.icon || def} alt='' />
       <p>{valueVe.win.name}</p>
     </div>
     <div>

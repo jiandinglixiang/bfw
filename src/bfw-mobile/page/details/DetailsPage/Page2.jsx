@@ -32,7 +32,7 @@ function Page2 (props) {
     http.getMatchData(propsVE.smid, scoreListLen).then((value) => {
       store.dispatch(setMatchResult({ matchResult: value }))
     })
-  }, [propsVE.smid])
+  }, [propsVE.smid, scoreListLen])
 
   const tipTile = ['对战实时战队数据', '对战实时成员数据']
   if (propsVE.matchList.game_type_id === 3) {

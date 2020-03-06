@@ -6,6 +6,7 @@ import styles from '../PvpList/index.module.scss'
 import def from '../../../assets/default_team_60.png'
 import { PropTypes } from '../../../../tool/util'
 import { connect } from 'react-redux'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function initList (value, index) {
   let name = ''
@@ -18,7 +19,7 @@ function initList (value, index) {
   }
   return <li className={styles.bodyItem} key={index} style={{ height: '45px' }}>
     <div>
-      <img src={value.photo || def} alt='' />
+      <Image src={value.photo || def} alt='' />
     </div>
     <div className={styles.longRow}>
       <p className={styles.leftText}>{name}</p>

@@ -6,6 +6,7 @@ import killsix from '../../../assets/sixtgun.png'
 import killone from '../../../assets/firstgun.png'
 import counter from '../../../assets/counter.png'
 import terrorists from '../../../assets/terrorists.png'
+import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function CsGoNowStatus (props) {
   const propsVE = diffCatch(props)({
@@ -36,9 +37,9 @@ function CsGoNowStatus (props) {
     <div className={styles.flanks1}>
       {!propsVE.isBottomBoth && [
         <div className={styles.senteIcon} key='0'>
-          {propsVE.team1.sente[0] ? <img src={killsix} /> : <span />}
-          {propsVE.team1.sente[1] ? <img src={kill5} /> : <span />}
-          {propsVE.team1.sente[2] ? <img src={killone} /> : <span />}
+          {propsVE.team1.sente[0] ? <Image src={killsix} /> : <span />}
+          {propsVE.team1.sente[1] ? <Image src={kill5} /> : <span />}
+          {propsVE.team1.sente[2] ? <Image src={killone} /> : <span />}
         </div>,
         <div className={styles.nowScore} key='1'>{propsVE.team1.sum}</div>
       ]}
@@ -58,7 +59,7 @@ function CsGoNowStatus (props) {
         {
           propsVE.team1.role.map((value, index) => {
             return <div key={index}>
-              <img src={value ? terrorists : counter} />
+              <Image src={value ? terrorists : counter} />
             </div>
           })
         }
@@ -86,7 +87,7 @@ function CsGoNowStatus (props) {
         {
           propsVE.team2.role.map((value, index) => {
             return <div key={index}>
-              <img src={value ? counter : terrorists} />
+              <Image src={value ? counter : terrorists} />
             </div>
           })
         }
@@ -94,9 +95,9 @@ function CsGoNowStatus (props) {
       {!propsVE.isBottomBoth && [
         <div className={styles.nowScore} key='1'>{propsVE.team2.sum}</div>,
         <div className={styles.senteIcon} key='0'>
-          {propsVE.team2.sente[0] ? <img src={killone} /> : <span />}
-          {propsVE.team2.sente[1] ? <img src={kill5} /> : <span />}
-          {propsVE.team2.sente[2] ? <img src={killsix} /> : <span />}
+          {propsVE.team2.sente[0] ? <Image src={killone} /> : <span />}
+          {propsVE.team2.sente[1] ? <Image src={kill5} /> : <span />}
+          {propsVE.team2.sente[2] ? <Image src={killsix} /> : <span />}
         </div>
       ]}
       {

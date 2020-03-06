@@ -11,7 +11,7 @@ function PieChart ({ value }) {
     const myChart = echarts.init(ref.current, '', {
       width: el.offsetWidth - (el.offsetWidth * 0.04) + 'px'
     })
-    value = diffCatch(value)({
+    const valueVE = diffCatch(value)({
       name: '',
       team1_count: '',
       team1_ratio: 0,
@@ -21,7 +21,7 @@ function PieChart ({ value }) {
     // 绘制图表
     myChart.setOption({
       title: {
-        text: value.name,
+        text: valueVE.name,
         padding: 0,
         textAlign: 'center',
         left: 'middle',
@@ -44,7 +44,7 @@ function PieChart ({ value }) {
           center: ['20%', '50%'],
           data: [
             {
-              value: 100 - value.team1_ratio,
+              value: 100 - valueVE.team1_ratio,
               labelLine: {
                 show: false
               },
@@ -55,7 +55,7 @@ function PieChart ({ value }) {
               }
             },
             {
-              value: value.team1_ratio,
+              value: valueVE.team1_ratio,
               labelLine: {
                 show: false
               },
@@ -73,7 +73,7 @@ function PieChart ({ value }) {
                 },
                 formatter: function (params) {
                   // console.log(params)
-                  return `{a|${params.value}%} \n{b|(${value.team1_count})}`
+                  return `{a|${params.value}%} \n{b|(${valueVE.team1_count})}`
                 },
                 position: 'center',
                 show: true,
@@ -100,7 +100,7 @@ function PieChart ({ value }) {
           center: ['80%', '50%'],
           data: [
             {
-              value: 100 - value.team2_ratio,
+              value: 100 - valueVE.team2_ratio,
               labelLine: {
                 show: false
               },
@@ -111,7 +111,7 @@ function PieChart ({ value }) {
               }
             },
             {
-              value: value.team2_ratio,
+              value: valueVE.team2_ratio,
               labelLine: {
                 show: false
               },
@@ -129,7 +129,7 @@ function PieChart ({ value }) {
                 },
                 formatter: function (params) {
                   // console.log(params)
-                  return `{a|${params.value}%} \n{b|(${value.team2_count})}`
+                  return `{a|${params.value}%} \n{b|(${valueVE.team2_count})}`
                 },
                 position: 'center',
                 show: true,

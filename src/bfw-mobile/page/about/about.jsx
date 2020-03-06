@@ -5,6 +5,7 @@ import nevBar from '../../assets/nav_back.png'
 import { PropTypes } from '../../../tool/util.js'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { Image } from '../../components/BasicsHtml/BasicsHtml.jsx'
 
 function About (props) {
   const { height } = props
@@ -16,10 +17,10 @@ function About (props) {
   }
   return <div>
     <div className={styles.heardNav}>
-      <img src={nevBar} onClick={() => history.goBack()} />
+      <Image src={nevBar} onClick={() => history.goBack()} />
       <div>关于我们</div>
     </div>
-    <img src={aboutImg} style={autoWidth} />
+    <Image src={aboutImg} style={autoWidth} />
   </div>
 }
 
