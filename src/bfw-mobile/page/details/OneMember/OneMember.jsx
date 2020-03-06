@@ -36,6 +36,7 @@ function MemberList (props) {
     value: {
       name: '--',
       hero_logo: '',
+      champion_img: '',
       logo: '',
       kills: 0,
       deaths: 0,
@@ -52,11 +53,12 @@ function MemberList (props) {
   const [big, setBig] = useState(style.twoBig)
   const item = value.item.length ? value.item : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
   const kda = isBoth && toBigNumber((value.kills + value.assists) / value.deaths * 3).toFormat(1)
+
   return <div className={style.oneMember}>
     <div>
       <div className={big}>
         {value.logo ? <Image src={value.logo} /> : <span />}
-        <Image src={value.hero_logo || (blueTeam ? def2 : def1)} />
+        <Image src={[value.champion_img, value.hero_logo, blueTeam ? def2 : def1]} />
         <Image src={exch} onClick={() => setBig(big ? '' : style.twoBig)} />
       </div>
       <p>{value.name}</p>

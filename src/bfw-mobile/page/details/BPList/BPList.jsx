@@ -35,8 +35,9 @@ function BPList (props) {
       <div>
         {
           !propsVe.team2.length ? noneAny : propsVe.team2.map(function (value, index) {
-            if (value[key]) {
-              return <Image key={index} src={value[key]} />
+            const srcc = value[key] || value.champion_img
+            if (srcc) {
+              return <Image key={index} src={srcc} />
             }
             return <span key={index} />
           })
