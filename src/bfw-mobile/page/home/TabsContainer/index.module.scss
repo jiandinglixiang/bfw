@@ -1,5 +1,6 @@
 .content {
   position: relative;
+  width: 100%;
   min-height: 60px;
 
   .showMenu {
@@ -183,6 +184,13 @@
       color: #E12727;
     }
   }
+}
+
+.fixedTop2 {
+  width: 100%;
+  max-width: 750px;
+  min-height: 60px;
+  background-color: #091329;
 }
 
 .tabOne {

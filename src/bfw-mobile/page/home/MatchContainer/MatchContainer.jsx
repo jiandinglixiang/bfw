@@ -5,29 +5,22 @@ import { connect } from 'react-redux'
 import { PropTypes } from '../../../../tool/util'
 import styles from './index.module.scss'
 import NotStartedOrOver from '../NotStartedOrOver/NotStartedOrOver.jsx'
-import { fixedTopClass } from '../home.jsx'
 
 let time = null
 let nodeList = [] // dom集合
-let topDistance = 0
 
 function scrollFun () {
-  // console.log(time, nodeList)
   if (!nodeList.length) {
     nodeList = document.querySelectorAll(`.${fixedTopContentClass}`)
   }
-  if (!topDistance) {
-    topDistance = document.querySelector(`.${fixedTopClass}`).clientHeight + 134
-  }
-  const scrollTop = (document.documentElement.scrollTop ||
-    document.body.scrollTop) + topDistance
+  const scrollTop = (document.documentElement.scrollTop || document.body.scrollTop) + 134
   let fixed = true
   for (let i = nodeList.length - 1; i >= 0; i--) {
     // console.log(scrollTop, nodeList[i].offsetTop)
     if (fixed && scrollTop > nodeList[i].offsetTop) {
       fixed = false
-      nodeList[i].children[0].style = `position: fixed;z-index: 2;top: ${topDistance}px;`
-    } else {
+      nodeList[i].children[0].style = 'position: fixed;z-index: 2;top: 134px;'
+    } else if (nodeList[i].children[0].style) {
       nodeList[i].children[0].style = ''
     }
   }
@@ -53,7 +46,6 @@ function MatchContainer ({
     }
     return function () {
       nodeList = [] // dom集合清空
-      topDistance = 0
       window.removeEventListener('scroll', onScroll)
     }
   }, [withOut, endMatchList, notStartMatchList, startMatchList])

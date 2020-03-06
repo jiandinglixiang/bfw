@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from 'react'
+import 'react-app-polyfill/stable'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import * as serviceWorker from './serviceWorker'

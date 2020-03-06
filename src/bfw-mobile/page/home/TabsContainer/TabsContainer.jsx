@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import styles from './index.module.scss'
 import menuDown from '../../../assets/menu_down.png'
@@ -35,6 +35,7 @@ function onSelect (setPickerTime, kindId, time) {
   setPickerTime(data.toDate())
 }
 
+let timeOut
 function TabsContainer (props) {
   const {
     width,
@@ -52,69 +53,94 @@ function TabsContainer (props) {
       setMenuState(1)
     }
   }, [width, gameKind])
-
-  return <div className={styles.content}>
-    <Divs className={[styles.navBar, menuState === 2 && styles.showAll]}>
-      <div className={styles.menuContent}>
-        {
-          gameKind.map((value, x) => {
-            return (
-              <Divs
-                key={x}
-                className={[styles.dayName, x === gameIndex && styles.activeButton]}
-                onClick={() => {
-                  if (menuState === 2) setMenuState(1)
-                  onTabClick(value.id)
-                  updateGameIndex(x)
-                }}>
-                {value.game_name}
-              </Divs>)
-          })
+  const ref = useRef(null)
+  useEffect(() => {
+    function onScroll () {
+      clearTimeout(timeOut)
+      setTimeout(() => {
+        const scrollTop = (document.documentElement.scrollTop || document.body.scrollTop)
+        if (scrollTop > 154) {
+          ref.current.style = 'position: fixed;z-index: 2;top:74px;'
+        } else if (ref.current.style) {
+          ref.current.style = ''
         }
-      </div>
-      {!!menuState && (
-        <Image
-          onClick={() => setMenuState(s => s === 1 ? 2 : 1)}
-          className={[styles.showMenu, menuState !== 1 && styles.rotateIcon]}
-          src={menuDown}
-        />
-      )}
-    </Divs>
-    <div className={styles.dayOpt}>
-      <div className={styles.dayList}>
-        <Divs
-          onClick={() => onShowTypeClick(0)}
-          className={[styles.noStart, showType === 0 && styles.activeButton]}>
-          <p>
-            <span>赛程</span>
-          </p>
+      }, 150)
+    }
+
+    if (ref) {
+      window.addEventListener('scroll', onScroll)
+    }
+    return function () {
+      clearTimeout(timeOut)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [])
+
+  return (
+    <div className={styles.content}>
+      <div ref={ref} className={styles.fixedTop2}>
+        <Divs className={[styles.navBar, menuState === 2 && styles.showAll]}>
+          <div className={styles.menuContent}>
+            {
+              gameKind.map((value, x) => {
+                return (
+                  <Divs
+                    key={x}
+                    className={[styles.dayName, x === gameIndex && styles.activeButton]}
+                    onClick={() => {
+                      if (menuState === 2) setMenuState(1)
+                      onTabClick(value.id)
+                      updateGameIndex(x)
+                    }}>
+                    {value.game_name}
+                  </Divs>)
+              })
+            }
+          </div>
+          <Image
+            hide={!menuState}
+            onClick={() => setMenuState(s => s === 1 ? 2 : 1)}
+            className={[styles.showMenu, menuState !== 1 && styles.rotateIcon]}
+            src={menuDown}
+          />
         </Divs>
-        <Divs
-          onClick={() => onShowTypeClick(1)}
-          className={[styles.starting, showType === 1 && styles.activeButton]}>
-          <p>
-            <span>进行中</span>
-          </p>
-        </Divs>
-        <Divs
-          onClick={() => onShowTypeClick(2)}
-          className={[styles.endOver, showType === 2 && styles.activeButton]}>
-          <p><span>赛果</span></p>
-        </Divs>
-        {time === dayName[1] && <CountDown cbk={() => onTimeClick(kindId, time)} />}
-      </div>
-      <div className={styles.showMenu}>
-        <DatePicker
-          mode='date'
-          title='选者日期'
-          value={pickerTime}
-          onChange={(value) => onSelect(setPickerTime, kindId, value)}
-        >
-          <PickerCustom />
-        </DatePicker>
+        <div className={styles.dayOpt}>
+          <div className={styles.dayList}>
+            <Divs
+              onClick={() => onShowTypeClick(0)}
+              className={[styles.noStart, showType === 0 && styles.activeButton]}>
+              <p>
+                <span>赛程</span>
+              </p>
+            </Divs>
+            <Divs
+              onClick={() => onShowTypeClick(1)}
+              className={[styles.starting, showType === 1 && styles.activeButton]}>
+              <p>
+                <span>进行中</span>
+              </p>
+            </Divs>
+            <Divs
+              onClick={() => onShowTypeClick(2)}
+              className={[styles.endOver, showType === 2 && styles.activeButton]}>
+              <p><span>赛果</span></p>
+            </Divs>
+            {time === dayName[1] && <CountDown cbk={() => onTimeClick(kindId, time)} />}
+          </div>
+          <div className={styles.showMenu}>
+            <DatePicker
+              mode='date'
+              title='选者日期'
+              value={pickerTime}
+              onChange={(value) => onSelect(setPickerTime, kindId, value)}
+            >
+              <PickerCustom />
+            </DatePicker>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  )
 }
 
 function mapStateToProps (state) {

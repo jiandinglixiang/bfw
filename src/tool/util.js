@@ -5,7 +5,7 @@ import 'moment/locale/zh-cn'
 import propTypes from 'prop-types'
 import { useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
-
+// import 'babel-plugin-import/lib/index.js'
 moment.locale('zh-cn')
 BigNumber.config({ ROUNDING_MODE: 1 })
 
