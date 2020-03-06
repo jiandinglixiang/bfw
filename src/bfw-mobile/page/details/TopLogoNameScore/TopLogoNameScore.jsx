@@ -141,56 +141,58 @@ function GameUnderway (props) {
       sente2: propsVE.team2.sente
     })
   }
-  return <div className={styles.content}>
-    <div className={styles.first}>
-      <div className={styles.topLogoIcon1}>
-        {
-          teamFaction.team1 && <div className={styles.teamIcon}><Image src={teamFaction.team1} /></div>
-        }
-        <div className={styles.logo}>
-          <Image src={propsVE.team1.logo} />
+  return (
+    <div className={styles.content}>
+      <div className={styles.first}>
+        <div className={styles.topLogoIcon1}>
+          {
+            teamFaction.team1 && <div className={styles.teamIcon}><Image src={teamFaction.team1} /></div>
+          }
+          <div className={styles.logo}>
+            <Image src={propsVE.team1.logo} />
+          </div>
+          <b style={tameScoreColor.team1}>{propsVE.team1.score}</b>
         </div>
-        <b style={tameScoreColor.team1}>{propsVE.team1.score}</b>
+        <div className={styles.teamName}>
+          <p style={{ padding: teamFaction.team1 ? '0 10px' : '0 32px 0 0' }}>{propsVE.team1.name}</p>
+        </div>
+        {teamSenteIcon.team1}
       </div>
-      <div className={styles.teamName}>
-        <p style={{ padding: teamFaction.team1 ? '0 10px' : '0 32px 0 0' }}>{propsVE.team1.name}</p>
-      </div>
-      {teamSenteIcon.team1}
-    </div>
-    <div className={styles.center}>
-      <div className={styles.high}>
-        <p className={isBoth ? styles.boutOver : styles.boutUnderway}>
-          {propsVE.round} {propsVE.time[0]}
-        </p>
-      </div>
-      {
-        propsVE.underwayBP && <div className={styles.low} />
-      }
-      <div className={styles.low}>
-        {
-          propsVE.gameId === 3 ? (<p>Map: {propsVE.csgoMap}</p>) : (
-            <p className={styles.difference}>
-              <span>差:{propsVE.gold}k</span>
-            </p>)
-        }
-      </div>
-    </div>
-    <div className={styles.last}>
-      <div className={styles.topLogoIcon2}>
-        <b style={tameScoreColor.team2}>{propsVE.team2.score}</b>
-        <div className={styles.logo}>
-          <Image src={propsVE.team2.logo} />
+      <div className={styles.center}>
+        <div className={styles.high}>
+          <p className={isBoth ? styles.boutOver : styles.boutUnderway}>
+            {propsVE.round} {propsVE.time[0]}
+          </p>
         </div>
         {
-          teamFaction.team2 && <div className={styles.teamIcon}><Image src={teamFaction.team2} /></div>
+          propsVE.underwayBP && <div className={styles.low} />
         }
+        <div className={styles.low}>
+          {
+            propsVE.gameId === 3 ? (<p>Map: {propsVE.csgoMap}</p>) : (
+              <p className={styles.difference}>
+                <span>差:{propsVE.gold}k</span>
+              </p>)
+          }
+        </div>
       </div>
-      <div className={styles.teamName}>
-        <p style={{ padding: teamFaction.team2 ? '0 10px' : '0 0 0 32px' }}>{propsVE.team2.name}</p>
+      <div className={styles.last}>
+        <div className={styles.topLogoIcon2}>
+          <b style={tameScoreColor.team2}>{propsVE.team2.score}</b>
+          <div className={styles.logo}>
+            <Image src={propsVE.team2.logo} />
+          </div>
+          {
+            teamFaction.team2 && <div className={styles.teamIcon}><Image src={teamFaction.team2} /></div>
+          }
+        </div>
+        <div className={styles.teamName}>
+          <p style={{ padding: teamFaction.team2 ? '0 10px' : '0 0 0 32px' }}>{propsVE.team2.name}</p>
+        </div>
+        {teamSenteIcon.team2}
       </div>
-      {teamSenteIcon.team2}
     </div>
-  </div>
+  )
 }
 
 function statusToTxt (s) {

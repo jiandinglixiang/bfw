@@ -61,12 +61,40 @@
 
       p {
         text-align: center;
-        line-height: 1;
       }
 
       span {
         font-family: ATUO123;
         font-weight: bold;
+      }
+
+      .gameOver {
+        width: 100%;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-evenly;
+        font-size: 15px;
+      }
+
+      .gameOverTxt {
+        color: #85838F;
+        font-size: 12px;
+      }
+
+      .maximum {
+        color: #70F7E2;
+      }
+
+      &.notStarted {
+        p:first-child {
+          color: #70F7E3;
+          font-size: 12px;
+        }
+
+        p:last-child {
+          font-size: 15px;
+        }
       }
     }
 

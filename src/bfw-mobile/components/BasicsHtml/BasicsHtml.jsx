@@ -7,10 +7,14 @@ function filterBool (x) {
 
 function useMemo2 (className) {
   return useMemo(function () {
-    if (className && Array.isArray(className)) {
-      return className.filter(filterBool).join(' ')
+    if (className) {
+      if (Array.isArray(className)) {
+        return className.filter(filterBool).join(' ')
+      }
+      return className
+    } else {
+      return ''
     }
-    return className
   }, [className])
 }
 

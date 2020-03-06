@@ -8,28 +8,28 @@ import defImg2 from '../../../assets/default_teamblue_40.png'
 import TryCatch from '../../../components/TryCatch/TryCatch.jsx'
 import { routerDetails } from '../Underway/Underway.jsx'
 import { useHistory } from 'react-router-dom'
-import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
+import { Divs, Image, Text } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function ScheduleBody (props) {
   const { gameData = {}, isOver = false } = props
   const history = useHistory()
   let pvpStatus
   if (isOver) {
-    const score = gameData.score.split(/:|,/).map(value => parseInt(value))
+    const score = gameData.score.split(/:|,/).map(value => parseInt(value) || 0)
     pvpStatus = (
       <div className={styles.center}>
-        <p style={{ color: '' }}>已结束</p>
-        <p>
-          <span className={score[0] > score[1] ? styles.maximum : ''}>{score[0] || 0}</span>
+        <p className={styles.gameOverTxt}>已结束</p>
+        <p className={styles.gameOver}>
+          <Text className={score[0] > score[1] && styles.maximum}>{score[0]}</Text>
           <span>-</span>
-          <span className={score[1] > score[0] ? styles.maximum : ''}>{score[1] || 0}</span>
+          <Text className={score[1] > score[0] && styles.maximum}>{score[1]}</Text>
         </p>
       </div>)
   } else {
-    pvpStatus = <div className={styles.center}>
+    pvpStatus = <Divs className={[styles.center, styles.notStarted]}>
       <p>未开始</p>
       <p>VS</p>
-    </div>
+    </Divs>
   }
   return (
     <li className={styles.notStartedAndOverContent} onClick={() => routerDetails(gameData, history)}>
