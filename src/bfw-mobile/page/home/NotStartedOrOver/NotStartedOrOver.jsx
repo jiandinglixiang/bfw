@@ -16,13 +16,20 @@ function ScheduleBody (props) {
   let pvpStatus
   if (isOver) {
     const score = gameData.score.split(/:|,/).map(value => parseInt(value))
-    pvpStatus = <p>
-      <span className={score[0] > score[1] ? styles.maximum : ''}>{score[0] || 0}</span>
-      <span>-</span>
-      <span className={score[1] > score[0] ? styles.maximum : ''}>{score[1] || 0}</span>
-    </p>
+    pvpStatus = (
+      <div className={styles.center}>
+        <p style={{ color: '' }}>已结束</p>
+        <p>
+          <span className={score[0] > score[1] ? styles.maximum : ''}>{score[0] || 0}</span>
+          <span>-</span>
+          <span className={score[1] > score[0] ? styles.maximum : ''}>{score[1] || 0}</span>
+        </p>
+      </div>)
   } else {
-    pvpStatus = <span>VS</span>
+    pvpStatus = <div className={styles.center}>
+      <p>未开始</p>
+      <p>VS</p>
+    </div>
   }
   return (
     <li className={styles.notStartedAndOverContent} onClick={() => routerDetails(gameData, history)}>
@@ -31,9 +38,7 @@ function ScheduleBody (props) {
           <p>{gameData.host_team_name}</p>
           <Image src={[gameData.host_team_logo, defImg1]} />
         </div>
-        <div className={styles.center}>
-          {pvpStatus}
-        </div>
+        {pvpStatus}
         <div className={styles.rightName}>
           <Image src={[gameData.guest_team_logo, defImg2]} />
           <p>{gameData.guest_team_name}</p>

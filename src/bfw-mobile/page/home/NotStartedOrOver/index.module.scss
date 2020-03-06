@@ -56,23 +56,17 @@
     }
 
     .center {
-      font-size: 15px;
-      font-weight: bold;
-      flex: 0 0 24%;
-      text-align: center;
-      color: white;
-      line-height: 1;
+      min-width: 24%;
+      flex: 0 0 auto;
 
       p {
         text-align: center;
+        line-height: 1;
+      }
 
-        span:nth-child(2) {
-          margin: 0 10px;
-        }
-
-        .maximum {
-          color: #70F7E3;
-        }
+      span {
+        font-family: ATUO123;
+        font-weight: bold;
       }
     }
 

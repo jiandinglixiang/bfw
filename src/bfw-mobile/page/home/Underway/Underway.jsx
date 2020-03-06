@@ -33,9 +33,12 @@ function LeftTime ({ gameData = {} }) {
   </p>
 }
 
-function FullScore ({ scoreList = [] }) {
-  const score = scoreListReduce(scoreList)
-  return <p><span>{score[0]}</span><span>-</span><span>{score[1]}</span></p>
+function FullScore ({ scoreList }) {
+  let arr = [0, 0]
+  if (typeof scoreList === 'string') {
+    arr = scoreList.split(',')
+  }
+  return <p><span>{arr[0]}</span><span>-</span><span>{arr[1]}</span></p>
 }
 
 function HeroList ({ arrIcon = [] }) {
@@ -102,7 +105,7 @@ function UnderwayDota (props) {
         <Image src={[gameData.host_team_logo, defImg1]} />
       </div>
       <div className={styles.matchScore}>
-        <FullScore scoreList={gameData.score_list} />
+        <FullScore scoreList={gameData.score} />
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}>
@@ -192,7 +195,7 @@ function UnderwayCsGo (props) {
         <Image src={gameData.host_team_logo || defImg1} />
       </div>
       <div className={styles.matchScore}>
-        <FullScore scoreList={gameData.score_list} />
+        <FullScore scoreList={gameData.score} />
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}>
@@ -280,7 +283,7 @@ function UnderwayLol (props) {
         <Image src={gameData.host_team_logo || defImg1} />
       </div>
       <div className={styles.matchScore}>
-        <FullScore scoreList={gameData.score_list} />
+        <FullScore scoreList={gameData.score} />
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}>
@@ -346,7 +349,7 @@ function UnderwayKoa (props) {
       <p className={styles.teamName1}>{gameData.host_team_name}</p>
       <div className={styles.teamLogo}><Image src={gameData.host_team_logo || defImg1} /></div>
       <div className={styles.matchScore}>
-        <FullScore scoreList={gameData.score_list} />
+        <FullScore scoreList={gameData.score} />
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}><Image src={gameData.guest_team_logo || defImg2} /></div>
@@ -393,7 +396,7 @@ LeftTime.propTypes = {
   gameData: PropTypes.object
 }
 FullScore.propTypes = {
-  scoreList: PropTypes.array
+  scoreList: PropTypes.any
 }
 UnderwayLol.propTypes = {
   gameData: PropTypes.object
