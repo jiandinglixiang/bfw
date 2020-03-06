@@ -1,24 +1,16 @@
 import React, { useState } from 'react'
 import liveBtnOn from '../../../assets/btn_live_on.png'
-// import liveBtnOff from '../../../assets/btn_live_off.png'
 import { Icon, Modal } from 'antd-mobile'
 import styles from './index.module.scss'
-import { diffCatch } from '../../../../tool/util.js'
+import { useDiffCatch } from '../../../../tool/util.js'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function onPress (value) {
   window.open(value.live_h5_url || value.live_url, '_blank')
 }
-
-// {
-//   liveList.length ? <ModalButton liveList={liveList} />
-//     : <Image src={liveBtnOff} width='80' height='30' />
-// }
 function LiveButton (props) {
-  const [show, changShow] = useState(true)
-  const { liveList } = diffCatch(props)({
-    liveList: []
-  })
+  const [show, changShow] = useState(false)
+  const { liveList } = useDiffCatch(props)({ liveList: [] })
   return (
     <div style={{ textAlign: 'center' }}>
       <Image onClick={() => changShow(!show)} src={liveBtnOn} width='80' height='30' />

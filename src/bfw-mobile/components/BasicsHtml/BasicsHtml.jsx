@@ -53,7 +53,7 @@ export function Text (props = {}) {
 export function Image (props = {}) {
   const className = useMemo2(props.className)
   const isArray = Array.isArray(props.src)
-  const [src, updateSrc] = useState(isArray ? props.src.filter(filterBool) : props.src)
+  const [src, updateSrc] = useState(isArray ? props.src.find(filterBool) : props.src)
   if (props.hide) {
     return null
   }

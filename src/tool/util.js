@@ -3,7 +3,7 @@ import defaultImg from '../bfw-mobile/assets/default_team_60.png'
 import BigNumber from 'bignumber.js'
 import 'moment/locale/zh-cn'
 import propTypes from 'prop-types'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 
 moment.locale('zh-cn')
@@ -76,6 +76,13 @@ export function formatDate (time, forme) {
 export function formatDate2 (time) {
   try {
     return moment(time).format('MM-DD  HH:mm')
+  } catch (e) {
+    return time || ''
+  }
+}
+export function formatDate3 (time) {
+  try {
+    return moment(time).format('HH:mm')
   } catch (e) {
     return time || ''
   }
@@ -249,6 +256,13 @@ export function diffCatch (obj) {
   return function (ReturnObj) {
     return diffCatch2(obj, ReturnObj)
   }
+}
+
+export function useDiffCatch (obj) {
+  // 所见即所得，多成数据取除保存
+  return useCallback(function (ReturnObj) {
+    return diffCatch2(obj, ReturnObj)
+  }, [obj])
 }
 
 export function objCatch (obj, expected = {}) {

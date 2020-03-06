@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './index.module.scss'
-import { formatDate, PropTypes } from '../../../../tool/util'
+import { diffCatch, formatDate3, PropTypes, useDiffCatch } from '../../../../tool/util'
 import GameTitle from '../GameTitle/GameTitle.jsx'
 import MatchTitle from '../../../components/MatchTitle/MatchTitle.jsx'
 import defImg1 from '../../../assets/default_teamred_40.png'
@@ -13,8 +13,6 @@ import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 function ScheduleBody (props) {
   const { gameData = {}, isOver = false } = props
   const history = useHistory()
-  const timeTxt = formatDate(gameData.game_start_time, 'HH:mm')
-  let timeStatus
   let pvpStatus
   if (isOver) {
     const score = gameData.score.split(/:|,/).map(value => parseInt(value))
@@ -23,55 +21,55 @@ function ScheduleBody (props) {
       <span>-</span>
       <span className={score[1] > score[0] ? styles.maximum : ''}>{score[1] || 0}</span>
     </p>
-    timeStatus = <p className={styles.over}>
-      <span>{gameData.match_rules}</span><span>{timeTxt}</span><span>已结束</span>
-    </p>
   } else {
-    timeStatus = <p className={styles.notStart}>
-      <span>{gameData.match_rules}</span><span>{timeTxt}</span><span>未开始</span>
-    </p>
     pvpStatus = <span>VS</span>
   }
-  return <li
-    className={styles.notStartedAndOverContent}
-    onClick={() => routerDetails(gameData, history)}
-  >
-    {timeStatus}
-    <div className={styles.teamPvp}>
-      <div className={styles.leftName}>
-        <p>{gameData.host_team_name}</p>
-        <Image src={gameData.host_team_logo || defImg1} />
+  return (
+    <li className={styles.notStartedAndOverContent} onClick={() => routerDetails(gameData, history)}>
+      <div className={styles.teamPvp}>
+        <div className={styles.leftName}>
+          <p>{gameData.host_team_name}</p>
+          <Image src={[gameData.host_team_logo, defImg1]} />
+        </div>
+        <div className={styles.center}>
+          {pvpStatus}
+        </div>
+        <div className={styles.rightName}>
+          <Image src={[gameData.guest_team_logo, defImg2]} />
+          <p>{gameData.guest_team_name}</p>
+        </div>
       </div>
-      <div className={styles.center}>
-        {pvpStatus}
-      </div>
-      <div className={styles.rightName}>
-        <Image src={gameData.guest_team_logo || defImg2} />
-        <p>{gameData.guest_team_name}</p>
-      </div>
-    </div>
-  </li>
+    </li>)
 }
 
 function ScheduleList (props) {
-  const { value = [], isOver = false } = props
-  return value.map((value, index) => {
+  const propsVE = useDiffCatch(props)({
+    value: [],
+    isOver: false
+  })
+  return propsVE.value.map((value, index) => {
+    const time = formatDate3(value.game_start_time)
     return <ul key={index}>
       <TryCatch>
-        <GameTitle typeId={value.game_type_id} matchName={value.game_name} />
-        <ScheduleBody gameData={value} isOver={isOver} />
+        <GameTitle gameName={value.game_name} icon={value.icon} time={`${value.match_rules} ${time}`} />
+        <ScheduleBody gameData={value} isOver={propsVE.isOver} />
       </TryCatch>
     </ul>
   })
 }
 
-function NotStartedOrOver ({ data = [], isOver = false }) {
+function NotStartedOrOver (props) {
+  const propsVE = useDiffCatch(props)({
+    data: [],
+    isOver: false
+  })
   return <div>
     {
-      data.map((value, index) => {
+      propsVE.data.map((value, index) => {
+        const valueVE = diffCatch(value)({ schedule_list: [] })
         return <div key={index}>
-          <MatchTitle gameName={value.day} />
-          <ScheduleList value={value.schedule_list} isOver={isOver} />
+          <MatchTitle gameName={valueVE.day} />
+          <ScheduleList value={valueVE.schedule_list} isOver={propsVE.isOver} />
         </div>
       })
     }

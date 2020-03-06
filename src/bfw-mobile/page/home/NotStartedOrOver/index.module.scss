@@ -21,7 +21,7 @@
   }
 
   .teamPvp {
-    height: 30px;
+    min-height: 55px;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -34,7 +34,7 @@
 
       img {
         flex: 0 0 auto;
-        width: 20px;
+        width: 40px;
         min-height: 20px;
       }
 

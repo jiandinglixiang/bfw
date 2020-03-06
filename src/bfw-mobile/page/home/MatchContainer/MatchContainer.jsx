@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import InPlay from '../InPlay'
 import { fixedTopContentClass } from '../../../components/MatchTitle/MatchTitle'
 import { connect } from 'react-redux'
-import { PropTypes } from '../../../../tool/util'
+import { PropTypes, useDiffCatch } from '../../../../tool/util'
 import styles from './index.module.scss'
 import NotStartedOrOver from '../NotStartedOrOver/NotStartedOrOver.jsx'
 
@@ -33,13 +33,16 @@ function onScroll () {
   // console.log(2)
 }
 
-function MatchContainer ({
-  endMatchList = [],
-  notStartMatchList = [],
-  startMatchList = [],
-  showType = 0
-}) {
-  const withOut = startMatchList.length + notStartMatchList.length + endMatchList.length
+function MatchContainer (props) {
+  const propsVE = useDiffCatch(props)({
+    endMatchList: [],
+    notStartMatchList: [],
+    startMatchList: [],
+    showType: 0
+  })
+  const withOut = useMemo(function () {
+    return propsVE.startMatchList.length + propsVE.notStartMatchList.length + propsVE.endMatchList.length
+  }, [propsVE])
   useEffect(function () {
     if (withOut) {
       window.addEventListener('scroll', onScroll)
@@ -48,15 +51,16 @@ function MatchContainer ({
       nodeList = [] // dom集合清空
       window.removeEventListener('scroll', onScroll)
     }
-  }, [withOut, endMatchList, notStartMatchList, startMatchList])
+  }, [withOut])
 
-  if (showType === 1) {
-    return startMatchList.length ? <InPlay data={startMatchList} /> : <div className={styles.withOut}>暂无数据</div>
-  } else if (showType === 2) {
-    return endMatchList.length ? <NotStartedOrOver data={endMatchList} isOver /> : <div
+  if (propsVE.showType === 1) {
+    return propsVE.startMatchList.length ? <InPlay data={propsVE.startMatchList} /> : <div
+      className={styles.withOut}>暂无数据</div>
+  } else if (propsVE.showType === 2) {
+    return propsVE.endMatchList.length ? <NotStartedOrOver data={propsVE.endMatchList} isOver /> : <div
       className={styles.withOut}>暂无数据</div>
   } else {
-    return notStartMatchList.length ? <NotStartedOrOver data={notStartMatchList} /> : <div
+    return propsVE.notStartMatchList.length ? <NotStartedOrOver data={propsVE.notStartMatchList} /> : <div
       className={styles.withOut}>暂无数据</div>
   }
 }

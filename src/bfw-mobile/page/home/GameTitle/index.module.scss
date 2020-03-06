@@ -1,29 +1,33 @@
 .content {
-  text-align: right;
-  line-height: 35px;
-  padding:0 2% 0 10%;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  background-image: url("../../../assets/tournament_dota.png");
-  background-repeat: no-repeat;
-  background-position: left top;
-  background-size: 100% 100%;
+  min-height: 25px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding: 0 2%;
+  background-color: #011938;
+  //background: linear-gradient(90deg, rgba(255, 73, 73, 0.2) 0%, rgba(6, 26, 53, 0) 100%);
 
-  &.background-5 {
-    background-image: url("../../../assets/tournament_dota.png");
+  img {
+    width: 15px;
+    min-height: 15px;
+    flex: 0 0 auto;
   }
 
-  &.background-3 {
-    background-image: url("../../../assets/tournament_csgo.png");
+  span {
+    flex: 0 0 auto;
+    //max-width: 10%;
+    white-space: nowrap;
+    font-size: 12px;
   }
 
-  &.background-2 {
-    background-image: url("../../../assets/tournament_kog.png");
-  }
-
-  &.background-1 {
-    background-image: url("../../../assets/tournament_lol.png");
+  p {
+    padding: 0 15px 0 5px;
+    width: 0;
+    font-size: 12px;
+    flex: 1 1 auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 

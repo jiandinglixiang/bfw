@@ -1,18 +1,22 @@
 import React from 'react'
-import { PropTypes } from '../../../../tool/util.js'
+import { useDiffCatch } from '../../../../tool/util.js'
 import styles from './index.module.scss'
+import normal from '../../../assets/score_ongoing_normal.png'
+import { Image, Pars, Text } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function GameTitle (props) {
-  const {
-    typeId = '0',
-    matchName = '加载中...'
-  } = props
-  return <li className={`${styles.content} ${styles['background-' + typeId]}`}>{matchName}</li>
-}
-
-GameTitle.propTypes = {
-  typeId: PropTypes.string,
-  matchName: PropTypes.string
+  const propsVE = useDiffCatch(props)({
+    time: '00:00',
+    gameName: '加载中...',
+    icon: ''
+  })
+  return (
+    <li className={styles.content}>
+      <Image src={[propsVE.icon, normal]} />
+      <Pars>{propsVE.gameName}</Pars>
+      <Text>{propsVE.time}</Text>
+    </li>
+  )
 }
 
 export default GameTitle

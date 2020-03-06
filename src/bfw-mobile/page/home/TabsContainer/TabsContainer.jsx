@@ -57,12 +57,14 @@ function TabsContainer (props) {
   useEffect(() => {
     function onScroll () {
       clearTimeout(timeOut)
-      setTimeout(() => {
-        const scrollTop = (document.documentElement.scrollTop || document.body.scrollTop)
-        if (scrollTop > 154) {
-          ref.current.style = 'position: fixed;z-index: 2;top:74px;'
-        } else if (ref.current.style) {
-          ref.current.style = ''
+      timeOut = setTimeout(() => {
+        if (ref) {
+          const scrollTop = (document.documentElement.scrollTop || document.body.scrollTop)
+          if (scrollTop > 154) {
+            ref.current.style = 'position: fixed;z-index: 2;top:74px;'
+          } else if (ref.current.style) {
+            ref.current.style = ''
+          }
         }
       }, 150)
     }

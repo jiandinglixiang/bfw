@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react'
 import styles from './index.module.scss'
 import strating from '../../../assets/live_30.gif'
-import { diffCatch, formatDate, inning, PropTypes, toBigNumber } from '../../../../tool/util.js'
+import { inning, PropTypes, toBigNumber, useDiffCatch } from '../../../../tool/util.js'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
 import { useHistory } from 'react-router-dom'
-import { gameRound } from '../MatchItem/MatchItem.jsx'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 export function routerDetails (data, history) {
@@ -28,11 +27,9 @@ function scoreListReduce (scoreList = []) {
 }
 
 function LeftTime ({ gameData = {} }) {
-  const timeTxt = formatDate(gameData.game_start_time, 'HH:mm')
   return <p className={styles.leftTime}>
     <Image src={strating} />
     <span>{gameData.match_rules}</span>
-    <span>{timeTxt}</span>
   </p>
 }
 
@@ -50,26 +47,48 @@ function HeroList ({ arrIcon = [] }) {
   })
 }
 
-function UnderwayDota ({ gameData }) {
+function UnderwayDota (props) {
+  const { gameData } = useDiffCatch(props)({
+    gameData: {
+      score_list: [],
+      poor_economy: {
+        gold: 0,
+        time: 0
+      },
+      round_total: 0,
+      score: '',
+      team1_more_attr: {
+        other_more_attr: {},
+        players: []
+      },
+      team2_more_attr: {
+        other_more_attr: {},
+        players: []
+      },
+      current_round: 1
+    }
+  })
   const moreAttr1 = gameData.team1_more_attr.other_more_attr
   const moreAttr2 = gameData.team2_more_attr.other_more_attr
 
   const inningsTime = useMemo(() => {
-    const nowInnings = gameRound(gameData.score_list, gameData.round_total)
+    const nowInnings = inning(gameData.current_round)
     const timeTxt = parseInt(gameData.poor_economy.time / 60)
     return timeTxt ? `${nowInnings} ${timeTxt}’` : nowInnings
   }, [gameData])
 
   const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
-
+  const isDire = useMemo(() => {
+    return moreAttr1.camp === 'dire' || moreAttr2.camp === 'radiant'
+  }, [moreAttr1.camp, moreAttr2.camp])
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
       <LeftTime gameData={gameData} />
-      <div className={styles.dotaMatchRed} />
+      <div className={isDire ? styles.dotaMatchBlue : styles.dotaMatchRed} />
       <div className={styles.centerDifference}>
         <p className={styles.money}>差:{poorEconomy}k</p>
       </div>
-      <div className={styles.dotaMatchBlue} />
+      <div className={isDire ? styles.dotaMatchRed : styles.dotaMatchBlue} />
     </div>
     <div className={styles.formation}>
       <div className={styles.nameAndKill}>
@@ -80,14 +99,14 @@ function UnderwayDota ({ gameData }) {
         </div>
       </div>
       <div className={styles.teamLogo}>
-        <Image src={gameData.host_team_logo || defImg1} />
+        <Image src={[gameData.host_team_logo, defImg1]} />
       </div>
       <div className={styles.matchScore}>
         <FullScore scoreList={gameData.score_list} />
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}>
-        <Image src={gameData.guest_team_logo || defImg2} />
+        <Image src={[gameData.guest_team_logo, defImg2]} />
       </div>
       <div className={styles.nameAndKill2}>
         <p>{gameData.guest_team_name}</p>
@@ -113,7 +132,27 @@ function UnderwayDota ({ gameData }) {
   </div>
 }
 
-function UnderwayCsGo ({ gameData }) {
+function UnderwayCsGo (props) {
+  const { gameData } = useDiffCatch(props)({
+    gameData: {
+      score_list: [],
+      poor_economy: {
+        gold: 0,
+        time: 0
+      },
+      round_total: 0,
+      score: '',
+      team1_more_attr: {
+        other_more_attr: {},
+        players: []
+      },
+      team2_more_attr: {
+        other_more_attr: {},
+        players: []
+      },
+      current_round: 0
+    }
+  })
   const moreAttr1 = gameData.team1_more_attr.other_more_attr
   const moreAttr2 = gameData.team2_more_attr.other_more_attr
 
@@ -127,15 +166,18 @@ function UnderwayCsGo ({ gameData }) {
     }
     return [sbc]
   }, [moreAttr1.current_round, gameData.poor_economy.time])
+  const isCT = useMemo(() => {
+    return moreAttr1.camp === 'CT' || moreAttr2.camp === 'C'
+  }, [moreAttr1.camp, moreAttr2.camp])
 
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
       <LeftTime gameData={gameData} />
-      <div className={styles.csgoMatchRed} />
+      <div className={isCT ? styles.csgoMatchBlue : styles.csgoMatchRed} />
       <div className={styles.centerDifference}>
         <p>Map: {moreAttr1.map || '...'}</p>
       </div>
-      <div className={styles.csgoMatchBlue} />
+      <div className={isCT ? styles.csgoMatchRed : styles.csgoMatchBlue} />
     </div>
     <div className={styles.formation}>
       <div className={styles.nameAndKill}>
@@ -150,7 +192,7 @@ function UnderwayCsGo ({ gameData }) {
         <Image src={gameData.host_team_logo || defImg1} />
       </div>
       <div className={styles.matchScore}>
-        <p><span>1</span><span>-</span><span>1</span></p>
+        <FullScore scoreList={gameData.score_list} />
         <p>全局比分</p>
       </div>
       <div className={styles.teamLogo}>
@@ -169,12 +211,12 @@ function UnderwayCsGo ({ gameData }) {
       <div className={styles.csgoScore}>
         <p><span>上半场</span><span>{moreAttr1.first_half_score || 0}-{moreAttr2.first_half_score || 0}</span></p>
       </div>
-      <p className={styles.score}>{gameData.team1_score || '-'}</p>
+      <p className={styles.score}>{gameData.team1_score}</p>
       <div className={styles.center}>
         <p>{firstHalf}</p>
         <p>{innings}</p>
       </div>
-      <p className={styles.score}>{gameData.team2_score || '-'}</p>
+      <p className={styles.score}>{gameData.team2_score}</p>
       <div className={styles.csgoScore}>
         <p><span>下半场</span><span>{moreAttr1.second_half_score || 0}-{moreAttr2.second_half_score || 0}</span></p>
       </div>
@@ -182,26 +224,49 @@ function UnderwayCsGo ({ gameData }) {
   </div>
 }
 
-function UnderwayLol ({ gameData }) {
+function UnderwayLol (props) {
+  const { gameData } = useDiffCatch(props)({
+    gameData: {
+      score_list: [],
+      poor_economy: {
+        gold: 0,
+        time: 0
+      },
+      round_total: 0,
+      score: '',
+      team1_more_attr: {
+        other_more_attr: {},
+        players: []
+      },
+      team2_more_attr: {
+        other_more_attr: {},
+        players: []
+      },
+      round: 0
+    }
+  })
   const moreAttr1 = gameData.team1_more_attr.other_more_attr
   const moreAttr2 = gameData.team2_more_attr.other_more_attr
 
   const inningsTime = useMemo(() => {
-    const nowInnings = inning(parseInt(gameData.round))
-    const timeTxt = gameData.poor_economy.time / 60
+    const nowInnings = inning(gameData.current_round || 1)
+    const timeTxt = parseInt(gameData.poor_economy.time / 60)
     return timeTxt ? `${nowInnings} ${timeTxt}’` : nowInnings
   }, [gameData.round, gameData.poor_economy.time])
 
   const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
+  const isBlue = useMemo(() => {
+    return moreAttr1.camp === 'blue' || moreAttr2.camp === 'red'
+  }, [moreAttr1.camp, moreAttr2.camp])
 
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
       <LeftTime gameData={gameData} />
-      <div className={styles.lolMatchRed} />
+      <div className={isBlue ? styles.lolMatchBlue : styles.lolMatchRed} />
       <div className={styles.centerDifference}>
         <p className={styles.money}>差:{poorEconomy}k</p>
       </div>
-      <div className={styles.lolMatchBlue} />
+      <div className={isBlue ? styles.lolMatchRed : styles.lolMatchBlue} />
     </div>
     <div className={styles.formation}>
       <div className={styles.nameAndKill}>
@@ -245,7 +310,27 @@ function UnderwayLol ({ gameData }) {
   </div>
 }
 
-function UnderwayKoa ({ gameData }) {
+function UnderwayKoa (props) {
+  const { gameData } = useDiffCatch(props)({
+    gameData: {
+      score_list: [],
+      poor_economy: {
+        gold: 0,
+        time: 0
+      },
+      round_total: 0,
+      score: '',
+      team1_more_attr: {
+        other_more_attr: {},
+        players: []
+      },
+      team2_more_attr: {
+        other_more_attr: {},
+        players: []
+      },
+      round: 0
+    }
+  })
   const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
 
   return <div className={styles.content}>
@@ -264,45 +349,30 @@ function UnderwayKoa ({ gameData }) {
         <FullScore scoreList={gameData.score_list} />
         <p>全局比分</p>
       </div>
-      <div className={styles.teamLogo}><Image src={gameData.guest_team_logo || defImg1} /></div>
+      <div className={styles.teamLogo}><Image src={gameData.guest_team_logo || defImg2} /></div>
       <p className={styles.teamName2}>{gameData.guest_team_name}</p>
     </div>
   </div>
 }
 
-function Underway ({ gameData = {} }) {
+function Underway (props) {
   const history = useHistory()
-  gameData = diffCatch(gameData)({
-    game_type_id: 0,
-    team1_more_attr: {
-      other_more_attr: {},
-      players: []
-    },
-    team2_more_attr: {
-      other_more_attr: {},
-      players: []
-    },
-    poor_economy: {
-      gold: 0,
-      time: 0
-    },
-    round: 0
-  })
+  const propsVE = useDiffCatch(props)({ gameData: { game_type_id: 0 } })
 
   function f () {
-    switch (gameData.game_type_id) {
+    switch (propsVE.gameData.game_type_id) {
       case 5:
-        return <UnderwayDota gameData={gameData} />
+        return <UnderwayDota gameData={propsVE.gameData} />
       case 3:
-        return <UnderwayCsGo gameData={gameData} />
+        return <UnderwayCsGo gameData={propsVE.gameData} />
       case 1:
-        return <UnderwayLol gameData={gameData} />
+        return <UnderwayLol gameData={propsVE.gameData} />
       default:
-        return <UnderwayKoa gameData={gameData} />
+        return <UnderwayKoa gameData={propsVE.gameData} />
     }
   }
 
-  return <div onClick={() => routerDetails(gameData, history)}>
+  return <div onClick={() => routerDetails(propsVE.gameData, history)}>
     {f()}
   </div>
 }
