@@ -94,7 +94,7 @@ function GameUnderway (props) {
     underwayBP: false, // false === 进行中 但没有选角色，没有ban
     matchRules: '',
     time: [],
-    round: 0,
+    round: '',
     gold: '0.0',
     csgoMap: '...',
     team1: {
@@ -231,7 +231,7 @@ function csgoInit (team1, team2, round) {
       sum: 0
     }
   }
-  data.round = round
+  data.round = inning(round)
   data.overtime = team1.is_over_time > 1 || team2.is_over_time > 1
   // data.team1.name = team1.team_name
   // data.team2.name = team2.team_name
@@ -282,6 +282,7 @@ export function csgoBothInit (endMatch) {
   // csgo 进行中小局，赛果对阵详情数据初始化
   const endMatchVE = diffCatch(endMatch)({
     team1: {
+      round: 0,
       other_more_attr: {
         first_half_score: 0,
         second_half_score: 0,
@@ -405,7 +406,8 @@ function Match ({ data = {}, matchList }) {
       other_more_attr: {},
       players: [],
       ban: []
-    }
+    },
+    current_round: 0
   })
   // 非小局 详情页
   data.status = matchList.status

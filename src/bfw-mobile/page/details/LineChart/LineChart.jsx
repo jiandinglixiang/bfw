@@ -240,13 +240,17 @@ function LineChart (props) {
         {
           show: false,
           type: 'piecewise',
-          dimension: 0,
-          // splitNumber: 6,
+          dimension: 1,
           pieces: [
             {
               min: -99999,
-              max: 0,
+              max: -2,
               color: '#E12727'
+            },
+            {
+              max: 99999,
+              min: -2,
+              color: '#3393FF'
             }
           ],
           outOfRange: {

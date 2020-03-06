@@ -83,34 +83,23 @@ export function Image (props = {}) {
 Divs.propTypes = {
   hide: PropTypes.bool,
   children: PropTypes.any,
-  className: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array
-  ])
+  className: PropTypes.any,
 }
 Pars.propTypes = {
   children: PropTypes.any,
   hide: PropTypes.bool,
-  className: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array
-  ])
+  className: PropTypes.any,
 }
 Text.propTypes = {
   children: PropTypes.any,
   hide: PropTypes.bool,
-  className: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array
-  ])
+  className: PropTypes.any,
+
 }
 Image.propTypes = {
   children: PropTypes.any,
   hide: PropTypes.bool,
-  className: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array
-  ]),
+  className: PropTypes.any,
   src: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.array
