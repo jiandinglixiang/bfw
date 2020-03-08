@@ -5,22 +5,9 @@ import TipTitle from '../TipTitle/TipTitle.jsx'
 import BoutTitleBar from '../BoutTitleBar/BoutTitleBar.jsx'
 import BPList from '../BPList/BPList.jsx'
 import TopLogoNameScore, { csgoBothInit } from '../TopLogoNameScore/TopLogoNameScore.jsx'
-import { globalDataInit } from '../../../../tool/useData.js'
 import { comparisonUtil } from '../details.jsx'
 import CsGoNowStatus from '../CsGoNowStatus/CsGoNowStatus.jsx'
 import csgoStyles from '../CsGoMapImg/index.module.scss'
-
-export const useStatePublicBoth = globalDataInit({
-  poor_economy: [],
-  team1: {
-    real_players: [],
-    real_history: [],
-    end_match: []
-  },
-  team2: {},
-  battle_data: {},
-  real_history: {}
-})
 
 function BothItem (props) {
   // dota lol koa

@@ -1,23 +1,20 @@
 import React from 'react'
-import propTypes from 'prop-types'
 import styles from './index.module.scss'
 import notice from '../../assets/notice.png'
 import { Image } from '../BasicsHtml/BasicsHtml.jsx'
+import { useStoreMenu } from '../../page/home/UseStore.js'
 
-function NoticeBar ({ txt }) {
-  return <div className={styles.component}>
-    <Image src={notice} />
-    <div>
-      <p>{txt}</p>
-      <p>{txt}</p>
+function NoticeBar () {
+  const [state] = useStoreMenu()
+  return <div>
+    <div className={styles.component}>
+      <Image src={notice} />
+      <div>
+        <p>{state.radio}</p>
+        <p>{state.radio}</p>
+      </div>
     </div>
   </div>
 }
 
-NoticeBar.propTypes = {
-  txt: propTypes.oneOfType([
-    propTypes.string,
-    propTypes.element,
-  ]),
-}
 export default NoticeBar

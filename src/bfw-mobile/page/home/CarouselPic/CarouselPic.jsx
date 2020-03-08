@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import styles from './index.module.scss'
 import { Carousel } from 'antd-mobile'
+import { useStoreMenu } from '../UseStore.js'
 
 function CarouselPic (props) {
-  const { carouseMap } = props
+  const [state] = useStoreMenu()
   const [autoplay, setAuto] = useState(false)
   return <div className={styles.content}>
     <Carousel
@@ -13,7 +14,7 @@ function CarouselPic (props) {
       infinite
     >
       {
-        carouseMap.map((value, index) => {
+        state.banner_list.map((value, index) => {
           return <a
             key={index}
             href={value.url}

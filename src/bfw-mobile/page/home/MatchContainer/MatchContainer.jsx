@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo } from 'react'
 import InPlay from '../InPlay'
 import { fixedTopContentClass } from '../../../components/MatchTitle/MatchTitle'
-import { connect } from 'react-redux'
-import { PropTypes, useDiffCatch } from '../../../../tool/util'
 import styles from './index.module.scss'
 import NotStartedOrOver from '../NotStartedOrOver/NotStartedOrOver.jsx'
+import { useStoreHome } from '../UseStore.js'
 
 let time = null
 let nodeList = [] // dom集合
@@ -33,54 +32,29 @@ function onScroll () {
   // console.log(2)
 }
 
-function MatchContainer (props) {
-  const propsVE = useDiffCatch(props)({
-    endMatchList: [],
-    notStartMatchList: [],
-    startMatchList: [],
-    showType: 0
-  })
-  const withOut = useMemo(function () {
-    return propsVE.startMatchList.length + propsVE.notStartMatchList.length + propsVE.endMatchList.length
-  }, [propsVE])
+function MatchContainer () {
+  const [state] = useStoreHome()
+  const stateVE = useMemo(function () {
+    return [
+      state.not_start_match_list[state.gameId + state.time],
+      state.start_match_list[state.gameId + state.time],
+      state.end_match_list[state.gameId + state.time]
+    ]
+  }, [state])
   useEffect(function () {
-    if (withOut) {
-      window.addEventListener('scroll', onScroll)
-    }
+    window.addEventListener('scroll', onScroll)
     return function () {
       nodeList = [] // dom集合清空
       window.removeEventListener('scroll', onScroll)
     }
-  }, [withOut])
-
-  if (propsVE.showType === 1) {
-    return propsVE.startMatchList.length ? <InPlay data={propsVE.startMatchList} /> : <div
-      className={styles.withOut}>暂无数据</div>
-  } else if (propsVE.showType === 2) {
-    return propsVE.endMatchList.length ? <NotStartedOrOver data={propsVE.endMatchList} isOver /> : <div
-      className={styles.withOut}>暂无数据</div>
-  } else {
-    return propsVE.notStartMatchList.length ? <NotStartedOrOver data={propsVE.notStartMatchList} /> : <div
-      className={styles.withOut}>暂无数据</div>
+  }, [stateVE])
+  if (!stateVE[state.gameStatus] || (stateVE[state.gameStatus] && !stateVE[state.gameStatus].length)) {
+    return <div className={styles.withOut}>暂无数据</div>
   }
-}
-
-MatchContainer.propTypes = {
-  endMatchList: PropTypes.array,
-  notStartMatchList: PropTypes.array,
-  startMatchList: PropTypes.array
-}
-
-function mapStateToProps (state) {
-  const home = state.home
-  const kindId = home.kindId
-  const time = home.time
-  return {
-    endMatchList: home.endMatchList[`${kindId}-${time}`],
-    notStartMatchList: home.notStartMatchList[`${kindId}-${time}`],
-    startMatchList: home.startMatchList[`${kindId}-${time}`],
-    showType: home.showType[`${kindId}-${time}`]
+  if (state.gameStatus === 1) {
+    return <InPlay data={stateVE[1]} />
   }
+  return <NotStartedOrOver data={stateVE[state.gameStatus]} isOver={state.gameStatus === 2} />
 }
 
-export default connect(mapStateToProps, null)(MatchContainer)
+export default MatchContainer
