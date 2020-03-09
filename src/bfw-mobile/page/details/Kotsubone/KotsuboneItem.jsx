@@ -20,8 +20,8 @@ function KotsuboneItem (props) {
         team_logo: '',
         other_more_attr: {},
         team_name: '',
-        round: 1,
-        is_win: 1,
+        round: 0,
+        is_win: 0,
         players: [],
         ban: []
       },
@@ -29,8 +29,8 @@ function KotsuboneItem (props) {
         team_logo: '',
         other_more_attr: {},
         team_name: '',
-        round: 1,
-        is_win: 1,
+        round: 0,
+        is_win: 0,
         players: [],
         ban: []
       },

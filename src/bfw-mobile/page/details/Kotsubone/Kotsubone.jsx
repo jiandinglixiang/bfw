@@ -106,15 +106,11 @@ function Kotsubone (props) {
           }
         })
         const round = inning(valueVE.team1.round)
-        const winName = valueVE.team1.is_win > 1 ? valueVE.team1.team_name : valueVE.team2.team_name
+        const winName = valueVE.team1.is_win > 0 ? valueVE.team1.team_name : valueVE.team2.team_name
         return (
           <li key={index} onClick={() => goBoth(valueVE.team1.round)}>
-            {
-              !propsVE.gameOver && [
-                <div key='0' style={{ height: '12px' }} />,
-                <TipTitle key='1' title={round} />
-              ]
-            }
+            <div key='0' style={{ height: '12px' }} />
+            <TipTitle key='1' title={round} />
             <div style={{ height: '10px' }} />
             <BoutTitleBar
               winName={winName}

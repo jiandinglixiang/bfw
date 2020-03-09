@@ -46,12 +46,12 @@ function MemberList (props) {
       gold_per_min: 0,
       xp_per_min: 0,
       gold: 0,
-      item: [],
+      items: [],
       game_no: 0
     }
   })
   const [big, setBig] = useState(style.twoBig)
-  const item = value.item.length ? value.item : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
+  const item = value.items.length ? value.items : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
   const kda = isBoth && toBigNumber((value.kills + value.assists) / value.deaths * 3).toFormat(1)
 
   return <div className={style.oneMember}>
@@ -125,12 +125,12 @@ function MemberListLol (props) {
       gold_per_min: 0,
       xp_per_min: 0,
       gold: 0,
-      item: [],
+      items: [],
       game_no: 0
     }
   })
   const [big, setBig] = useState(style.twoBig)
-  const item = propsVE.value.item.length ? propsVE.value.item : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
+  const item = propsVE.value.items.length ? propsVE.value.items : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
   const kda = propsVE.isBoth && toBigNumber((propsVE.value.kills + propsVE.value.assists) / propsVE.value.deaths * 3).toFormat(1)
   return <div className={style.oneMember}>
     <div>
@@ -257,19 +257,19 @@ export function OneMember (props) {
       // 队伍1是夜魔客队
       team2.logo = propsVE.matchList.host_team_logo
       team2.name = propsVE.matchList.host_team_name
-      team2.list = propsVE.matchList.team1_more_attr.players
+      team2.list = propsVE.matchResult.match_list.real_players[0] || []
 
       team1.logo = propsVE.matchList.guest_team_logo
       team1.name = propsVE.matchList.guest_team_name
-      team1.list = propsVE.matchList.team2_more_attr.players
+      team1.list = propsVE.matchResult.match_list.real_players[1] || []
     } else {
       team1.logo = propsVE.matchList.host_team_logo
       team1.name = propsVE.matchList.host_team_name
-      team1.list = propsVE.matchList.team1_more_attr.players
+      team1.list = propsVE.matchResult.match_list.real_players[0] || []
 
       team2.logo = propsVE.matchList.guest_team_logo
       team2.name = propsVE.matchList.guest_team_name
-      team2.list = propsVE.matchList.team2_more_attr.players
+      team2.list = propsVE.matchResult.match_list.real_players[1] || []
     }
   }
   return <div>
