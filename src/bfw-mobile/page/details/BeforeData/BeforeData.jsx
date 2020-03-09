@@ -40,16 +40,16 @@ function BeforeData (props) {
           <div>
             <Image src={[info1Ve.team_natural_info.icon, defImg3]} />
             <p className={styles.gray}>---%</p>
-            <p>{info1Ve.team_natural_info.full_name || '--'}</p>
+            <p>{info1Ve.team_natural_info.full_name || '暂无'}</p>
           </div>
           <div>
             <Image src={[info1Ve.team_restrain_info.icon, defImg3]} />
             <p className={styles.green}>---%</p>
-            <p>{info1Ve.team_restrain_info.name || '--'}</p>
+            <p>{info1Ve.team_restrain_info.name || '暂无'}</p>
           </div>
           <div>
             <p className={styles.blue}>
-              {info1Ve.win_info.winning_streak > 0 ? 'x' + info1Ve.win_info.num : null}
+              {info1Ve.win_info.winning_streak > 0 ? 'x' + info1Ve.win_info.num : '-'}
             </p>
           </div>
         </div>
@@ -61,16 +61,16 @@ function BeforeData (props) {
           <div>
             <Image src={[info2Ve.team_natural_info.icon, defImg3]} />
             <p className={styles.yellow}>---%</p>
-            <p>{info2Ve.team_natural_info.full_name || '--'}</p>
+            <p>{info2Ve.team_natural_info.full_name || '暂无'}</p>
           </div>
           <div>
             <Image src={[info2Ve.team_restrain_info.icon, defImg3]} />
             <p className={styles.green}>---%</p>
-            <p>{info2Ve.team_restrain_info.name || '--'}</p>
+            <p>{info2Ve.team_restrain_info.name || '暂无'}</p>
           </div>
           <div>
             <p className={styles.blue}>
-              {info2Ve.win_info.winning_streak > 0 ? 'x' + info2Ve.win_info.num : null}
+              {info2Ve.win_info.winning_streak > 0 ? 'x' + info2Ve.win_info.num : '-'}
             </p>
           </div>
         </div>

@@ -51,12 +51,7 @@ function FuturePvpList (props) {
       ]
     }
   }, [hostList, guestList, more1])
-  if (!hostList.length && !guestList.length) {
-    return <div className={stylesFuture.content}>
-      <PvpTitle title='未来赛程' />
-      <div className={stylesFuture.withOut}>暂无数据</div>
-    </div>
-  }
+
   return <div className={stylesFuture.content}>
     <PvpTitle title='未来赛程' />
     <div className={stylesFuture.container}>
@@ -68,6 +63,7 @@ function FuturePvpList (props) {
             <div className={styles.longRow}>联赛</div>
           </li>
           {host.map(initList)}
+          {!host.length && <li className={stylesFuture.withOut}>暂无数据</li>}
         </ul>
       </div>
       <div>
@@ -78,6 +74,7 @@ function FuturePvpList (props) {
             <div className={styles.longRow}>联赛</div>
           </li>
           {guest.map(initList)}
+          {!guest.length && <li className={stylesFuture.withOut}>暂无数据</li>}
         </ul>
       </div>
     </div>

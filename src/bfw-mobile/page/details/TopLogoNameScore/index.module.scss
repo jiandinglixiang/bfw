@@ -162,7 +162,7 @@
 
 .boutOver, .boutUnderway {
   flex: 1 1 auto;
-  padding: 0 5px;
+  padding: 2px 5px;
   line-height: 22px;
   text-align: center;
   border-radius: 11px;
@@ -178,7 +178,8 @@
 
 .boutUnderway {
   // 回合颜色
-  border: 2px solid #70F7E2;
+  background: url("../../../assets/xhdpi.gif") no-repeat center center transparent;
+  background-size: 100% 100%;
   color: white;
 }
 

@@ -96,11 +96,7 @@ function ListItem (props) {
   </li>
 }
 
-function Title () {
-  const [search] = useSearch()
-  const { gameId } = diffCatch(search)({
-    gameId: 0
-  })
+function Title ({ gameId }) {
   if (gameId === 2) {
     return (
       <li className={styles.contentTitle}>
@@ -131,23 +127,23 @@ function Title () {
   )
 }
 
-function initList (list, len, more, showMore) {
-  if (len) {
-    return <ul className={`${styles.publicClass} ${styles.compactRow}`}>
-      <Title />
+function initList (list, len, more, showMore, gameId) {
+  return (
+    <ul className={`${styles.publicClass} ${styles.compactRow}`}>
+      <Title gameId={gameId} />
+      {!len && <div className={styles2.noneAnyOne} />}
       {list.map((value, index) => <ListItem key={index} value={value} />)}
       {
         !more && len > 5 ? <li className={styles.moreList} onClick={() => showMore(!more)}>
           点击展开更多比赛
         </li> : null
       }
-    </ul>
-  }
-  return <div className={styles2.withOut}>暂无数据</div>
+    </ul>)
 }
 
 function HistoryPvpList (props) {
   const propsVE = useDiffCatch(props)({
+    gameId: 0,
     teamInfo: {},
     historyCompetition: {
       team1_history_competition: [],
@@ -174,10 +170,10 @@ function HistoryPvpList (props) {
     <PvpTitle title='历史比赛列表' />
     <div className={styles2.paddingTop15} />
     <TameNameLogo name={propsVE.teamInfo.team1.name} logo={propsVE.teamInfo.team1.logo} />
-    {initList(host, hostList.length, more1, showMore1)}
+    {initList(host, hostList.length, more1, showMore1, propsVE.gameId)}
     <div className={styles2.paddingTop15} />
     <TameNameLogo name={propsVE.teamInfo.team2.name} logo={propsVE.teamInfo.team2.logo} />
-    {initList(guest, guestList.length, more2, showMore2)}
+    {initList(guest, guestList.length, more2, showMore2, propsVE.gameId)}
   </div>
 }
 
@@ -188,3 +184,7 @@ TameNameLogo.propTypes = {
 }
 
 export default HistoryPvpList
+
+Title.propTypes = {
+  gameId: PropTypes.any
+}

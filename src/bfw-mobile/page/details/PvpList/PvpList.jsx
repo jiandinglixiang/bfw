@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import PvpTitle from '../PvpTitle/PvpTitle'
 import styles from './index.module.scss'
 import def from '../../../assets/default_team_60.png'
-import { diffCatch, formatDate, useSearch } from '../../../../tool/util'
+import { diffCatch, formatDate, PropTypes, useSearch } from '../../../../tool/util'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function ListItem (props) {
@@ -83,11 +83,7 @@ function ListItem (props) {
     </li>)
 }
 
-function Title () {
-  const [search] = useSearch()
-  const { gameId } = diffCatch(search)({
-    gameId: 0
-  })
+function Title ({ gameId }) {
   if (gameId === 2) {
     return (
       <li className={styles.contentTitle}>
@@ -117,7 +113,8 @@ function Title () {
 
 function PvpList (props) {
   const [more, showMore] = useState(false)
-  const { twoSidesConfrontation } = diffCatch(props)({
+  const { twoSidesConfrontation, gameId } = diffCatch(props)({
+    gameId: 0,
     twoSidesConfrontation: []
   })
   const list = useMemo(function () {
@@ -131,8 +128,9 @@ function PvpList (props) {
     <div className={styles.content}>
       <PvpTitle title='双方对阵列表' />
       <ul className={styles.publicClass}>
+        <Title gameId={gameId} />
         {
-          list.length ? <Title /> : <li className={styles.noneAnyOne} />
+          !list.length && <li className={styles.noneAnyOne} />
         }
         {
           list.map((value, index) => <ListItem value={value} key={index} />)
@@ -147,3 +145,7 @@ function PvpList (props) {
 }
 
 export default PvpList
+
+Title.propTypes = {
+  gameId: PropTypes.any
+}

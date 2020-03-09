@@ -205,12 +205,12 @@ function UnderwayCsGo (props) {
       <div className={styles.csgoScore}>
         <p><span>上半场</span><span>{moreAttr1.first_half_score || 0}-{moreAttr2.first_half_score || 0}</span></p>
       </div>
-      <p className={styles.score}>{gameData.team1_score}</p>
+      <p className={styles.score}>{gameData.team1_score || '-'}</p>
       <div className={styles.center}>
         <p>{firstHalf}</p>
         <p>{innings}</p>
       </div>
-      <p className={styles.score}>{gameData.team2_score}</p>
+      <p className={styles.score}>{gameData.team2_score || '-'}</p>
       <div className={styles.csgoScore}>
         <p><span>下半场</span><span>{moreAttr1.second_half_score || 0}-{moreAttr2.second_half_score || 0}</span></p>
       </div>

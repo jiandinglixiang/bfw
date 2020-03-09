@@ -65,8 +65,8 @@ function BothPage () {
       <div style={{ padding: '0 2%' }}>
         {equalStatus([0, 1, 3, 5]) && <TipTitle title={tipTile[0]} />}
         {equalStatus([1, 5]) && <LineChart isBoth endMatch={endMatchVE} />}
-        {equalStatus([1, 5]) && (<TipTitle title={tipTile[1]} />)}
-        <RadarChart endMatch={endMatchVE} />
+        {equalStatus([1, 5]) && <TipTitle title={tipTile[1]} />}
+        {equalStatus([1, 5]) && <RadarChart endMatch={endMatchVE} />}
         {
           equalStatus([1, 5]) && (
             <OneMember

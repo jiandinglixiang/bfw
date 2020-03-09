@@ -58,7 +58,15 @@ function OutTame (props) {
   if (withOut) {
     return <div className={stylesOutTame.content}>
       <PvpTitle title='出场名单' />
-      <div className={stylesOutTame.withOut}>暂无数据</div>
+      <div className={stylesOutTame.container}>
+        <div>
+          <TameNameLogo name={propsVE.teamInfo.team1.name} logo={propsVE.teamInfo.team1.logo} mode />
+        </div>
+        <div>
+          <TameNameLogo name={propsVE.teamInfo.team2.name} logo={propsVE.teamInfo.team2.logo} mode />
+        </div>
+      </div>
+      <div className={stylesOutTame.noneAnyOne} />
     </div>
   }
   return <div className={stylesOutTame.content}>
@@ -72,6 +80,7 @@ function OutTame (props) {
             <div className={styles.longRow}>名字/国籍</div>
           </li>
           {host.map(initList)}
+          {!host.length && <li className={stylesOutTame.withOut}>暂无数据</li>}
         </ul>
       </div>
       <div>
@@ -82,6 +91,7 @@ function OutTame (props) {
             <div className={styles.longRow}>名字/国籍</div>
           </li>
           {guest.map(initList)}
+          {!guest.length && <li className={stylesOutTame.withOut}>暂无数据</li>}
         </ul>
       </div>
     </div>

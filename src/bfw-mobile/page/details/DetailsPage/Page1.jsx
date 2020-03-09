@@ -52,9 +52,11 @@ function Page1 () {
       <BeforeData
         teamInfo={teamInfo}
         matchAnalysis={analysis.match_analysis} />
-      <PvpList twoSidesConfrontation={analysis.two_sides_confrontation} />
+      <PvpList gameId={search.gameId} twoSidesConfrontation={analysis.two_sides_confrontation} />
       <HistoryPvpList
-        teamInfo={teamInfo} historyCompetition={analysis.history_competition} />
+        gameId={search.gameId}
+        teamInfo={teamInfo}
+        historyCompetition={analysis.history_competition} />
       <FuturePvpList
         teamInfo={teamInfo} futureSchedule={analysis.future_schedule} />
       <OutTame

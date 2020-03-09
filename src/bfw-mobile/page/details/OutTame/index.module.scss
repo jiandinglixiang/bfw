@@ -1,10 +1,9 @@
 .content {
   overflow: hidden;
-  padding: 0 15px 15px 15px;
   background-color: #06051A;
 
   .container {
-    padding-top: 15px;
+    padding-top: 5px;
     display: flex;
     flex-flow: row nowrap;
     align-items: flex-start;
@@ -24,4 +23,20 @@
     line-height: 150px;
     color: #4F5975;
   }
+
+  .noneAnyOne {
+    &:after {
+      box-sizing: border-box;
+      content: '暂无数据';
+      display: block;
+      width: 100%;
+      padding-top: 100px;
+      height: 150px;
+      text-align: center;
+      background: url("../../../assets/default_nodata.png") no-repeat center 30px;
+      background-size: 65px 65px;
+      color: #4F5975;
+    }
+  }
+
 }

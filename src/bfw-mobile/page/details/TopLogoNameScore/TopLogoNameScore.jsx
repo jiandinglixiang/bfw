@@ -213,7 +213,7 @@ function timeToTxt (time, status) {
   return [`${time2}:${time - time2 * 60}`]
 }
 
-function csgoInit (team1, team2, round) {
+function csgoInit (team1, team2) {
   const data = {
     round: 0,
     overtime: false, // 加时赛
@@ -232,8 +232,7 @@ function csgoInit (team1, team2, round) {
       sum: 0
     }
   }
-  data.round = inning(round)
-  data.overtime = team1.is_over_time > 1 || team2.is_over_time > 1
+  data.overtime = team1.is_over_time > 0 || team2.is_over_time > 0
   // data.team1.name = team1.team_name
   // data.team2.name = team2.team_name
   data.team1.score = [team1.first_half_score, team1.second_half_score]
@@ -276,7 +275,9 @@ function csgoDataInit (matchList) {
   })
   const team1 = matchListVE.team1_more_attr
   const team2 = matchListVE.team2_more_attr
-  return csgoInit(team1, team2, matchListVE.current_round)
+  const data = csgoInit(team1, team2)
+  data.round = team1.round || team2.round // csgo不转换文字
+  return data
 }
 
 export function csgoBothInit (endMatch) {
@@ -306,7 +307,8 @@ export function csgoBothInit (endMatch) {
   })
   const team1 = endMatchVE.team1.other_more_attr
   const team2 = endMatchVE.team2.other_more_attr
-  const data = csgoInit(team1, team2, team1.round)
+  const data = csgoInit(team1, team2)
+  data.round = team1.current_round || team2.current_round // csgo不转换文字
   data.team1.name = endMatchVE.team1.team_name
   data.team2.name = endMatchVE.team2.team_name
   return data
