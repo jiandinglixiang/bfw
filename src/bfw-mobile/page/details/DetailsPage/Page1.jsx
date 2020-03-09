@@ -17,8 +17,10 @@ function Page1 () {
   const search = useMemo(function () {
     return queryToObj(location.search)
   }, [location.search])
+
   const [analysis] = analysisData.useStore()
   const [details] = detailsData.useStore()
+
   const teamInfo = useMemo(function () {
     const matchList = diffCatch(details.match_list)({
       host_team_name: '',
@@ -37,25 +39,28 @@ function Page1 () {
       }
     }
   }, [details.match_list])
+
   useEffect(function () {
     UseStore.getAnalysis(search.smid)
   }, [search.smid])
-  return <div>
-    <PvpStatistics
-      teamInfo={teamInfo}
-      confrontation={analysis.confrontation}
-      histotyConfrontationStatistics={analysis.histoty_confrontation_statistics} />
-    <BeforeData
-      teamInfo={teamInfo}
-      matchAnalysis={analysis.match_analysis} />
-    <PvpList twoSidesConfrontation={analysis.two_sides_confrontation} />
-    <HistoryPvpList
-      teamInfo={teamInfo} historyCompetition={analysis.history_competition} />
-    <FuturePvpList
-      teamInfo={teamInfo} futureSchedule={analysis.future_schedule} />
-    <OutTame
-      teamInfo={teamInfo} players={analysis.players} />
-  </div>
+  return (
+    <div>
+      <PvpStatistics
+        teamInfo={teamInfo}
+        confrontation={analysis.confrontation}
+        histotyConfrontationStatistics={analysis.histoty_confrontation_statistics} />
+      <BeforeData
+        teamInfo={teamInfo}
+        matchAnalysis={analysis.match_analysis} />
+      <PvpList twoSidesConfrontation={analysis.two_sides_confrontation} />
+      <HistoryPvpList
+        teamInfo={teamInfo} historyCompetition={analysis.history_competition} />
+      <FuturePvpList
+        teamInfo={teamInfo} futureSchedule={analysis.future_schedule} />
+      <OutTame
+        teamInfo={teamInfo} players={analysis.players} />
+    </div>
+  )
 }
 
 export default Page1

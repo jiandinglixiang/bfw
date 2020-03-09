@@ -5,6 +5,8 @@ import yemo from '../../../assets/nightdemon_type2.png'
 import { diffCatch, formatDate, inning, PropTypes, toBigNumber } from '../../../../tool/util.js'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
+import redImg from '../../../assets/redteam_type2.png'
+import blueImg from '../../../assets/blueteam_type2(1).png'
 import firstBlood from '../../../assets/firstblood.png'
 import deckills from '../../../assets/deckills.png'
 import fiveKills from '../../../assets/pentakills.png'
@@ -120,8 +122,13 @@ function GameUnderway (props) {
   const tameScoreColor = {}
   let teamSenteIcon = {}
   // 阵营识别 红方蓝方
-  teamFaction.team1 = propsVE.team1.camp === 1 ? yemo : tianhui
-  teamFaction.team2 = propsVE.team1.camp === 1 ? tianhui : yemo
+  if (propsVE.gameId === 5) {
+    teamFaction.team1 = propsVE.team1.camp === 1 ? yemo : tianhui
+    teamFaction.team2 = propsVE.team1.camp === 1 ? tianhui : yemo
+  } else if (propsVE.gameId === 1) {
+    teamFaction.team1 = propsVE.team1.camp === 1 ? blueImg : redImg
+    teamFaction.team2 = propsVE.team1.camp === 1 ? redImg : blueImg
+  }
   if (isBoth) {
     tameScoreColor.team1 = { color: propsVE.team1.isWin ? '#F9DF70' : '#85838F' }
     tameScoreColor.team2 = { color: propsVE.team2.isWin ? '#F9DF70' : '#85838F' }
