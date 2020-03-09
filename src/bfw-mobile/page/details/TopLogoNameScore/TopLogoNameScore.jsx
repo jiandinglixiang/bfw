@@ -2,8 +2,6 @@ import React from 'react'
 import styles from './index.module.scss'
 import tianhui from '../../../assets/tianhui_type2.png'
 import yemo from '../../../assets/nightdemon_type2.png'
-import redImg from '../../../assets/redteam_type2.png'
-import blueImg from '../../../assets/blueteam_type2(1).png'
 import { diffCatch, formatDate, inning, PropTypes, toBigNumber } from '../../../../tool/util.js'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
@@ -103,6 +101,7 @@ function GameUnderway (props) {
       name: '...',
       score: 0,
       sente: [],
+      isWin: false
     },
     team2: {
       camp: 0,
@@ -110,6 +109,7 @@ function GameUnderway (props) {
       name: '...',
       score: 0,
       sente: [],
+      isWin: false
     }
   })
   const isBoth = propsVE.isBoth || propsVE.isBottomBoth
@@ -120,17 +120,11 @@ function GameUnderway (props) {
   const tameScoreColor = {}
   let teamSenteIcon = {}
   // 阵营识别 红方蓝方
-  if (propsVE.gameId === 5) {
-    teamFaction.team1 = propsVE.team1.camp === 'dire' ? yemo : tianhui
-    teamFaction.team2 = propsVE.team1.camp === 'dire' ? tianhui : yemo
-  } else if (propsVE.gameId === 1) {
-    teamFaction.team1 = propsVE.team1.camp === 'blue' ? blueImg : redImg
-    teamFaction.team2 = propsVE.team1.camp === 'blue' ? redImg : blueImg
-  }
-
+  teamFaction.team1 = propsVE.team1.camp === 1 ? yemo : tianhui
+  teamFaction.team2 = propsVE.team1.camp === 1 ? tianhui : yemo
   if (isBoth) {
-    tameScoreColor.team1 = { color: propsVE.team1.score > propsVE.team2.score ? '#F9DF70' : '#85838F' }
-    tameScoreColor.team2 = { color: propsVE.team2.score > propsVE.team1.score ? '#F9DF70' : '#85838F' }
+    tameScoreColor.team1 = { color: propsVE.team1.isWin ? '#F9DF70' : '#85838F' }
+    tameScoreColor.team2 = { color: propsVE.team2.isWin ? '#F9DF70' : '#85838F' }
   }
   if ((isBoth || propsVE.underwayBP) && [1, 5].includes(propsVE.gameId)) {
     // lol dota
@@ -237,13 +231,13 @@ function csgoInit (team1, team2, round) {
   // data.team2.name = team2.team_name
   data.team1.score = [team1.first_half_score, team1.second_half_score]
   data.team2.score = [team2.first_half_score, team2.second_half_score]
-  data.team1.role = [team1.first_half_role === 'CT', team1.second_half_role === 'CT']
-  data.team2.role = [team2.first_half_role === 'T', team2.second_half_role === 'T']
+  data.team1.role = [team1.first_half_role === 'CT' ? 1 : 2, team1.second_half_role === 'T' ? 2 : 1]
+  data.team2.role = [team2.first_half_role === 'T' ? 2 : 1, team2.second_half_role === 'CT' ? 1 : 2]
   if (data.overtime) {
     data.team1.score.push(team1.over_time_score)
     data.team2.score.push(team2.over_time_score)
-    data.team1.role.push(team1.second_half_role === 'CT')
-    data.team2.role.push(team2.second_half_role === 'T')
+    data.team1.role.push(team1.second_half_role === 'CT' ? 1 : 2)
+    data.team2.role.push(team2.second_half_role === 'T' ? 2 : 1)
   }
   data.team1.sente = [team1.flag_r1 > 0, team1.flag_w5 > 0, team1.flag_r16 > 0]
   data.team2.sente = [team2.flag_r1 > 0, team2.flag_w5 > 0, team2.flag_r16 > 0]
@@ -320,11 +314,13 @@ function Both ({ data = {}, endMatch }) {
     },
     team1: {
       players: [],
-      ban: []
+      ban: [],
+      is_win: 0
     },
     team2: {
       players: [],
-      ban: []
+      ban: [],
+      is_win: 0
     },
   })
   // 小局页
@@ -337,13 +333,15 @@ function Both ({ data = {}, endMatch }) {
   data.team2.name = endMatchVE.team2.team_name
   data.team1.score = endMatchVE.team1.score
   data.team2.score = endMatchVE.team2.score
+  data.team1.isWin = endMatchVE.team1.is_win > 0
+  data.team2.isWin = endMatchVE.team2.is_win > 0
   data.round = !data.isBottomBoth && endMatchVE.team1.round && inning(endMatchVE.team1.round)
   data.time = timeToTxt(endMatchVE.poor_economy.time, data.status)
   data.gold = toBigNumber(endMatchVE.poor_economy.gold / 1000).toFormat(1)
   if (data.gameId === 5) {
     // dota阵营
-    data.team1.camp = endMatchVE.team1.camp && (endMatchVE.team1.camp === 'dire' ? 1 : 2)
-    data.team2.camp = endMatchVE.team2.camp && (endMatchVE.team2.camp === 'dire' ? 1 : 2)
+    data.team1.camp = endMatchVE.team1.other_more_attr.camp === 'dire' ? 1 : 2
+    data.team2.camp = endMatchVE.team2.other_more_attr.camp === 'dire' ? 1 : 2
     // 先手icon bool 数组
     data.team1.sente = [
       endMatchVE.team1.other_more_attr.is_first_blood > 0,
@@ -355,9 +353,9 @@ function Both ({ data = {}, endMatch }) {
     ]
   }
   if (data.gameId === 1) {
-    data.team1.camp = endMatchVE.team1.camp && (endMatchVE.team1.camp === 'blue' ? 1 : 2)
     // lol阵营
-    data.team2.camp = endMatchVE.team2.camp && (endMatchVE.team2.camp === 'blue' ? 1 : 2)
+    data.team1.camp = endMatchVE.team1.other_more_attr.camp === 'blue' ? 1 : 2
+    data.team2.camp = endMatchVE.team2.other_more_attr.camp === 'blue' ? 1 : 2
     data.team1.sente = [
       endMatchVE.team1.other_more_attr.first_kills > 0,
       endMatchVE.team1.other_more_attr.five_kills > 0,
@@ -407,7 +405,9 @@ function Match ({ data = {}, matchList }) {
       players: [],
       ban: []
     },
-    current_round: 0
+    current_round: 0,
+    team1_score: 0,
+    team2_score: 0
   })
   // 非小局 详情页
   data.status = matchList.status
@@ -418,9 +418,8 @@ function Match ({ data = {}, matchList }) {
   data.team2.name = matchList.guest_team_name
   if (data.status === 1) {
     // 非小局 进行中
-    const score = matchList.score.split(/,|:/)
-    data.team1.score = score[0]
-    data.team2.score = score[1]
+    data.team1.score = matchList.team1_score
+    data.team2.score = matchList.team2_score
     data.round = inning(matchList.current_round)
     data.time = timeToTxt(matchList.poor_economy.time, data.status)
     data.gold = toBigNumber(matchList.poor_economy.gold / 1000).toFormat(1)
@@ -431,9 +430,9 @@ function Match ({ data = {}, matchList }) {
     // 进行中 但没有选角色，没有ban
     if (data.gameId === 5) {
       // 非小局 进行中 游戏dota
-      data.team1.camp = matchList.team1_more_attr.other_more_attr.camp && (matchList.team1_more_attr.other_more_attr.camp === 'dire' ? 1 : 2)
       // 阵营dire=天辉
-      data.team2.camp = matchList.team2_more_attr.other_more_attr.camp && (matchList.team2_more_attr.other_more_attr.camp === 'dire' ? 1 : 2)
+      data.team1.camp = matchList.team1_more_attr.other_more_attr.camp === 'dire' ? 1 : 2
+      data.team2.camp = matchList.team2_more_attr.other_more_attr.camp === 'dire' ? 1 : 2
       // 先手icon bool 数组
       data.team1.sente = [
         matchList.team1_more_attr.other_more_attr.is_first_blood > 0,
@@ -452,9 +451,9 @@ function Match ({ data = {}, matchList }) {
     }
     if (data.gameId === 1) {
       // 非小局 进行中 游戏lol
-      data.team1.camp = matchList.team1_more_attr.other_more_attr.camp && (matchList.team1_more_attr.other_more_attr.camp === 'blue' ? 1 : 2)
       // 阵营blue=蓝方
-      data.team2.camp = matchList.team2_more_attr.other_more_attr.camp && (matchList.team2_more_attr.other_more_attr.camp === 'blue' ? 1 : 2)
+      data.team1.camp = matchList.team1_more_attr.other_more_attr.camp === 'blue' ? 1 : 2
+      data.team2.camp = matchList.team2_more_attr.other_more_attr.camp === 'blue' ? 1 : 2
       data.team1.sente = [
         matchList.team1_more_attr.other_more_attr.first_kills > 0,
         matchList.team1_more_attr.other_more_attr.five_kills > 0,

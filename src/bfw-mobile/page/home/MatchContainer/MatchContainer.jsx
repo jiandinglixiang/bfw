@@ -3,7 +3,7 @@ import InPlay from '../InPlay'
 import { fixedTopContentClass } from '../../../components/MatchTitle/MatchTitle'
 import styles from './index.module.scss'
 import NotStartedOrOver from '../NotStartedOrOver/NotStartedOrOver.jsx'
-import { useStoreHome } from '../UseStore.js'
+import { homeGameX } from '../UseStore.js'
 
 let time = null
 let nodeList = [] // dom集合
@@ -33,7 +33,7 @@ function onScroll () {
 }
 
 function MatchContainer () {
-  const [state] = useStoreHome()
+  const [state] = homeGameX.useStoreX()
   const stateVE = useMemo(function () {
     return [
       state.not_start_match_list[state.gameId + state.time],

@@ -58,7 +58,7 @@ function MemberList (props) {
     <div>
       <div className={big}>
         {value.logo ? <Image src={value.logo} /> : <span />}
-        <Image src={[value.champion_img, value.hero_logo, blueTeam ? def2 : def1]} />
+        <Image src={[value.hero_logo, blueTeam ? def2 : def1]} />
         <Image src={exch} onClick={() => setBig(big ? '' : style.twoBig)} />
       </div>
       <p>{value.name}</p>
@@ -115,7 +115,7 @@ function MemberListLol (props) {
     blueTeam: false,
     value: {
       name: '-',
-      hero_logo: '',
+      champion_img: '',
       logo: '',
       kills: 0,
       deaths: 0,
@@ -136,7 +136,7 @@ function MemberListLol (props) {
     <div>
       <div className={big}>
         {propsVE.value.logo ? <Image src={propsVE.value.logo} /> : <span />}
-        <Image src={propsVE.value.hero_logo || (propsVE.blueTeam ? def2 : def1)} />
+        <Image src={[propsVE.value.champion_img, propsVE.blueTeam ? def2 : def1]} />
         <Image src={exch} onClick={() => setBig(big ? '' : style.twoBig)} />
       </div>
       <p>{propsVE.value.name}</p>
@@ -254,9 +254,11 @@ export function OneMember (props) {
       camp = propsVE.matchList.team1_more_attr.other_more_attr.camp === 'blue'
     }
     if (camp) {
+      // 队伍1是夜魔客队
       team2.logo = propsVE.matchList.host_team_logo
       team2.name = propsVE.matchList.host_team_name
       team2.list = propsVE.matchList.team1_more_attr.players
+
       team1.logo = propsVE.matchList.guest_team_logo
       team1.name = propsVE.matchList.guest_team_name
       team1.list = propsVE.matchList.team2_more_attr.players
@@ -264,6 +266,7 @@ export function OneMember (props) {
       team1.logo = propsVE.matchList.host_team_logo
       team1.name = propsVE.matchList.host_team_name
       team1.list = propsVE.matchList.team1_more_attr.players
+
       team2.logo = propsVE.matchList.guest_team_logo
       team2.name = propsVE.matchList.guest_team_name
       team2.list = propsVE.matchList.team2_more_attr.players

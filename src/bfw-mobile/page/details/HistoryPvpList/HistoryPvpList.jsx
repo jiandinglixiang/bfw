@@ -2,9 +2,8 @@ import React, { useMemo, useState } from 'react'
 import PvpTitle from '../PvpTitle/PvpTitle'
 import styles from '../PvpList/index.module.scss'
 import def from '../../../assets/default_team_60.png'
-import { diffCatch, formatDate, PropTypes, useSearch } from '../../../../tool/util'
+import { diffCatch, formatDate, PropTypes, useDiffCatch, useSearch } from '../../../../tool/util'
 import styles2 from './index.module.scss'
-import { connect } from 'react-redux'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 export function TameNameLogo ({ name, logo, mode }) {
@@ -147,7 +146,16 @@ function initList (list, len, more, showMore) {
   return <div className={styles2.withOut}>暂无数据</div>
 }
 
-function HistoryPvpList ({ hostName, hostLogo, guestName, guestLogo, hostList, guestList }) {
+function HistoryPvpList (props) {
+  const propsVE = useDiffCatch(props)({
+    teamInfo: {},
+    historyCompetition: {
+      team1_history_competition: [],
+      team2_history_competition: [],
+    }
+  })
+  const hostList = propsVE.historyCompetition.team1_history_competition
+  const guestList = propsVE.historyCompetition.team2_history_competition
   const [more1, showMore1] = useState(false)
   const [more2, showMore2] = useState(false)
   const host = useMemo(function () {
@@ -165,35 +173,18 @@ function HistoryPvpList ({ hostName, hostLogo, guestName, guestLogo, hostList, g
   return <div className={styles.content}>
     <PvpTitle title='历史比赛列表' />
     <div className={styles2.paddingTop15} />
-    <TameNameLogo name={hostName} logo={hostLogo} />
+    <TameNameLogo name={propsVE.teamInfo.team1.name} logo={propsVE.teamInfo.team1.logo} />
     {initList(host, hostList.length, more1, showMore1)}
     <div className={styles2.paddingTop15} />
-    <TameNameLogo name={guestName} logo={guestLogo} />
+    <TameNameLogo name={propsVE.teamInfo.team2.name} logo={propsVE.teamInfo.team2.logo} />
     {initList(guest, guestList.length, more2, showMore2)}
   </div>
 }
 
-HistoryPvpList.propTypes = {
-  hostName: PropTypes.string,
-  hostLogo: PropTypes.string,
-  guestName: PropTypes.string,
-  guestLogo: PropTypes.string,
-  hostList: PropTypes.array,
-  guestList: PropTypes.array
-}
 TameNameLogo.propTypes = {
   name: PropTypes.string,
   logo: PropTypes.string,
   mode: PropTypes.bool
 }
 
-export default connect(function (state) {
-  return {
-    hostName: state.details.matchList.host_team_name,
-    hostLogo: state.details.matchList.host_team_logo,
-    guestName: state.details.matchList.guest_team_name,
-    guestLogo: state.details.matchList.guest_team_logo,
-    hostList: state.details.history_competition.team1_history_competition || [],
-    guestList: state.details.history_competition.team2_history_competition || []
-  }
-})(HistoryPvpList)
+export default HistoryPvpList

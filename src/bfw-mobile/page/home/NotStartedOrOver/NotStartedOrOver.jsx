@@ -56,7 +56,12 @@ function ScheduleList (props) {
     const time = formatDate3(value.game_start_time)
     return <ul key={index}>
       <TryCatch>
-        <GameTitle gameName={value.game_name} icon={value.icon} time={`${value.match_rules} ${time}`} />
+        <GameTitle
+          gameId={value.game_type_id}
+          gameName={value.game_name}
+          icon={value.icon}
+          time={`${value.match_rules} ${time}`}
+        />
         <ScheduleBody gameData={value} isOver={propsVE.isOver} />
       </TryCatch>
     </ul>

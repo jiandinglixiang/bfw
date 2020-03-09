@@ -1,43 +1,45 @@
-import React, { useEffect } from 'react'
-import { diffCatch, useSearch } from '../../../../tool/util'
+import React, { useMemo } from 'react'
+import { diffCatch, queryToObj } from '../../../../tool/util'
 import TipTitle from '../TipTitle/TipTitle.jsx'
 import LineChart from '../LineChart/LineChart.jsx'
 import CsGoMapImg from '../CsGoMapImg/CsGoMapImg.jsx'
 import RadarChart from '../RadarChart/RadarChart.jsx'
 import TopLogoNameScore from '../TopLogoNameScore/TopLogoNameScore.jsx'
-import styles from '../index.module.scss'
-import http from '../../../../tool/http.js'
-import { store } from '../../../redux.js'
-import { setMatchResult } from '../store.js'
-import { connect } from 'react-redux'
 import { comparisonUtil } from '../details.jsx'
-import HeadBar from '../../../components/HeadBar/HeadBar.jsx'
 import OneMember from '../OneMember/OneMember.jsx'
+import { useLocation } from 'react-router-dom'
+import UseStore, { detailsData, underwayData } from '../UseStore.js'
 
-function BothPage (props) {
+async function getData (smid) {
+  await UseStore.getDetails(smid)
+  const details = detailsData.getStore()
+  UseStore.getMatchData(smid, details.match_list.current_round)
+}
+
+function BothPage () {
   // 历史数据
-  const [search] = useSearch()
+  const location = useLocation()
+  const [matchResult] = underwayData.useStore()
+
+  const search = useMemo(function () {
+    return queryToObj(location.search)
+  }, [location.search])
   const searchVE = diffCatch(search)({
     round: 0,
-    gameName: '',
-    smid: ''
+    matchName: '',
+    smid: '',
+    gameId: 0
   })
-  const propsVE = diffCatch(props)({
-    matchResult: {
-      match_list: {
-        end_match: [],
-      }
-    }
-  })
-  useEffect(() => {
-    if (!propsVE.matchResult.match_list.end_match.length) {
-      http.getMatchData(searchVE.smid, searchVE.round).then((value) => {
-        store.dispatch(setMatchResult({ matchResult: value }))
-      })
-    }
-  }, [searchVE.smid, searchVE.round, propsVE.matchResult.match_list.end_match.length])
 
-  const endMatch = propsVE.matchResult.match_list.end_match.find(value => {
+  if (!matchResult.match_list.end_match) {
+    getData(searchVE.smid)
+  }
+
+  const propsVE = diffCatch(matchResult.match_list)({
+    end_match: [],
+  })
+
+  const endMatch = propsVE.end_match.find(value => {
     const valueVE = diffCatch(value)({ team1: { round: 0 } })
     return valueVE.team1.round === searchVE.round
   })
@@ -58,8 +60,7 @@ function BothPage (props) {
     tipTile[0] = '对战交锋数据'
   }
   return (
-    <div className={styles['game-rear-' + endMatchVE.team1.game_type_id]}>
-      <HeadBar title={searchVE.gameName} />
+    <div>
       <TopLogoNameScore isBoth endMatch={endMatchVE} />
       <div style={{ padding: '0 2%' }}>
         {equalStatus([0, 1, 3, 5]) && <TipTitle title={tipTile[0]} />}
@@ -83,10 +84,4 @@ function BothPage (props) {
     </div>)
 }
 
-function mapStateToProps (state) {
-  return {
-    matchResult: state.details.matchResult
-  }
-}
-
-export default connect(mapStateToProps)(BothPage)
+export default BothPage

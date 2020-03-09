@@ -3,7 +3,7 @@ import liveBtnOn from '../../../assets/btn_live_on.png'
 import { Icon, Modal } from 'antd-mobile'
 import styles from './index.module.scss'
 import { useDiffCatch } from '../../../../tool/util.js'
-import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
+import { Divs, Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function onPress (value) {
   window.open(value.live_h5_url || value.live_url, '_blank')
@@ -12,7 +12,7 @@ function LiveButton (props) {
   const [show, changShow] = useState(false)
   const { liveList } = useDiffCatch(props)({ liveList: [] })
   return (
-    <div style={{ textAlign: 'center' }}>
+    <Divs hide={!liveList.length} style={{ textAlign: 'center' }}>
       <Image onClick={() => changShow(!show)} src={liveBtnOn} width='80' height='30' />
       <Modal
         visible={show}
@@ -32,7 +32,7 @@ function LiveButton (props) {
           }
         </div>
       </Modal>
-    </div>
+    </Divs>
   )
 }
 

@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import HeadBar from '../../components/HeadBar/HeadBar.jsx'
 import styles from './index.module.scss'
-import { store } from '../../redux'
-import { getMatchDetailsAsync } from './store'
-import { diffCatch, PropTypes, useSearch } from '../../../tool/util.js'
+import { queryToObj, useDiffCatch } from '../../../tool/util.js'
 import TopLogoNameScore from './TopLogoNameScore/TopLogoNameScore.jsx'
-import { connect } from 'react-redux'
 import Page0 from './DetailsPage/Page0.jsx'
 import Page1 from './DetailsPage/Page1.jsx'
 import Page2 from './DetailsPage/Page2.jsx'
 import LiveButton from './LiveButton/LiveButton.jsx'
-
-function equalActive (index, eq) {
-  return index === eq ? styles.active : ''
-}
+import { Route, Switch, useLocation } from 'react-router-dom'
+import BothPage from './DetailsPage/BothPage.jsx'
+import UseStore, { detailsData } from './UseStore.js'
+import { Divs } from '../../components/BasicsHtml/BasicsHtml.jsx'
 
 export function comparisonUtil (gameId, gameStatus) {
   // equalStatus
@@ -37,88 +34,88 @@ export function comparisonUtil (gameId, gameStatus) {
   }
 }
 
-function TabsList ({ gameOver, index, updateIndex }) {
-  return <div className={styles.tabsList}>
-    <div
-      className={equalActive(index, 0)}
-      onClick={() => updateIndex(0)}>
-      <p>指数分析</p>
-    </div>
-    <div
-      className={equalActive(index, 1)}
-      onClick={() => updateIndex(1)}>
-      <p>历史数据</p>
-    </div>
-    <div
-      className={equalActive(index, 2)}
-      onClick={() => updateIndex(2)}>
-      <p>{gameOver ? '赛果' : '赛况'}</p>
-    </div>
-  </div>
-}
-
-function Details (props) {
-  const [search] = useSearch()
-  const [tabIndex, update] = useState(0)
-  useEffect(() => {
-    const time = setInterval(function () {
-      store.dispatch(getMatchDetailsAsync(search.smid))
-    }, 5000)
-    store.dispatch(getMatchDetailsAsync(search.smid))
-    window.scrollTo(0, 0)
-    return function () {
-      clearTimeout(time)
-    }
-  }, [search.smid])
-  const { matchList, liveList } = diffCatch(props)({
-    liveList: [],
-    matchList: {
-      game_name: '',
-      game_type_id: 0,
-      odds_list: [],
-      score_list: [],
-      status: 0 // 状态 0：未开始 1：进行中 2：已结束
+function TabsList () {
+  const [state] = detailsData.useStore()
+  const stateVE = useDiffCatch(state)({
+    match_list: {
+      status: 0,
+      odds_list: []
     }
   })
+  const [tabIndex, update] = useState(0)
   return (
-    <div className={styles['game-rear-' + matchList.game_type_id]}>
-      <HeadBar title={matchList.game_name} />
+    <div>
+      <div className={styles.tabsList}>
+        <Divs
+          className={tabIndex === 0 && styles.active}
+          onClick={() => update(0)}>
+          <p>指数分析</p>
+        </Divs>
+        <Divs
+          className={tabIndex === 1 && styles.active}
+          onClick={() => update(1)}>
+          <p>历史数据</p>
+        </Divs>
+        <Divs
+          className={tabIndex === 2 && styles.active}
+          onClick={() => update(2)}>
+          <p>{stateVE.match_list.status === 2 ? '赛果' : '赛况'}</p>
+        </Divs>
+      </div>
+      <div className={styles.paddingBody + ' ' + styles.paddingBody2}>
+        <div style={{ display: tabIndex === 0 ? 'block' : 'none' }}>
+          <Page0 oddList={stateVE.match_list.odds_list} />
+        </div>
+        {
+          tabIndex === 1 && <Page1 />
+        }
+        {
+          tabIndex === 2 && <Page2 />
+        }
+      </div>
+    </div>)
+}
+
+function Details () {
+  const [state] = detailsData.useStore()
+  return (
+    <div>
       <div style={{
         paddingTop: '16px',
         minHeight: '121px'
       }}>
-        <TopLogoNameScore matchList={matchList} />
-        {!!liveList.length && <LiveButton liveList={liveList} />}
+        <TopLogoNameScore matchList={state.match_list} />
+        <LiveButton liveList={state.live_list} />
       </div>
-      <TabsList
-        gameOver={matchList.status === 2}
-        index={tabIndex}
-        updateIndex={update}
-      />
-      <div className={styles.paddingBody + ' ' + styles.paddingBody2}>
-        <div style={{ display: tabIndex === 0 ? 'block' : 'none' }}>
-          <Page0 oddList={matchList.odds_list} />
-        </div>
-        {
-          tabIndex === 1 && <Page1 matchList={matchList} smid={matchList.smid} />
-        }
-        {
-          tabIndex === 2 && <Page2 matchList={matchList} smid={matchList.smid} />
-        }
-      </div>
+      <TabsList />
     </div>
   )
 }
 
-export default connect(function (state) {
-  return {
-    liveList: state.details.liveList,
-    matchList: state.details.matchList
-  }
-})(Details)
+function DetailsContainer () {
+  const location = useLocation()
+  const search = useMemo(function () {
+    return queryToObj(location.search)
+  }, [location.search])
 
-TabsList.propTypes = {
-  gameOver: PropTypes.bool,
-  index: PropTypes.number,
-  updateIndex: PropTypes.func
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    const time = setInterval(function () {
+      // UseStore.getDetails(search.smid)
+    }, 5000)
+    UseStore.getDetails(search.smid)
+    return function () {
+      clearTimeout(time)
+    }
+  }, [search])
+  return (
+    <div className={styles['game-rear-' + search.gameId]}>
+      <HeadBar title={search.matchName} />
+      <Switch>
+        <Route path='/details/both'><BothPage search={search} /></Route>
+        <Route path='/details'><Details search={search} /></Route>
+      </Switch>
+    </div>)
 }
+
+export default DetailsContainer

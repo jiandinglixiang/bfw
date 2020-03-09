@@ -16,14 +16,14 @@ function CsGoNowStatus (props) {
     team1: {
       name: '',
       score: [0, 0],
-      role: [false, false],
+      role: [0, 0],
       sente: [],
       sum: 0
     },
     team2: {
       name: '',
       score: [],
-      role: [false, false],
+      role: [0, 0],
       sente: [],
       sum: 0
     }
@@ -58,8 +58,9 @@ function CsGoNowStatus (props) {
       <div className={styles.factionIcon}>
         {
           propsVE.team1.role.map((value, index) => {
+            const camp = value ? value === 1 ? terrorists : counter : index ? terrorists : counter
             return <div key={index}>
-              <Image src={value ? terrorists : counter} />
+              <Image src={camp} />
             </div>
           })
         }
@@ -86,8 +87,9 @@ function CsGoNowStatus (props) {
       <div className={styles.factionIcon}>
         {
           propsVE.team2.role.map((value, index) => {
+            const camp = value ? value === 1 ? terrorists : counter : !index ? terrorists : counter
             return <div key={index}>
-              <Image src={value ? counter : terrorists} />
+              <Image src={camp} />
             </div>
           })
         }

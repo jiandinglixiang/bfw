@@ -1,6 +1,6 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { diffCatch, inning, useSearch } from '../../../../tool/util.js'
+import { useHistory, useLocation } from 'react-router-dom'
+import { diffCatch, inning } from '../../../../tool/util.js'
 import TipTitle from '../TipTitle/TipTitle.jsx'
 import BoutTitleBar from '../BoutTitleBar/BoutTitleBar.jsx'
 import BPList from '../BPList/BPList.jsx'
@@ -79,7 +79,7 @@ function BothItem2 (props) {
 function Kotsubone (props) {
   // 赛况/赛果 列表
   const history = useHistory()
-  const [search] = useSearch()
+  const location = useLocation()
 
   const propsVE = diffCatch(props)({
     matchList: {}, // 赛程
@@ -90,12 +90,8 @@ function Kotsubone (props) {
     } // 赛况赛果
   })
 
-  function goBoth (value) {
-    const query = new URLSearchParams()
-    query.append('smid', search.smid)
-    query.append('round', value.team1.round)
-    query.append('gameName', propsVE.matchList.game_name)
-    history.push('/details/both?' + query.toString())
+  function goBoth (round) {
+    history.push(`/details/both${location.search}&round=${round}`)
   }
 
   const endMatch = propsVE.matchResult.match_list.end_match
@@ -112,7 +108,7 @@ function Kotsubone (props) {
         const round = inning(valueVE.team1.round)
         const winName = valueVE.team1.is_win > 1 ? valueVE.team1.team_name : valueVE.team2.team_name
         return (
-          <li key={index} onClick={() => goBoth(value)}>
+          <li key={index} onClick={() => goBoth(valueVE.team1.round)}>
             {
               !propsVE.gameOver && [
                 <div key='0' style={{ height: '12px' }} />,

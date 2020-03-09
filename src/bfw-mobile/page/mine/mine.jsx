@@ -4,19 +4,11 @@ import defaultImg from '../../assets/default_100.png'
 import password from '../../assets/modify_password.png'
 import { Link } from 'react-router-dom'
 import { Modal } from 'antd-mobile'
-import { PropTypes } from '../../../tool/util.js'
-import { connect } from 'react-redux'
 import { Divs, Image, Pars, Text } from '../../components/BasicsHtml/BasicsHtml.jsx'
 
-function Mine (props) {
-  const { width, height, } = props
-  const autoWidth = {
-    width: `${width}px`,
-    minHeight: `${height - 40}px`,
-    backgroundColor: ' #06051A'
-  }
+function Mine () {
   const [showModal, changShow] = useState(false)
-  return <Divs style={autoWidth}>
+  return <Divs>
     <Divs className={styles.topHead}>
       <Image src={defaultImg} />
       <Divs><Pars>PDD没有人鱼线</Pars><Text /></Divs>
@@ -54,22 +46,4 @@ function Mine (props) {
   </Divs>
 }
 
-Mine.propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
-  dispatch: PropTypes.func,
-}
-
-function mapStateToProps (state) {
-  return {
-    width: state.device.width,
-    height: state.device.height,
-    bannerList: state.home.bannerList,
-  }
-}
-
-export default connect(mapStateToProps,
-  function (dispatch) {
-    return { dispatch }
-  },
-)(Mine)
+export default Mine

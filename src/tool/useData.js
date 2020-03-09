@@ -91,7 +91,7 @@ function loadLoop (mapLoop, func) {
 export function createUseStore (state) {
   const mapLoop = new Map()
 
-  function setState (data) {
+  function setStore (data) {
     const ret = typeof data === 'function' ? data(state) : data
     eqType(ret, state)
     if (Object.is(ret, state)) {
@@ -105,7 +105,7 @@ export function createUseStore (state) {
     return state
   }
 
-  return [(filterFunc) => {
+  const useStore = [(filterFunc) => {
     if (process.env.NODE_ENV !== 'production') {
       if (filterFunc !== undefined && typeof filterFunc !== 'function') {
         throw Error('filterFunc必须是函数')
@@ -115,10 +115,15 @@ export function createUseStore (state) {
     useEffect(loadLoop.bind(null, mapLoop, func), [func])
     if (typeof filterFunc === 'function') {
       const newValue = useMemo(privatization.bind(null, value, filterFunc), [value])
-      return [newValue, setState]
+      return [newValue, setStore]
     }
-    return [value, setState]
-  }, setState, () => state]
+    return [value, setStore]
+  }]
+  return {
+    useStore: useStore[0],
+    setStore,
+    getStore: () => state
+  }
 }
 
 export function createUseReducer (reducer, state) {
@@ -153,9 +158,9 @@ export function createUseReducer (reducer, state) {
     }
   }]
   return {
-    useStore: useStore[0],
-    dispatchFunc,
-    getState: () => state
+    useStoreX: useStore[0],
+    dispatchX: dispatchFunc,
+    getStoreX: () => state
   }
 }
 

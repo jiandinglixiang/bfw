@@ -4,8 +4,7 @@ import stylesOutTame from './index.module.scss'
 import { TameNameLogo } from '../HistoryPvpList/HistoryPvpList'
 import styles from '../PvpList/index.module.scss'
 import def from '../../../assets/default_team_60.png'
-import { PropTypes } from '../../../../tool/util'
-import { connect } from 'react-redux'
+import { useDiffCatch } from '../../../../tool/util'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function initList (value, index) {
@@ -28,7 +27,17 @@ function initList (value, index) {
   </li>
 }
 
-function OutTame ({ hostName, hostLogo, guestName, guestLogo, hostList, guestList }) {
+function OutTame (props) {
+  const propsVE = useDiffCatch(props)({
+    teamInfo: {},
+    players: {
+      team1_players: [],
+      team2_players: [],
+    }
+  })
+  const hostList = propsVE.players.team1_players
+  const guestList = propsVE.players.team2_players
+
   const [host, guest, withOut] = useMemo(function () {
     // 补齐一样长度
     const diff = hostList.length > guestList.length
@@ -56,7 +65,7 @@ function OutTame ({ hostName, hostLogo, guestName, guestLogo, hostList, guestLis
     <PvpTitle title='出场名单' />
     <div className={stylesOutTame.container}>
       <div>
-        <TameNameLogo name={hostName} logo={hostLogo} mode />
+        <TameNameLogo name={propsVE.teamInfo.team1.name} logo={propsVE.teamInfo.team1.logo} mode />
         <ul className={styles.publicClass}>
           <li className={styles.contentTitle}>
             <div>头像</div>
@@ -66,7 +75,7 @@ function OutTame ({ hostName, hostLogo, guestName, guestLogo, hostList, guestLis
         </ul>
       </div>
       <div>
-        <TameNameLogo name={guestName} logo={guestLogo} mode />
+        <TameNameLogo name={propsVE.teamInfo.team2.name} logo={propsVE.teamInfo.team2.logo} mode />
         <ul className={styles.publicClass}>
           <li className={styles.contentTitle}>
             <div>头像</div>
@@ -79,21 +88,4 @@ function OutTame ({ hostName, hostLogo, guestName, guestLogo, hostList, guestLis
   </div>
 }
 
-OutTame.propTypes = {
-  hostName: PropTypes.string,
-  hostLogo: PropTypes.string,
-  guestName: PropTypes.string,
-  guestLogo: PropTypes.string,
-  hostList: PropTypes.array,
-  guestList: PropTypes.array
-}
-export default connect(function (state) {
-  return {
-    hostName: state.details.matchList.host_team_name,
-    hostLogo: state.details.matchList.host_team_logo,
-    guestName: state.details.matchList.guest_team_name,
-    guestLogo: state.details.matchList.guest_team_logo,
-    hostList: state.details.players.team1_players || [],
-    guestList: state.details.players.team2_players || []
-  }
-})(OutTame)
+export default OutTame

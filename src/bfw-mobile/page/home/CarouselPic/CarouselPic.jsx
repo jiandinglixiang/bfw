@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import styles from './index.module.scss'
 import { Carousel } from 'antd-mobile'
-import { useStoreMenu } from '../UseStore.js'
+import { homeMenuData } from '../UseStore.js'
 
 function CarouselPic (props) {
-  const [state] = useStoreMenu()
+  const [state] = homeMenuData.useStore()
   const [autoplay, setAuto] = useState(false)
   return <div className={styles.content}>
     <Carousel

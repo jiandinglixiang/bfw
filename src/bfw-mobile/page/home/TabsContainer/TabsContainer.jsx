@@ -6,15 +6,15 @@ import PickerCustom from '../PickerCustom/PickerCustom'
 import moment from 'moment'
 import CountDown from '../CountDown/CountDown'
 import { Divs, Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
-import UseStore, { useStoreHome, useStoreMenu } from '../UseStore.js'
+import UseStore, { homeGameX, homeMenuData } from '../UseStore.js'
 
 let timeOut
 const dayTime = moment(Date.now()).format('YYYY-MM-DD')
 
 function TabsContainer () {
   const ref = useRef()
-  const [state] = useStoreMenu()
-  const [homeState, homeDispatch] = useStoreHome()
+  const [state] = homeMenuData.useStore()
+  const [homeState, homeDispatch] = homeGameX.useStoreX()
   const [menuState, setMenuState] = useState(0)
   // const [pickerTime, setPickerTime] = useState(new Date(Date.now()))
   useEffect(() => {
@@ -72,6 +72,11 @@ function TabsContainer () {
                       if (menuState === 2) setMenuState(1)
                       if (value.id === homeState.gameId) return
                       UseStore.getScheduleList(value.id, homeState.time)
+                      homeDispatch({
+                        type: 'GAME_ID_UPDATE',
+                        gameId: value.id,
+                        gameStatus: 0, // 赛程赛果
+                      })
                     }}>
                     {value.game_name}
                   </Divs>
@@ -111,9 +116,14 @@ function TabsContainer () {
               title='选者日期'
               value={new Date(Date.now())}
               onChange={(value) => {
-                const date = moment(value)
+                const date = moment(value).format('YYYY-MM-DD')
                 // setPickerTime(date.toDate())
-                UseStore.getScheduleList(homeState.gameId, date.format('YYYY-MM-DD'))
+                UseStore.getScheduleList(homeState.gameId, date)
+                homeDispatch({
+                  type: 'TIME_UPDATE',
+                  time: date,
+                  gameStatus: 0, // 赛程赛果
+                })
               }}
             >
               <PickerCustom />

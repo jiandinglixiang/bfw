@@ -1,70 +1,73 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { PropTypes } from '../../../tool/util.js'
 
 function filterBool (x) {
   return !!x
 }
 
-function useMemo2 (className) {
-  return useMemo(function () {
-    if (className) {
-      if (Array.isArray(className)) {
-        return className.filter(filterBool).join(' ')
+function useMemo2 (props) {
+  const className = useMemo(function () {
+    if (props.className) {
+      if (Array.isArray(props.className)) {
+        return props.className.filter(filterBool).join(' ')
       }
-      return className
-    } else {
-      return ''
+      return props.className
     }
-  }, [className])
+    return null
+  }, [props.className])
+  return useMemo(function () {
+    const attrs = { ...props }
+    if (attrs.className !== undefined) {
+      attrs.className = className
+    }
+    if (attrs.hide !== undefined) {
+      attrs.hide = null
+    }
+    return attrs
+  }, [props, className])
 }
 
-export function Divs (props = {}) {
-  const className = useMemo2(props.className)
-  if (props.hide) {
-    return null
-  }
+export function Divs (props) {
+  const attrs = useMemo2(props)
+  if (props.hide) return null
   return (
-    <div {...props} className={className}>
+    <div {...attrs}>
       {props.children}
     </div>
   )
 }
 
 export function Pars (props = {}) {
-  const className = useMemo2(props.className)
-  if (props.hide) {
-    return null
-  }
+  const attrs = useMemo2(props)
+  if (props.hide) return null
   return (
-    <p {...props} className={className}>
+    <p {...attrs}>
       {props.children}
     </p>
   )
 }
 
 export function Text (props = {}) {
-  const className = useMemo2(props.className)
-  if (props.hide) {
-    return null
-  }
+  const attrs = useMemo2(props)
+  if (props.hide) return null
   return (
-    <span {...props} className={className}>
+    <span {...attrs}>
       {props.children}
     </span>
   )
 }
 
 export function Image (props = {}) {
-  const className = useMemo2(props.className)
-  const isArray = Array.isArray(props.src)
-  const [src, updateSrc] = useState(isArray ? props.src.find(filterBool) : props.src)
-  if (props.hide) {
-    return null
-  }
+  const attrs = useMemo2(props)
+  const isArray = Array.isArray(attrs.src)
+  const [src, updateSrc] = useState(isArray ? attrs.src.find(filterBool) : attrs.src)
+  useEffect(function () {
+    updateSrc(isArray ? attrs.src.find(filterBool) : attrs.src)
+  }, [isArray, attrs.src])
+  if (props.hide) return null
   return (
     <img
-      {...props}
-      className={className}
+      {...attrs}
       src={src}
       alt=''
       onError={() => {

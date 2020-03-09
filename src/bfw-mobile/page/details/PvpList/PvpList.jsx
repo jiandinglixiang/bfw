@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react'
 import PvpTitle from '../PvpTitle/PvpTitle'
 import styles from './index.module.scss'
 import def from '../../../assets/default_team_60.png'
-import { connect } from 'react-redux'
 import { diffCatch, formatDate, useSearch } from '../../../../tool/util'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
@@ -147,11 +146,4 @@ function PvpList (props) {
     </div>)
 }
 
-PvpList.propTypes = {
-  // twoSidesConfrontation: PropTypes.any
-}
-export default connect(function (state) {
-  return {
-    twoSidesConfrontation: state.details.two_sides_confrontation
-  }
-})(PvpList)
+export default PvpList

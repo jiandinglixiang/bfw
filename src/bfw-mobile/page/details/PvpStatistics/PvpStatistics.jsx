@@ -60,27 +60,27 @@ function confrontationMap (confrontation) {
 }
 
 function PvpStatistics (props) {
-  const { confrontation, historyConfrontation, matchList } = diffCatch(props)({
+  const { teamInfo, confrontation, histotyConfrontationStatistics } = diffCatch(props)({
+    teamInfo: {},
     confrontation: [],
-    historyConfrontation: [],
-    matchList: {}
+    histotyConfrontationStatistics: [],
   })
   return <div className={styles.content}>
     <PvpTitle title='对战交锋数据' />
     <div className={styles.tameNames}>
-      <p>{matchList.host_team_name}</p>
-      <p>{matchList.guest_team_name}</p>
+      <p>{teamInfo.team1.name}</p>
+      <p>{teamInfo.team2.name}</p>
     </div>
     <ul>
       {confrontationMap(confrontation)}
     </ul>
     <PvpTitle title='历史对战数据统计' />
     <div className={styles.tameNames}>
-      <p>{matchList.host_team_name}</p>
-      <p>{matchList.guest_team_name}</p>
+      <p>{teamInfo.team1.name}</p>
+      <p>{teamInfo.team2.name}</p>
     </div>
     <ul>
-      {confrontationMap(historyConfrontation)}
+      {confrontationMap(histotyConfrontationStatistics)}
     </ul>
   </div>
 }

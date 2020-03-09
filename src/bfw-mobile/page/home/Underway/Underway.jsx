@@ -32,10 +32,10 @@ function FullScore ({ scoreList }) {
   return <p><span>{arr[0]}</span><span>-</span><span>{arr[1]}</span></p>
 }
 
-function HeroList ({ arrIcon = [] }) {
+function HeroList ({ arrIcon = [], iconKey = '' }) {
   return [0, 1, 2, 3, 4].map(index => {
-    if (arrIcon[index] && arrIcon[index].hero_logo) {
-      return <Image key={index} src={arrIcon[index].hero_logo} />
+    if (arrIcon[index] && arrIcon[index][iconKey]) {
+      return <Image key={index} src={arrIcon[index][iconKey]} />
     }
     return <span key={index} />
   })
@@ -112,7 +112,7 @@ function UnderwayDota (props) {
     </div>
     <div className={styles.pvpNowStatus}>
       <div className={styles.teamIcon1}>
-        <HeroList arrIcon={gameData.team1_more_attr.players} />
+        <HeroList arrIcon={gameData.team1_more_attr.players} iconKey='hero_logo' />
       </div>
       <p className={styles.score}>{gameData.team1_score || '-'}</p>
       <div className={styles.center}>
@@ -120,7 +120,7 @@ function UnderwayDota (props) {
       </div>
       <p className={styles.score}>{gameData.team2_score || '-'}</p>
       <div className={styles.teamIcon2}>
-        <HeroList arrIcon={gameData.team2_more_attr.players} />
+        <HeroList arrIcon={gameData.team2_more_attr.players} iconKey='hero_logo' />
       </div>
     </div>
   </div>
@@ -290,7 +290,7 @@ function UnderwayLol (props) {
     </div>
     <div className={styles.pvpNowStatus}>
       <div className={styles.teamIcon1}>
-        <HeroList arrIcon={gameData.team1_more_attr.players} />
+        <HeroList arrIcon={gameData.team1_more_attr.players} iconKey='champion_img' />
       </div>
       <p className={styles.score}>{gameData.team1_score || '-'}</p>
       <div className={styles.center}>
@@ -298,7 +298,7 @@ function UnderwayLol (props) {
       </div>
       <p className={styles.score}>{gameData.team2_score || '-'}</p>
       <div className={styles.teamIcon2}>
-        <HeroList arrIcon={gameData.team2_more_attr.players} />
+        <HeroList arrIcon={gameData.team2_more_attr.players} iconKey='champion_img' />
       </div>
     </div>
   </div>
@@ -353,6 +353,7 @@ function Underway (props) {
   const history = useHistory()
   const propsVE = useDiffCatch(props)({ gameData: { game_type_id: 0 } })
 
+  // console.log('变化')
   function f () {
     switch (propsVE.gameData.game_type_id) {
       case 5:

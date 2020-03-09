@@ -145,10 +145,10 @@ function MatchTable ({ team2Table, team1Table }) {
                     className={styles.haemalStrandIcon}
                     style={{
                       backgroundColor: backColor(valueVE.hp),
-                      width: hpInit(valueVE.hp)
+                      width: hpInit(valueVE.hp) + '%'
                     }} />
                 </td>
-                <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
+                <td><p>{valueVE.kills || 0}/{valueVE.deaths || 0}/{valueVE.assists || 0}</p></td>
                 <td><Image src={valueVE.weapon_logo} /></td>
                 <td><Image src={valueVE.equipment_logo} /></td>
                 <td><p className={styles.bigTxt}>{valueVE.money}</p></td>
@@ -187,10 +187,10 @@ function MatchTable ({ team2Table, team1Table }) {
                     className={styles.haemalStrandIcon}
                     style={{
                       backgroundColor: backColor(valueVE.hp),
-                      width: hpInit(valueVE.hp)
+                      width: hpInit(valueVE.hp) + '%'
                     }} />
                 </td>
-                <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
+                <td><p>{valueVE.kills || 0}/{valueVE.deaths || 0}/{valueVE.assists || 0}</p></td>
                 <td><Image src={valueVE.weapon_logo} /></td>
                 <td><Image src={valueVE.equipment_logo} /></td>
                 <td><p className={styles.bigTxt}>{valueVE.money}</p></td>

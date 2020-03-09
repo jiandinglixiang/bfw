@@ -12,6 +12,7 @@ import UseStore from './UseStore.js'
 
 function Home () {
   useEffect(function () {
+    window.scrollTo(0, 0)
     UseStore.getHomeMenu().then(function () {
       UseStore.getScheduleList()
     })

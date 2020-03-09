@@ -4,8 +4,7 @@ import stylesFuture from './index.module.scss'
 import def from '../../../assets/default_team_60.png'
 import { TameNameLogo } from '../HistoryPvpList/HistoryPvpList'
 import styles from '../PvpList/index.module.scss'
-import { connect } from 'react-redux'
-import { formatDate2, objCatch, PropTypes } from '../../../../tool/util'
+import { formatDate2, objCatch, useDiffCatch } from '../../../../tool/util'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function initList (value, index) {
@@ -23,7 +22,16 @@ function initList (value, index) {
   </li>
 }
 
-function FuturePvpList ({ hostName, hostLogo, guestName, guestLogo, hostList, guestList }) {
+function FuturePvpList (props) {
+  const propsVE = useDiffCatch(props)({
+    teamInfo: {},
+    futureSchedule: {
+      team1_future_schedule: [],
+      team2_future_schedule: [],
+    }
+  })
+  const hostList = propsVE.futureSchedule.team1_future_schedule
+  const guestList = propsVE.futureSchedule.team2_future_schedule
   const [more1, showMore1] = useState(false)
   const [host, guest, isHave] = useMemo(function () {
     if (more1) {
@@ -53,7 +61,7 @@ function FuturePvpList ({ hostName, hostLogo, guestName, guestLogo, hostList, gu
     <PvpTitle title='未来赛程' />
     <div className={stylesFuture.container}>
       <div>
-        <TameNameLogo name={hostName} logo={hostLogo} mode />
+        <TameNameLogo name={propsVE.teamInfo.team1.name} logo={propsVE.teamInfo.team1.logo} mode />
         <ul className={styles.publicClass}>
           <li className={styles.contentTitle}>
             <div>对阵</div>
@@ -63,7 +71,7 @@ function FuturePvpList ({ hostName, hostLogo, guestName, guestLogo, hostList, gu
         </ul>
       </div>
       <div>
-        <TameNameLogo name={guestName} logo={guestLogo} mode />
+        <TameNameLogo name={propsVE.teamInfo.team2.name} logo={propsVE.teamInfo.team2.logo} mode />
         <ul className={styles.publicClass}>
           <li className={styles.contentTitle}>
             <div>对阵</div>
@@ -81,21 +89,4 @@ function FuturePvpList ({ hostName, hostLogo, guestName, guestLogo, hostList, gu
   </div>
 }
 
-FuturePvpList.propTypes = {
-  hostName: PropTypes.string,
-  hostLogo: PropTypes.string,
-  guestName: PropTypes.string,
-  guestLogo: PropTypes.string,
-  hostList: PropTypes.array,
-  guestList: PropTypes.array
-}
-export default connect(function (state) {
-  return {
-    hostName: state.details.matchList.host_team_name,
-    hostLogo: state.details.matchList.host_team_logo,
-    guestName: state.details.matchList.guest_team_name,
-    guestLogo: state.details.matchList.guest_team_logo,
-    hostList: state.details.future_schedule.team1_future_schedule || [],
-    guestList: state.details.future_schedule.team2_future_schedule || []
-  }
-})(FuturePvpList)
+export default FuturePvpList

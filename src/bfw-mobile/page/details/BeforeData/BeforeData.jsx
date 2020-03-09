@@ -8,8 +8,8 @@ import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function BeforeData (props) {
   const propsVe = diffCatch(props)({
+    teamInfo: {},
     matchAnalysis: [],
-    matchList: {}
   })
   const info1Ve = diffCatch(propsVe.matchAnalysis[0])({
     win_info: {},
@@ -32,8 +32,8 @@ function BeforeData (props) {
       </div>
       <div className={styles.rowList}>
         <div>
-          <Image src={propsVe.matchList.host_team_logo || defImg1} />
-          <p>{propsVe.matchList.host_team_name}</p>
+          <Image src={propsVe.teamInfo.team1.logo} />
+          <p>{propsVe.teamInfo.team1.name}</p>
         </div>
         <div>
           <Image src={info1Ve.team_natural_info.icon || defImg1} />
@@ -53,8 +53,8 @@ function BeforeData (props) {
       </div>
       <div className={styles.rowList}>
         <div>
-          <Image src={propsVe.matchList.guest_team_logo || defImg2} />
-          <p>{propsVe.matchList.guest_team_name}</p>
+          <Image src={propsVe.teamInfo.team2.logo || defImg2} />
+          <p>{propsVe.teamInfo.team2.name}</p>
         </div>
         <div>
           <Image src={info2Ve.team_natural_info.icon || defImg1} />

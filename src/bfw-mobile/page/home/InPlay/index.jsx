@@ -12,6 +12,7 @@ function ScheduleList (props) {
     return <ul key={index}>
       <TryCatch>
         <GameTitle
+          gameId={value1.game_type_id}
           gameName={value1.game_name}
           icon={value1.icon}
           time={time}

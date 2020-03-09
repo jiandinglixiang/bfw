@@ -311,3 +311,19 @@ export function useSearch () {
   }, [location.search])
   return [search, location]
 }
+
+export function queryToObj (search) {
+  try {
+    if (typeof search !== 'string') {
+      return {}
+    }
+    const params = new URLSearchParams(search.slice(1))
+    if (!Object.fromEntries) {
+      return fromEntries([...params.entries()])
+    }
+    return Object.fromEntries(params.entries())
+  } catch (err) {
+    console.error('查询参数错误', err)
+    return {}
+  }
+}
