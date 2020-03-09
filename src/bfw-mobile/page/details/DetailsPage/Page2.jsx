@@ -5,7 +5,7 @@ import LineChart from '../LineChart/LineChart.jsx'
 import { OneMember } from '../OneMember/OneMember.jsx'
 import Kotsubone from '../Kotsubone/Kotsubone.jsx'
 import CsGoMapImg from '../CsGoMapImg/CsGoMapImg.jsx'
-import { comparisonUtil } from '../details.jsx'
+import { comparisonUtil } from '../DetailsContainer.jsx'
 import UseStore, { detailsData, underwayData } from '../UseStore.js'
 import { useLocation } from 'react-router-dom'
 

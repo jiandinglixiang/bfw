@@ -46,8 +46,9 @@ function MemberList (props) {
       gold_per_min: 0,
       xp_per_min: 0,
       gold: 0,
-      items: [],
-      game_no: 0
+      item: [],
+      game_no: 0,
+      level: 0
     }
   })
   const [big, setBig] = useState(style.twoBig)
@@ -94,7 +95,7 @@ function MemberList (props) {
         </p>
       </div>
       <div>
-        <p>{value.game_no ? value.game_no + '级' : '-'}</p>
+        <p>{value.level ? value.level + '级' : '-'}</p>
         <div>
           {
             item.map((val, index) => {
@@ -114,6 +115,7 @@ function MemberListLol (props) {
   const propsVE = diffCatch(props)({
     blueTeam: false,
     value: {
+      level: 0,
       name: '-',
       champion_img: '',
       logo: '',
@@ -157,7 +159,7 @@ function MemberListLol (props) {
         <p className={style.yellow}>{propsVE.value.gold}</p>
       </div>
       <div>
-        <p>{propsVE.value.game_no ? propsVE.value.game_no + '级' : '-'}</p>
+        <p>{propsVE.value.level ? propsVE.value.level + '级' : '-'}</p>
         <div>
           {
             item.map((val, index) => {

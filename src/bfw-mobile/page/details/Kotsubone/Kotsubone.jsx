@@ -5,7 +5,7 @@ import TipTitle from '../TipTitle/TipTitle.jsx'
 import BoutTitleBar from '../BoutTitleBar/BoutTitleBar.jsx'
 import BPList from '../BPList/BPList.jsx'
 import TopLogoNameScore, { csgoBothInit } from '../TopLogoNameScore/TopLogoNameScore.jsx'
-import { comparisonUtil } from '../details.jsx'
+import { comparisonUtil } from '../DetailsContainer.jsx'
 import CsGoNowStatus from '../CsGoNowStatus/CsGoNowStatus.jsx'
 import csgoStyles from '../CsGoMapImg/index.module.scss'
 
@@ -100,6 +100,13 @@ function Kotsubone (props) {
       endMatch.map((value, index) => {
         const valueVE = diffCatch(value)({
           team1: {
+            team_name: '',
+            game_type_id: 0,
+            round: 0,
+            is_win: 0
+          },
+          team2: {
+            team_name: '',
             game_type_id: 0,
             round: 0,
             is_win: 0

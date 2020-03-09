@@ -281,7 +281,7 @@ function csgoDataInit (matchList) {
 }
 
 export function csgoBothInit (endMatch) {
-  // csgo 进行中小局，赛果对阵详情数据初始化
+  // csgo 小局，赛果对阵详情数据初始化
   const endMatchVE = diffCatch(endMatch)({
     team1: {
       round: 0,
