@@ -53,7 +53,7 @@ function MemberList (props) {
   })
   const [big, setBig] = useState(style.twoBig)
   const item = value.item.length ? value.item : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
-  const kda = isBoth && toBigNumber((value.kills + value.assists) / value.deaths * 3).toFormat(1)
+  const kda = isBoth && toBigNumber((value.kills + value.assists) / value.deaths).toFormat(1)
 
   return <div className={style.oneMember}>
     <div>

@@ -96,20 +96,18 @@ function DetailsContainer () {
   const location = useLocation()
   const search = useMemo(function () {
     return queryToObj(location.search)
-  }, [location.search])
-  console.log('执行')
+  }, [location])
+
   useEffect(() => {
     window.scrollTo(0, 0)
     const time = setInterval(function () {
       // UseStore.getDetails(search.smid)
     }, 5000)
     UseStore.getDetails(search.smid)
-    console.log('执行')
     return function () {
-      console.log(321)
       clearTimeout(time)
     }
-  }, [search])
+  }, [])
   return (
     <div className={styles['game-rear-' + search.gameId]}>
       <HeadBar title={search.matchName} />

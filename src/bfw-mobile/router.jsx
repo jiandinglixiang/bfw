@@ -10,18 +10,20 @@ import Mine from './page/mine/mine.jsx'
 import Login from './page/mine/login/Login.jsx'
 import ChangePassword from './page/mine/changePassword/ChangePassword.jsx'
 import About from './page/about/about.jsx'
-import RouteC from './components/RouteC/RouteC.jsx'
+import { updateDeviceSize } from './device.js'
 
 document.querySelector('#meta-index').content = 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no'
 
 FastClick.attach(document.body)
 
+updateDeviceSize()
+
 function MoreRouter1 () {
   return <>
     <Switch>
-      <RouteC path='/mine'><Mine /></RouteC>
-      <RouteC path='/login'><Login /></RouteC>
-      <RouteC path='/'><Home /></RouteC>
+      <Route path='/mine'><Mine /></Route>
+      <Route path='/login'><Login /></Route>
+      <Route path='/'><Home /></Route>
     </Switch>
     <TabBar />
   </>
@@ -31,10 +33,10 @@ function Router () {
   return <HashRouter>
     <Switch>
       <Route exact path='/'><MoreRouter1 /></Route>
-      <RouteC path='/details'><DetailsContainer /></RouteC>
-      <RouteC path='/changePassword'><ChangePassword /></RouteC>
-      <RouteC path='/about'><About /></RouteC>
-      <RouteC path='/'><MoreRouter1 /></RouteC>
+      <Route path='/details'><DetailsContainer /></Route>
+      <Route path='/changePassword'><ChangePassword /></Route>
+      <Route path='/about'><About /></Route>
+      <Route path='/'><MoreRouter1 /></Route>
     </Switch>
   </HashRouter>
 }

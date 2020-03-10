@@ -257,26 +257,30 @@ function csgoDataInit (matchList) {
   const matchListVE = diffCatch(matchList)({
     current_round: 0,
     team1_more_attr: {
-      first_half_score: 0,
-      second_half_score: 0,
-      over_time_score: 0,
-      flag_r1: 0,
-      flag_r16: 0,
-      flag_w5: 0
+      other_more_attr: {
+        first_half_score: 0,
+        second_half_score: 0,
+        over_time_score: 0,
+        flag_r1: 0,
+        flag_r16: 0,
+        flag_w5: 0
+      }
     },
     team2_more_attr: {
-      first_half_score: 0,
-      second_half_score: 0,
-      over_time_score: 0,
-      flag_r1: 0,
-      flag_r16: 0,
-      flag_w5: 0
+      other_more_attr: {
+        first_half_score: 0,
+        second_half_score: 0,
+        over_time_score: 0,
+        flag_r1: 0,
+        flag_r16: 0,
+        flag_w5: 0
+      }
     }
   })
-  const team1 = matchListVE.team1_more_attr
-  const team2 = matchListVE.team2_more_attr
+  const team1 = matchListVE.team1_more_attr.other_more_attr
+  const team2 = matchListVE.team2_more_attr.other_more_attr
   const data = csgoInit(team1, team2)
-  data.round = team1.round || team2.round // csgo不转换文字
+  data.round = team1.current_round || team2.current_round // csgo不转换文字
   return data
 }
 
@@ -305,10 +309,10 @@ export function csgoBothInit (endMatch) {
       }
     },
   })
-  const team1 = endMatchVE.team1.other_more_attr
-  const team2 = endMatchVE.team2.other_more_attr
-  const data = csgoInit(team1, team2)
-  data.round = team1.current_round || team2.current_round // csgo不转换文字
+  const team1 = endMatchVE.team1
+  const team2 = endMatchVE.team2
+  const data = csgoInit(team1.other_more_attr, team2.other_more_attr)
+  data.round = team1.round || team2.round // csgo不转换文字
   data.team1.name = endMatchVE.team1.team_name
   data.team2.name = endMatchVE.team2.team_name
   return data

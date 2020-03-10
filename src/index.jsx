@@ -1,26 +1,20 @@
 import React, { lazy, Suspense } from 'react'
 import 'react-app-polyfill/stable'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
 import * as serviceWorker from './serviceWorker'
 import device from 'current-device'
 
-let Router
-let store
-if (device.mobile()) {
-  Router = lazy(() => import(/* webpackChunkName: 'mobile' */'./bfw-mobile/router'))
-  store = require('./bfw-mobile/redux').default
-} else {
-  Router = lazy(() => import(/* webpackChunkName: 'mobile' */'./bfw-mobile/router'))
-  store = require('./bfw-mobile/redux').default
-  // Router = lazy(() => import(/* webpackChunkName: 'web' */'./bfw-web/router'))
-  // store = require('./bfw-web/store').default
+let App
+if (device.mobile() || (() => 1)) {
+  const MobileRouter = lazy(() => import(/* webpackChunkName: 'mobile' */'./bfw-mobile/router'))
+  App = <Suspense fallback={<div>Loading...</div>}><MobileRouter /></Suspense>
+// } else {
+//   const WebRouter = lazy(() => import(/* webpackChunkName: 'web' */'./bfw-web/router'))
+//   const store = require('./bfw-web/store').default
+//   const Provider = require('react-redux').Provider
+//   App = <Provider store={store}><Suspense fallback={<div>Loading...</div>}><WebRouter /></Suspense></Provider>
 }
-ReactDOM.render(<Provider store={store}>
-  <Suspense fallback={<div>Loading...</div>}>
-    <Router />
-  </Suspense>
-</Provider>, document.getElementById('root'))
+ReactDOM.render(App, document.getElementById('root'))
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
