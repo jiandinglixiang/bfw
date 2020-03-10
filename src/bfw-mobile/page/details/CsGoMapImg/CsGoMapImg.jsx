@@ -84,7 +84,9 @@ function BothTable ({ team2Table, team1Table }) {
               })
             }
             {
-              !team1Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
+              !team1Table.length && [0, 1, 2, 3, 4, 5].map(key => (<tr key={key}>
+                <td colSpan={8} />
+              </tr>))
             }
           </tbody>
         </table>
@@ -125,14 +127,17 @@ function BothTable ({ team2Table, team1Table }) {
                     <td><p style={fontColor(valueVE.score - valueVE.deaths)}>{valueVE.score - valueVE.deaths}</p></td>
                     <td><p style={fontColor(valueVE.fk_diff)}>{valueVE.fk_diff}</p></td>
                     <td><p>{valueVE.rating}</p></td>
-                    <td><p>{valueVE.score}/<span style={{ color: '#70F7E3' }}>{valueVE.deaths}</span>/{valueVE.assists}</p></td>
+                    <td><p>{valueVE.score}/<span style={{ color: '#70F7E3' }}>{valueVE.deaths}</span>/{valueVE.assists}
+                    </p></td>
                     <td><p>{valueVE.damage_pr_round}</p></td>
                   </tr>
                 )
               })
             }
             {
-              !team2Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
+              !team2Table.length && [0, 1, 2, 3, 4, 5].map(key => (<tr key={key}>
+                <td colSpan={8} />
+              </tr>))
             }
           </tbody>
         </table>
