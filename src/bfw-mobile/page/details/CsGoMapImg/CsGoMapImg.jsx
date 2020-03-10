@@ -181,7 +181,9 @@ function MatchTable ({ team2Table, team1Table }) {
           })
         }
         {
-          !team1Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
+          !team1Table.length && [0, 1, 2, 3, 4, 5].map(key => (<tr key={key}>
+            <td colSpan={7} />
+          </tr>))
         }
       </tbody>
     </table>
@@ -224,7 +226,9 @@ function MatchTable ({ team2Table, team1Table }) {
           })
         }
         {
-          !team2Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
+          !team2Table.length && [0, 1, 2, 3, 4, 5].map(key => (<tr key={key}>
+            <td colSpan={7} />
+          </tr>))
         }
       </tbody>
     </table>
@@ -374,7 +378,7 @@ function CsGoMapImg (props) {
 
   return <div>
     <div style={{ height: '10px' }} />
-    <p className={`${styles.mapRight} ${styles['csgoMap-' + one.map]}`}>{one.map}</p>
+    {showBottom && <p className={`${styles.mapRight} ${styles['csgoMap-' + one.map]}`}>{one.map}</p>}
     {overtime && <p className={styles.extraTimeTxt}>加时赛</p>}
     {propsVE.isBoth ? <BothTable team1Table={team1Table} team2Table={team2Table} /> : <MatchTable
       team1Table={team1Table} team2Table={team2Table} />}
