@@ -22,7 +22,7 @@ function ListItem (props) {
   const valueVe = value
   let winLogo = <div><span>平</span></div>
   let winScore = <div><span>暂无</span></div>
-  if (valueVe.team1_score * 1 > valueVe.team2_score * 1) {
+  if (valueVe.team1_score > valueVe.team2_score) {
     winLogo = <div>
       <Image src={valueVe.team1_info.icon || def} alt='' />
       <p>{valueVe.team1_info.name}</p>
@@ -34,7 +34,7 @@ function ListItem (props) {
         <span>{valueVe.team2_score}</span>
       </p>
     </div>
-  } else if (valueVe.team2_score * 1 > valueVe.team1_score * 1) {
+  } else if (valueVe.team2_score > valueVe.team1_score) {
     winLogo = <div>
       <Image src={valueVe.team2_info.icon || def} alt='' />
       <p>{valueVe.team2_info.name}</p>

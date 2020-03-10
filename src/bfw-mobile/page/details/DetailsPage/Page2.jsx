@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import { queryToObj, useDiffCatch } from '../../../../tool/util'
+import { findQuery, queryToObj, useDiffCatch } from '../../../../tool/util'
 import TipTitle from '../TipTitle/TipTitle.jsx'
 import LineChart from '../LineChart/LineChart.jsx'
 import { OneMember } from '../OneMember/OneMember.jsx'
@@ -7,11 +7,12 @@ import Kotsubone from '../Kotsubone/Kotsubone.jsx'
 import CsGoMapImg from '../CsGoMapImg/CsGoMapImg.jsx'
 import { comparisonUtil } from '../DetailsContainer.jsx'
 import UseStore, { detailsData, underwayData } from '../UseStore.js'
-import { useLocation } from 'react-router-dom'
 
 function Page2 () {
   // 历史数据
-  const location = useLocation()
+  const search = useMemo(function () {
+    return queryToObj(findQuery())
+  }, [window.location])
 
   const [details] = detailsData.useStore()
   const [matchResult] = underwayData.useStore()
@@ -25,10 +26,6 @@ function Page2 () {
     economic_curve_list: [],
     match_list: {}
   })
-
-  const search = useMemo(function () {
-    return queryToObj(location.search)
-  }, [location.search])
 
   useEffect(() => {
     UseStore.getMatchData(search.smid, matchListVE.current_round)

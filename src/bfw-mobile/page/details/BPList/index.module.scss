@@ -24,7 +24,7 @@
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
 
     &:before,
     &:after {
@@ -32,15 +32,16 @@
       display: block;
     }
 
-    img, span {
-      width: 25px;
-      margin-right: 1px;
-      height: 25px;
-      border-radius: 50%;
-    }
-
-    span {
+    > div {
+      flex: 0 0 15%;
+      margin: 0 0.5%;
       padding: 7.5% 0;
+      border-radius: 50%;
+      height: 0;
+      overflow: hidden;
+      background-size: auto 100%;
+      background-position: center center;
+      background-repeat: no-repeat;
       background-color: #101831;
     }
   }

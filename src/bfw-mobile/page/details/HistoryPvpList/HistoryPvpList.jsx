@@ -4,7 +4,7 @@ import styles from '../PvpList/index.module.scss'
 import def from '../../../assets/default_team_60.png'
 import { diffCatch, formatDate, PropTypes, useDiffCatch, useSearch } from '../../../../tool/util'
 import styles2 from './index.module.scss'
-import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
+import { Image, Text } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 export function TameNameLogo ({ name, logo, mode }) {
   return <div className={`${styles2.tameNameLogo} ${mode ? styles2.background2 : ''}`}>
@@ -27,16 +27,16 @@ function ListItem (props) {
   const valueVe = value
   const scoreArr = (valueVe.score || '').split(/:|,/)
   let scoreE = <span>暂无</span>
-  if (scoreArr.length) {
+  if (scoreArr.length && (scoreArr[0] || scoreArr[1])) {
     scoreE = <p className={styles.scoreArr}>
-      <span className={scoreArr[0] > scoreArr[1] ? styles.winScore : ''}>{scoreArr[0]}</span>
+      <Text className={scoreArr[0] > scoreArr[1] && styles.winScore}>{scoreArr[0] || 0}</Text>
       <span>-</span>
-      <span className={scoreArr[1] > scoreArr[0] ? styles.winScore : ''}>{scoreArr[1]}</span>
+      <Text className={scoreArr[1] > scoreArr[0] && styles.winScore}>{scoreArr[1] || 0}</Text>
     </p>
   }
   if (gameId === 2) {
     return (
-      <li>
+      <li className={styles.bodyItem}>
         <div>
           <Image src={valueVe.confrontation.icon || def} alt='' />
           <p>{valueVe.confrontation.name}</p>
@@ -54,7 +54,7 @@ function ListItem (props) {
   }
   if (gameId === 3) {
     return (
-      <li>
+      <li className={styles.bodyItem}>
         <div>
           <Image src={valueVe.confrontation.icon || def} alt='' />
           <p>{valueVe.confrontation.name}</p>

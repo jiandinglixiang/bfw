@@ -21,12 +21,12 @@ export function GameOverOrNotStarted (props) {
     matchRules: '',
     time: [],
     team1: {
-      logo: defImg1,
+      logo: '',
       name: '...',
       score: 0
     },
     team2: {
-      logo: defImg2,
+      logo: '',
       name: '...',
       score: 0,
     }
@@ -34,7 +34,7 @@ export function GameOverOrNotStarted (props) {
   return <div className={styles.content}>
     <div className={styles.first}>
       <div className={styles.topLogoIcon1}>
-        <div className={styles.logo}><Image src={propsVE.team1.logo} /></div>
+        <div className={styles.logo}><Image src={[propsVE.team1.logo, defImg1]} /></div>
       </div>
       <div className={styles.teamName}>
         <p>{propsVE.team1.name}</p>
@@ -63,7 +63,7 @@ export function GameOverOrNotStarted (props) {
     }
     <div className={styles.last}>
       <div className={styles.topLogoIcon2}>
-        <div className={styles.logo}><Image src={propsVE.team2.logo} /></div>
+        <div className={styles.logo}><Image src={[propsVE.team2.logo, defImg2]} /></div>
       </div>
       <div className={styles.teamName}>
         <p>{propsVE.team2.name}</p>
@@ -99,7 +99,7 @@ function GameUnderway (props) {
     csgoMap: '...',
     team1: {
       camp: 0,
-      logo: defImg1,
+      logo: '',
       name: '...',
       score: 0,
       sente: [],
@@ -107,7 +107,7 @@ function GameUnderway (props) {
     },
     team2: {
       camp: 0,
-      logo: defImg2,
+      logo: '',
       name: '...',
       score: 0,
       sente: [],
@@ -150,7 +150,7 @@ function GameUnderway (props) {
             teamFaction.team1 && <div className={styles.teamIcon}><Image src={teamFaction.team1} /></div>
           }
           <div className={styles.logo}>
-            <Image src={propsVE.team1.logo} />
+            <Image src={[propsVE.team1.logo, defImg1]} />
           </div>
           <b style={tameScoreColor.team1}>{propsVE.team1.score}</b>
         </div>
@@ -181,7 +181,7 @@ function GameUnderway (props) {
         <div className={styles.topLogoIcon2}>
           <b style={tameScoreColor.team2}>{propsVE.team2.score}</b>
           <div className={styles.logo}>
-            <Image src={propsVE.team2.logo} />
+            <Image src={[propsVE.team2.logo, defImg2]} />
           </div>
           {
             teamFaction.team2 && <div className={styles.teamIcon}><Image src={teamFaction.team2} /></div>
@@ -392,8 +392,10 @@ function Both ({ data = {}, endMatch }) {
     return (
       <div>
         <GameUnderway {...data} />
-        <BPList isBan team1={endMatchVE.team1.ban} team2={endMatchVE.team2.ban} />
-        <BPList team1={endMatchVE.team1.players} team2={endMatchVE.team2.players} />
+        <div style={{ padding: '0 2%' }}>
+          <BPList isBan team1={endMatchVE.team1.ban} team2={endMatchVE.team2.ban} />
+          <BPList gameId={5} team1={endMatchVE.team1.players} team2={endMatchVE.team2.players} />
+        </div>
       </div>
     )
   }
@@ -458,8 +460,10 @@ function Match ({ data = {}, matchList }) {
       return (
         <div>
           <GameUnderway {...data} />
-          <BPList isBan team1={matchList.team1_more_attr.ban} team2={matchList.team2_more_attr.ban} />
-          <BPList team1={matchList.team1_more_attr.players} team2={matchList.team2_more_attr.players} />
+          <div style={{ padding: '0 2%' }}>
+            <BPList isBan team1={matchList.team1_more_attr.ban} team2={matchList.team2_more_attr.ban} />
+            <BPList gameId={5} team1={matchList.team1_more_attr.players} team2={matchList.team2_more_attr.players} />
+          </div>
         </div>)
     }
     if (data.gameId === 1) {
@@ -478,7 +482,9 @@ function Match ({ data = {}, matchList }) {
       return (
         <div>
           <GameUnderway {...data} />
-          <BPList team1={matchList.team1_more_attr.players} team2={matchList.team2_more_attr.players} />
+          <div style={{ padding: '0 2%' }}>
+            <BPList gameId={1} team1={matchList.team1_more_attr.players} team2={matchList.team2_more_attr.players} />
+          </div>
         </div>)
     }
     if (data.gameId === 3) {

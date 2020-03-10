@@ -312,12 +312,25 @@ export function useSearch () {
   return [search, location]
 }
 
+export function findQuery () {
+  const location = window.location
+  const hash = location.hash.indexOf('?')
+  if (hash !== -1) {
+    return location.hash.slice(hash + 1)
+  }
+  const search = location.search.indexOf('?')
+  if (search !== -1) {
+    return location.search.slice(search + 1)
+  }
+  return ''
+}
+
 export function queryToObj (search) {
   try {
     if (typeof search !== 'string') {
       return {}
     }
-    const params = new URLSearchParams(search.slice(1))
+    const params = new URLSearchParams(search)
     if (!Object.fromEntries) {
       return fromEntries([...params.entries()])
     }

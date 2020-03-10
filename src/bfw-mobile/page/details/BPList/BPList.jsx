@@ -1,45 +1,48 @@
 import React from 'react'
 import styles from './index.module.scss'
 import { diffCatch } from '../../../../tool/util.js'
-import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function BPList (props) {
   const propsVe = diffCatch(props)({
+    gameId: 0,
     isBan: false,
     team1: [],
     team2: []
   })
-  const noneAny = [
-    <span key='1' />,
-    <span key='2' />,
-    <span key='3' />,
-    <span key='4' />,
-    <span key='5' />,
-    propsVe.isBan && <span key='0' />
-  ]
-  const key = propsVe.isBan ? 'avatar' : 'hero_logo'
+  const noneAny = [0, 1, 2, 3, 4]
+  let srcKey = ''
+  if (propsVe.isBan) {
+    noneAny.push(5)
+    srcKey = 'avatar'
+  } else {
+    if (propsVe.gameId === 5) {
+      srcKey = 'hero_logo'
+    } else if (propsVe.gameId === 1) {
+      srcKey = 'champion_img'
+    }
+  }
   return <div>
     <div className={styles.BPlist}>
       <div>
         {
-          !propsVe.team1.length ? noneAny : propsVe.team1.map(function (value, index) {
-            const srcc = value[key] || value.champion_img
+          noneAny.map(function (index) {
+            const srcc = propsVe.team1[index] && propsVe.team1[index][srcKey]
             if (srcc) {
-              return <Image key={index} src={srcc} />
+              return <div key={index} style={{ backgroundImage: `url(${srcc})` }} />
             }
-            return <span key={index} />
+            return <div key={index} />
           })
         }
       </div>
       {propsVe.isBan ? <p>B</p> : <p className={styles.green}>P</p>}
       <div>
         {
-          !propsVe.team2.length ? noneAny : propsVe.team2.map(function (value, index) {
-            const srcc = value[key] || value.champion_img
+          noneAny.map(function (index) {
+            const srcc = propsVe.team2[index] && propsVe.team2[index][srcKey]
             if (srcc) {
-              return <Image key={index} src={srcc} />
+              return <div key={index} style={{ backgroundImage: `url(${srcc})` }} />
             }
-            return <span key={index} />
+            return <div key={index} />
           })
         }
       </div>

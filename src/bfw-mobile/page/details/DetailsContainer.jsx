@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import HeadBar from '../../components/HeadBar/HeadBar.jsx'
 import styles from './index.module.scss'
-import { queryToObj, useDiffCatch } from '../../../tool/util.js'
+import { findQuery, queryToObj, useDiffCatch } from '../../../tool/util.js'
 import TopLogoNameScore from './TopLogoNameScore/TopLogoNameScore.jsx'
 import Page0 from './DetailsPage/Page0.jsx'
 import Page1 from './DetailsPage/Page1.jsx'
 import Page2 from './DetailsPage/Page2.jsx'
 import LiveButton from './LiveButton/LiveButton.jsx'
-import { Route, Switch, useLocation } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import BothPage from './DetailsPage/BothPage.jsx'
 import UseStore, { detailsData } from './UseStore.js'
 import { Divs } from '../../components/BasicsHtml/BasicsHtml.jsx'
@@ -93,28 +93,28 @@ function Details () {
 }
 
 function DetailsContainer () {
-  const location = useLocation()
   const search = useMemo(function () {
-    return queryToObj(location.search)
-  }, [location])
-
+    return queryToObj(findQuery())
+  }, [window.location])
   useEffect(() => {
     window.scrollTo(0, 0)
+    UseStore.getDetails(search.smid)
     const time = setInterval(function () {
       // UseStore.getDetails(search.smid)
-    }, 5000)
-    UseStore.getDetails(search.smid)
+    }, 0)
     return function () {
       clearTimeout(time)
     }
   }, [])
   return (
-    <div className={styles['game-rear-' + search.gameId]}>
-      <HeadBar title={search.matchName} fixedTop/>
-      <Switch>
-        <Route path='/details/both'><BothPage search={search} /></Route>
-        <Route path='/details'><Details search={search} /></Route>
-      </Switch>
+    <div>
+      <HeadBar title={search.matchName} fixedTop styles={{ backgroundColor: '#06051A' }} />
+      <div className={styles['game-rear-' + search.gameId]}>
+        <Switch>
+          <Route path='/details/both'><BothPage search={search} /></Route>
+          <Route path='/details'><Details search={search} /></Route>
+        </Switch>
+      </div>
     </div>)
 }
 

@@ -34,10 +34,7 @@ function FullScore ({ scoreList }) {
 
 function HeroList ({ arrIcon = [], iconKey = '' }) {
   return [0, 1, 2, 3, 4].map(index => {
-    if (arrIcon[index] && arrIcon[index][iconKey]) {
-      return <Image key={index} src={arrIcon[index][iconKey]} />
-    }
-    return <span key={index} />
+    return <div key={index} style={{ backgroundImage: `url(${arrIcon[index] && arrIcon[index][iconKey]})` }} />
   })
 }
 

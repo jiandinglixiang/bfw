@@ -6,17 +6,15 @@ import HistoryPvpList from '../HistoryPvpList/HistoryPvpList.jsx'
 import FuturePvpList from '../FuturePvpLits/FuturePvpLits.jsx'
 import OutTame from '../OutTame/OutTame.jsx'
 import UseStore, { analysisData, detailsData } from '../UseStore.js'
-import { useLocation } from 'react-router-dom'
-import { diffCatch, queryToObj } from '../../../../tool/util.js'
+import { diffCatch, findQuery, queryToObj } from '../../../../tool/util.js'
 import def1 from '../../../assets/default_teamred_40.png'
 import def2 from '../../../assets/default_teamblue_40.png'
 
 function Page1 () {
   // 历史数据
-  const location = useLocation()
   const search = useMemo(function () {
-    return queryToObj(location.search)
-  }, [location.search])
+    return queryToObj(findQuery())
+  }, [window.location])
 
   const [analysis] = analysisData.useStore()
   const [details] = detailsData.useStore()

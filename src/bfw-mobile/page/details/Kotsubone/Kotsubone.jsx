@@ -38,6 +38,7 @@ function BothItem (props) {
       {
         equalStatus([1, 5]) && (
           <BPList
+            gameId={equalStatus(5) ? 5 : 1}
             team1={propsVE.endMatch.team1.players}
             team2={propsVE.endMatch.team2.players}
           />

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { diffCatch, queryToObj } from '../../../../tool/util'
+import { diffCatch, findQuery, queryToObj } from '../../../../tool/util'
 import TipTitle from '../TipTitle/TipTitle.jsx'
 import LineChart from '../LineChart/LineChart.jsx'
 import CsGoMapImg from '../CsGoMapImg/CsGoMapImg.jsx'
@@ -7,7 +7,6 @@ import RadarChart from '../RadarChart/RadarChart.jsx'
 import TopLogoNameScore from '../TopLogoNameScore/TopLogoNameScore.jsx'
 import { comparisonUtil } from '../DetailsContainer.jsx'
 import OneMember from '../OneMember/OneMember.jsx'
-import { useLocation } from 'react-router-dom'
 import UseStore, { detailsData, underwayData } from '../UseStore.js'
 
 async function getData (smid) {
@@ -18,12 +17,12 @@ async function getData (smid) {
 
 function BothPage () {
   // 历史数据
-  const location = useLocation()
+
   const [matchResult] = underwayData.useStore()
 
   const search = useMemo(function () {
-    return queryToObj(location.search)
-  }, [location.search])
+    return queryToObj(findQuery())
+  }, [window.location])
   const searchVE = diffCatch(search)({
     round: 0,
     matchName: '',
