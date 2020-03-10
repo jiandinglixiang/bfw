@@ -77,7 +77,9 @@ function ListItem (props) {
         <p>{valueVe.match_name}</p>
         <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
       </div>
-      <div>{time}'{valueVe.game_duration_time - (time ? time * 60 : 0)}</div>
+      <div>
+        {valueVe.game_duration_time ? `${time}'${valueVe.game_duration_time - (time ? time * 60 : 0)}` : '-'}
+      </div>
       {winLogo}
       {winScore}
     </li>)

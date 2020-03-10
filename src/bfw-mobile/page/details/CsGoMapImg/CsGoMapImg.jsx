@@ -367,15 +367,15 @@ function CsGoMapImg (props) {
   first.forEach(function (val) {
     if (val.team_role === realHistory.first.team1.role) {
       realHistory.first.team1.icon.push(val.logo)
-    } else {
+    } else if (val.team_role === realHistory.first.team2.role) {
       realHistory.first.team2.icon.push(val.logo)
     }
   })
   second.forEach(function (val) {
-    if (val.team_role === realHistory.second.team2.role) {
-      realHistory.second.team2.icon.push(val.logo)
-    } else {
+    if (val.team_role === realHistory.second.team1.role) {
       realHistory.second.team1.icon.push(val.logo)
+    } else if (val.team_role === realHistory.second.team2.role) {
+      realHistory.second.team2.icon.push(val.logo)
     }
   })
 
@@ -400,13 +400,10 @@ function CsGoMapImg (props) {
           </div>
           <div className={styles.teamRed}>
             <Image src={[realHistory.first.team1.logo, def1]} />
-            <div className={styles.hodlRight}>
+            <div>
               {
                 realHistory.first.team1.icon.map((val, index) => {
-                  if (val) {
-                    return <Image src={val} key={index} />
-                  }
-                  return null
+                  return <Image src={val} key={index} />
                 })
               }
             </div>
@@ -436,13 +433,10 @@ function CsGoMapImg (props) {
           </div>
           <div className={styles.teamRed}>
             <Image src={[realHistory.second.team1.logo, def1]} />
-            <div className={styles.hodlRight}>
+            <div>
               {
                 realHistory.second.team1.icon.map((val, index) => {
-                  if (val) {
-                    return <Image src={val} key={index} />
-                  }
-                  return null
+                  return <Image src={val} key={index} />
                 })
               }
             </div>

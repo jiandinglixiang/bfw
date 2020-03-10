@@ -84,7 +84,7 @@ function ListItem (props) {
       <p>{`${valueVe.match_rules || ''} ${formatDate(valueVe.game_start_time, 'MM-DD')}`}</p>
     </div>
     <div>
-      {time}'{valueVe.game_duration_time - (time ? time * 60 : 0)}
+      {valueVe.game_duration_time ? `${time}'${valueVe.game_duration_time - (time ? time * 60 : 0)}` : '-'}
     </div>
     <div>
       <Image src={valueVe.win.icon || def} alt='' />
@@ -134,9 +134,9 @@ function initList (list, len, more, showMore, gameId) {
       {!len && <div className={styles2.noneAnyOne} />}
       {list.map((value, index) => <ListItem key={index} value={value} />)}
       {
-        !more && len > 5 ? <li className={styles.moreList} onClick={() => showMore(!more)}>
-          点击展开更多比赛
-        </li> : null
+        len > 5 && <li className={styles.moreList} onClick={() => showMore(!more)}>
+          {more ? '收起更多比赛' : '点击展开更多比赛'}
+        </li>
       }
     </ul>)
 }

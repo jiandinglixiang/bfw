@@ -5,7 +5,6 @@ import { diffCatch, toBigNumber } from '../../../../tool/util.js'
 
 function LineChart (props) {
   const ref = useRef()
-  // const [myChart, update] = useState({})
   const propsVE = diffCatch(props)({
     isBoth: false,
     matchList: {
@@ -24,43 +23,11 @@ function LineChart (props) {
       team2: {}
     }
   })
-  // const team1 = {
-  //   name: '',
-  //   camp: true
-  // }
-  // const team2 = {
-  //   name: '',
-  //   camp: false
-  // }
   let curveList = []
   if (propsVE.isBoth) {
     curveList = propsVE.endMatch.poor_economy.economic_curve
-    // team1.name = propsVE.endMatch.team1.team_name
-    // team2.name = propsVE.endMatch.team2.team_name
-    // if (propsVE.endMatch.team1.game_type_id === 5) {
-    //   // dota
-    //   team1.camp = propsVE.endMatch.team1.camp === 'dire'
-    //   team2.camp = propsVE.endMatch.team2.camp === 'dire'
-    // }
-    // if (propsVE.endMatch.team1.game_type_id === 1) {
-    //   // lol
-    //   team1.camp = propsVE.endMatch.team1.camp === 'blue'
-    //   team2.camp = propsVE.endMatch.team2.camp === 'blue'
-    // }
   } else {
     curveList = propsVE.matchResult.economic_curve_list
-    // team1.name = propsVE.matchList.host_team_name
-    // team2.name = propsVE.matchList.guest_team_name
-    // if (propsVE.matchList.game_type_id === 5) {
-    //   // dota
-    //   team1.camp = propsVE.matchList.team1_more_attr.camp === 'dire'
-    //   team2.camp = propsVE.matchList.team2_more_attr.camp === 'dire'
-    // }
-    // if (propsVE.matchList.game_type_id === 1) {
-    //   // lol
-    //   team1.camp = propsVE.matchList.team1_more_attr.camp === 'blue'
-    //   team2.camp = propsVE.matchList.team2_more_attr.camp === 'blue'
-    // }
   }
 
   useEffect(() => {
@@ -264,6 +231,9 @@ function LineChart (props) {
   }, [ref, curveList])
   return <div>
     <div className={styles.lineChartSwitch}>
+      <div>
+        1
+      </div>
       <div>
         <button className={styles.activeClick}>经济差</button>
         {/*     <button
