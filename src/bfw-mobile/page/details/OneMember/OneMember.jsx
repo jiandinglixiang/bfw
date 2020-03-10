@@ -53,8 +53,10 @@ function MemberList (props) {
   })
   const [big, setBig] = useState(style.twoBig)
   const item = value.item.length ? value.item : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
-  const kda = isBoth && toBigNumber((value.kills + value.assists) / value.deaths).toFormat(1)
-
+  let kda = 0
+  if (isBoth && value.deaths) {
+    kda = toBigNumber((value.kills + value.assists) / value.deaths).toFixed(1, 3)
+  }
   return <div className={style.oneMember}>
     <div>
       <div className={big}>
@@ -133,7 +135,10 @@ function MemberListLol (props) {
   })
   const [big, setBig] = useState(style.twoBig)
   const item = propsVE.value.items.length ? propsVE.value.items : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
-  const kda = propsVE.isBoth && toBigNumber((propsVE.value.kills + propsVE.value.assists) / propsVE.value.deaths * 3).toFormat(1)
+  let kda = 0
+  if (propsVE.isBoth && propsVE.value.deaths) {
+    kda = toBigNumber((propsVE.value.kills + propsVE.value.assists) / propsVE.value.deaths * 3).toFixed(1, 3)
+  }
   return <div className={style.oneMember}>
     <div>
       <div className={big}>

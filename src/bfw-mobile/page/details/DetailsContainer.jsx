@@ -110,7 +110,7 @@ function DetailsContainer () {
   }, [])
   return (
     <div className={styles['game-rear-' + search.gameId]}>
-      <HeadBar title={search.matchName} />
+      <HeadBar title={search.matchName} fixedTop/>
       <Switch>
         <Route path='/details/both'><BothPage search={search} /></Route>
         <Route path='/details'><Details search={search} /></Route>
