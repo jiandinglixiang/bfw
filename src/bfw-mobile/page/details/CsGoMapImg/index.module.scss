@@ -71,30 +71,42 @@
   }
 }
 
+.scrollXContainer {
+  width: 100%;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+
+
+  table {
+    min-width: 130%;
+  }
+}
+
 .csgoTableBlue, .csgoTableYellow {
   width: 100%;
+  table-layout: auto;
   background: url("../../../assets/csgo_listbg@2x.png") no-repeat left top;
   background-size: 100% 100%;
-
   thead tr {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: flex-start;
+    //display: flex;
+    //flex-flow: row nowrap;
+    //align-items: center;
+    //justify-content: flex-start;
     background: rgba(6, 26, 53, 0.6);
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
-    min-height: 25px;
+    height: 25px;
   }
 
   tbody tr {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: flex-start;
+    //display: flex;
+    //flex-flow: row nowrap;
+    //align-items: center;
+    //justify-content: flex-start;
     margin-top: 1px;
     background: rgba(22, 69, 129, 0.6);
-    min-height: 30px;
+    height: 30px;
 
     &.gameOver {
       background: rgba(6, 5, 26, 0.6);
@@ -107,32 +119,29 @@
   }
 
   th {
-    width: 0;
-    flex: 1 0 14.2%;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
+    //display: flex;
+    //flex-flow: column nowrap;
+    //justify-content: center;
+    //align-items: center;
     min-height: 25px;
   }
 
   tbody td {
-    width: 0;
-    flex: 1 0 14.2%;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    min-height: 30px;
+    //width: 0;
+    //flex: 1 0 14.2%;
+    //display: flex;
+    //flex-flow: column nowrap;
+    //justify-content: center;
+    //align-items: center;
+    //height: 30px;
   }
 
-  .alignItemsLeft {
-    align-items: center;
+  .alignItemsLeft p{
+    text-align: left;
   }
 
   p {
     max-width: 100%;
-    flex: 0 0 auto;
     text-align: center;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -157,7 +166,7 @@
 
   img {
     max-width: 100%;
-    flex: 0 0 auto;
+    //flex: 0 0 auto;
     height: 13px;
   }
 }

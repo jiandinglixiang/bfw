@@ -80,13 +80,8 @@ function Details () {
   const [state] = detailsData.useStore()
   return (
     <div>
-      <div style={{
-        paddingTop: '16px',
-        minHeight: '121px'
-      }}>
-        <TopLogoNameScore matchList={state.match_list} />
-        <LiveButton liveList={state.live_list} />
-      </div>
+      <TopLogoNameScore matchList={state.match_list} />
+      <LiveButton liveList={state.live_list} />
       <TabsList />
     </div>
   )

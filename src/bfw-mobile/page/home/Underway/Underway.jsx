@@ -158,8 +158,12 @@ function UnderwayCsGo (props) {
     return [sbc]
   }, [moreAttr1.current_round, gameData.poor_economy.time])
   const isCT = useMemo(() => {
-    return moreAttr1.camp === 'CT' || moreAttr2.camp === 'C'
-  }, [moreAttr1.camp, moreAttr2.camp])
+    // 队伍一是否是CT
+    // if (moreAttr1.current_round > 15) {
+    //   return (moreAttr1.second_half_role||moreAttr1.first_half_role) === 'CT'
+    // }
+    return (moreAttr1.second_half_role || moreAttr1.first_half_role) === 'CT'
+  }, [moreAttr1.first_half_role, moreAttr1.second_half_role])
 
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>

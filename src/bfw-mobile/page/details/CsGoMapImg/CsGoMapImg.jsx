@@ -27,103 +27,102 @@ function hpInit (num) {
 function BothTable ({ team2Table, team1Table }) {
   return (
     <>
-      <table className={styles.csgoTableBlue}>
-        <thead>
-          <tr>
-            <th><p>UOL</p></th>
-            <th><p>HS%</p></th>
-            <th><p>KAST</p></th>
-            <th><p>K-D</p></th>
-            <th><p>FK driff</p></th>
-            <th><p>Rating<br /> 2.0</p></th>
-            <th><p>K/D/A</p></th>
-            <th><p>ADR</p></th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            team1Table.map((value, key) => {
-              const valueVE = diffCatch(value)({
-                hs: 0,
-                kills: 0,
-                deaths: 0,
+      <div className={styles.scrollXContainer}>
+        <div style={{ height: '5px' }} />
+        <table className={styles.csgoTableBlue} >
+          <thead>
+            <tr>
+              <th><p>UOL</p></th>
+              <th><p>HS%</p></th>
+              <th><p>KAST</p></th>
+              <th><p>K-D</p></th>
+              <th><p>FK driff</p></th>
+              <th><p>Rating 2.0</p></th>
+              <th><p>K/D/A</p></th>
+              <th><p>ADR</p></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              team1Table.map((value, key) => {
+                const valueVE = diffCatch(value)({
+                  hs: 0,
+                  kills: 0,
+                  deaths: 0,
+                })
+                let hskpi = 0
+                const hs = valueVE.hs || 0
+                if (hs && valueVE.kills) {
+                  hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1, 3)
+                }
+                return (
+                  <tr key={key}>
+                    <td><p>{valueVE.nick}</p></td>
+                    <td><p>{hs}/{hskpi}%</p></td>
+                    <td><p>-</p></td>
+                    <td><p>{valueVE.kills - valueVE.deaths}</p></td>
+                    <td>{valueVE.fk_diff}</td>
+                    <td><p>{valueVE.rating}</p></td>
+                    <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
+                    <td><p>{valueVE.damage_pr_round}</p></td>
+                  </tr>
+                )
               })
-              let hskpi = 0
-              const hs = valueVE.hs || 0
-              if (hs && valueVE.kills) {
-                hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1, 3)
-              }
-              return (
-                <tr key={key}>
-                  <td><p>{valueVE.nick}</p></td>
-                  <td><p>{hs}/{hskpi}%</p></td>
-                  <td><p>-</p></td>
-                  <td><p>{valueVE.kills - valueVE.deaths}</p></td>
-                  <td>{valueVE.fk_diff}</td>
-                  <td><p>{valueVE.rating}</p></td>
-                  <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
-                  <td><p>{valueVE.damage_pr_round}</p></td>
-                </tr>
-              )
-            })
-          }
-          {
-            !team1Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
-          }
-        </tbody>
-        <tfoot>
-          <tr>
-            <td>
-              <div />
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-      <table className={styles.csgoTableYellow}>
-        <thead>
-          <tr>
-            <th><p>UOL</p></th>
-            <th><p>HS%</p></th>
-            <th><p>KAST</p></th>
-            <th><p>K-D</p></th>
-            <th><p>FK driff</p></th>
-            <th><p>Rating<br /> 2.0</p></th>
-            <th><p>K/D/A</p></th>
-            <th><p>ADR</p></th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            team2Table.map((value, key) => {
-              const valueVE = diffCatch(value)({
-                hs: 0,
-                kills: 0,
-                deaths: 0,
+            }
+            {
+              !team1Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
+            }
+          </tbody>
+        </table>
+        <div style={{ height: '5px' }} />
+      </div>
+      <div className={styles.scrollXContainer}>
+        <table className={styles.csgoTableYellow}>
+          <thead>
+            <tr>
+              <th><p>UOL</p></th>
+              <th><p>HS%</p></th>
+              <th><p>KAST</p></th>
+              <th><p>K-D</p></th>
+              <th><p>FK driff</p></th>
+              <th><p>Rating 2.0</p></th>
+              <th><p>K/D/A</p></th>
+              <th><p>ADR</p></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              team2Table.map((value, key) => {
+                const valueVE = diffCatch(value)({
+                  hs: 0,
+                  kills: 0,
+                  deaths: 0,
+                })
+                let hskpi = 0
+                const hs = valueVE.hs || 0
+                if (hs && valueVE.kills) {
+                  hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1, 3)
+                }
+                return (
+                  <tr key={key}>
+                    <td><p>{valueVE.nick}</p></td>
+                    <td><p>{hs}/{hskpi}%</p></td>
+                    <td><p>-</p></td>
+                    <td><p>{valueVE.kills - valueVE.deaths}</p></td>
+                    <td>{valueVE.fk_diff}</td>
+                    <td><p>{valueVE.rating}</p></td>
+                    <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
+                    <td><p>{valueVE.damage_pr_round}</p></td>
+                  </tr>
+                )
               })
-              let hskpi = 0
-              const hs = valueVE.hs || 0
-              if (hs && valueVE.kills) {
-                hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1, 3)
-              }
-              return (
-                <tr key={key}>
-                  <td><p>{valueVE.nick}</p></td>
-                  <td><p>{hs}/{hskpi}%</p></td>
-                  <td><p>-</p></td>
-                  <td><p>{valueVE.kills - valueVE.deaths}</p></td>
-                  <td>{valueVE.fk_diff}</td>
-                  <td><p>{valueVE.rating}</p></td>
-                  <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
-                  <td><p>{valueVE.damage_pr_round}</p></td>
-                </tr>
-              )
-            })
-          }
-          {
-            !team2Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
-          }
-        </tbody>
-      </table>
+            }
+            {
+              !team2Table.length && [<tr key={0} />, <tr key={1} />, <tr key={2} />, < tr key={3} />, <tr key={4} />]
+            }
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }
@@ -280,16 +279,16 @@ function CsGoMapImg (props) {
     team2Table = propsVE.endMatch.team2.players
     first = propsVE.endMatch.real_history.first
     second = propsVE.endMatch.real_history.second
-    const team1MoreAttr1 = propsVE.endMatch.team1.other_more_attr
-    const team2MoreAttr1 = propsVE.endMatch.team2.other_more_attr
-    realHistory.first.team1.role = team1MoreAttr1.first_half_role
-    realHistory.first.team2.role = team2MoreAttr1.first_half_role
-    realHistory.second.team1.role = team1MoreAttr1.first_half_role
-    realHistory.second.team2.role = team2MoreAttr1.first_half_role
-    realHistory.first.team1.score = team1MoreAttr1.first_half_score
-    realHistory.first.team2.score = team2MoreAttr1.first_half_score
-    realHistory.second.team1.score = team1MoreAttr1.second_half_score
-    realHistory.second.team2.score = team2MoreAttr1.second_half_score
+    const team1MoreAttr = propsVE.endMatch.team1.other_more_attr
+    const team2MoreAttr = propsVE.endMatch.team2.other_more_attr
+    realHistory.first.team1.role = team1MoreAttr.first_half_role
+    realHistory.first.team2.role = team2MoreAttr.first_half_role
+    realHistory.second.team1.role = team1MoreAttr.second_half_role
+    realHistory.second.team2.role = team2MoreAttr.second_half_role
+    realHistory.first.team1.score = team1MoreAttr.first_half_score
+    realHistory.first.team2.score = team2MoreAttr.first_half_score
+    realHistory.second.team1.score = team1MoreAttr.second_half_score
+    realHistory.second.team2.score = team2MoreAttr.second_half_score
     realHistory.first.team1.logo = propsVE.endMatch.team1.team_logo
     realHistory.first.team2.logo = propsVE.endMatch.team2.team_logo
     realHistory.second.team1.logo = propsVE.endMatch.team1.team_logo
@@ -324,23 +323,23 @@ function CsGoMapImg (props) {
     // 成员数据
     first = propsVE.matchResult.match_list.real_history.first
     second = propsVE.matchResult.match_list.real_history.second
-    const team1MoreAttr = propsVE.matchList.team1_more_attr.other_more_attr
-    const team2MoreAttr = propsVE.matchList.team2_more_attr.other_more_attr
-    overtime = team1MoreAttr.is_over_time > 1
-    realHistory.first.team1.role = team1MoreAttr.first_half_role
-    realHistory.first.team2.role = team2MoreAttr.first_half_role
-    realHistory.second.team1.role = team1MoreAttr.first_half_role
-    realHistory.second.team2.role = team2MoreAttr.first_half_role
-    realHistory.first.team1.score = team1MoreAttr.first_half_score
-    realHistory.first.team2.score = team2MoreAttr.first_half_score
-    realHistory.second.team1.score = team1MoreAttr.second_half_score
-    realHistory.second.team2.score = team2MoreAttr.second_half_score
+    const team1MoreAttrs = propsVE.matchList.team1_more_attr.other_more_attr
+    const team2MoreAttrs = propsVE.matchList.team2_more_attr.other_more_attr
+    overtime = team1MoreAttrs.is_over_time > 1
+    realHistory.first.team1.role = team1MoreAttrs.first_half_role
+    realHistory.first.team2.role = team2MoreAttrs.first_half_role
+    realHistory.second.team1.role = team1MoreAttrs.second_half_role
+    realHistory.second.team2.role = team2MoreAttrs.second_half_role
+    realHistory.first.team1.score = team1MoreAttrs.first_half_score
+    realHistory.first.team2.score = team2MoreAttrs.first_half_score
+    realHistory.second.team1.score = team1MoreAttrs.second_half_score
+    realHistory.second.team2.score = team2MoreAttrs.second_half_score
     realHistory.first.team1.logo = propsVE.matchList.host_team_logo
     realHistory.first.team2.logo = propsVE.matchList.guest_team_logo
     realHistory.second.team1.logo = propsVE.matchList.host_team_logo
     realHistory.second.team2.logo = propsVE.matchList.guest_team_logo
-    realHistory.first.start = team1MoreAttr.current_round > 0
-    realHistory.second.start = team1MoreAttr.current_round > 15
+    realHistory.first.start = team1MoreAttrs.current_round > 0
+    realHistory.second.start = team1MoreAttrs.current_round > 15
   }
   first.forEach(function (val) {
     if (val.team_role === realHistory.first.team1.role) {

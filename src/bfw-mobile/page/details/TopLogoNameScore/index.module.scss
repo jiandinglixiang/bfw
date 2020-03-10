@@ -2,8 +2,9 @@
   width: 100%;
   display: flex;
   flex-flow: row nowrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
+  min-height: 110px;
 }
 
 .first, .last {
