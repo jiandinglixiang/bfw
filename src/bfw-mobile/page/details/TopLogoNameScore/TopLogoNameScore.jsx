@@ -162,11 +162,11 @@ function GameUnderway (props) {
       <div className={styles.center}>
         <div className={styles.high}>
           <p className={isBoth ? styles.boutOver : styles.boutUnderway}>
-            {propsVE.round} {propsVE.time[0]}
+            {propsVE.gameId !== 3 && propsVE.round} {propsVE.time[0]}
           </p>
         </div>
         {
-          propsVE.underwayBP && <div className={styles.low} />
+          propsVE.underwayBP && propsVE.gameId !== 3 && <div className={styles.low} />
         }
         <div className={styles.low}>
           {
@@ -247,8 +247,8 @@ function csgoInit (team1, team2) {
   }
   data.team1.sente = [team1.flag_r1 > 0, team1.flag_w5 > 0, team1.flag_r16 > 0]
   data.team2.sente = [team2.flag_r1 > 0, team2.flag_w5 > 0, team2.flag_r16 > 0]
-  data.team1.sum = data.team1.score.reduce((a, b) => a + b, 0)
-  data.team2.sum = data.team2.score.reduce((a, b) => a + b, 0)
+  // data.team1.sum = data.team1.score.reduce((a, b) => a + b, 0)
+  // data.team2.sum = data.team2.score.reduce((a, b) => a + b, 0)
   return data
 }
 
@@ -256,6 +256,8 @@ function csgoDataInit (matchList) {
   // csgo 进行中赛况对阵详情数据初始化
   const matchListVE = diffCatch(matchList)({
     current_round: 0,
+    team1_score: 0,
+    team2_score: 0,
     team1_more_attr: {
       other_more_attr: {
         first_half_score: 0,
@@ -264,7 +266,8 @@ function csgoDataInit (matchList) {
         flag_r1: 0,
         flag_r16: 0,
         flag_w5: 0
-      }
+      },
+      score: 0
     },
     team2_more_attr: {
       other_more_attr: {
@@ -274,13 +277,16 @@ function csgoDataInit (matchList) {
         flag_r1: 0,
         flag_r16: 0,
         flag_w5: 0
-      }
+      },
+      score: 0
     }
   })
   const team1 = matchListVE.team1_more_attr.other_more_attr
   const team2 = matchListVE.team2_more_attr.other_more_attr
   const data = csgoInit(team1, team2)
   data.round = team1.current_round || team2.current_round // csgo不转换文字
+  data.team1.sum = matchListVE.team1_score
+  data.team2.sum = matchListVE.team2_score
   return data
 }
 
@@ -313,8 +319,10 @@ export function csgoBothInit (endMatch) {
   const team2 = endMatchVE.team2
   const data = csgoInit(team1.other_more_attr, team2.other_more_attr)
   data.round = team1.round || team2.round // csgo不转换文字
-  data.team1.name = endMatchVE.team1.team_name
-  data.team2.name = endMatchVE.team2.team_name
+  data.team1.name = team1.team_name
+  data.team2.name = team2.team_name
+  data.team1.sum = team1.score
+  data.team2.sum = team2.score
   return data
 }
 
@@ -489,6 +497,9 @@ function Match ({ data = {}, matchList }) {
     }
     if (data.gameId === 3) {
       // csgo 显示
+      const csgoScore = matchList.score.split(/,|:/)
+      data.team1.score = csgoScore[0]
+      data.team2.score = csgoScore[1]
       data.csgoMap = matchList.team1_more_attr.other_more_attr.map || matchList.team2_more_attr.other_more_attr.map
       const scgoData = csgoDataInit(matchList)
       return <div>

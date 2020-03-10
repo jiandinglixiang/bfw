@@ -4,6 +4,8 @@ import tttt from '../../../assets/terrorists.png'
 import ctct from '../../../assets/counter.png'
 import { diffCatch, PropTypes, toBigNumber } from '../../../../tool/util.js'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
+import def1 from '../../../assets/default_teamred_40.png'
+import def2 from '../../../assets/default_teamblue_40.png'
 
 function backColor (num) {
   if (num > 20) {
@@ -46,11 +48,15 @@ function BothTable ({ team2Table, team1Table }) {
                 kills: 0,
                 deaths: 0,
               })
-              const hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1)
+              let hskpi = 0
+              const hs = valueVE.hs || 0
+              if (hs && valueVE.kills) {
+                hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1, 3)
+              }
               return (
                 <tr key={key}>
-                  <td><p>{valueVE.name}</p></td>
-                  <td><p>{valueVE.hs}/{hskpi}</p></td>
+                  <td><p>{valueVE.nick}</p></td>
+                  <td><p>{hs}/{hskpi}%</p></td>
                   <td><p>-</p></td>
                   <td><p>{valueVE.kills - valueVE.deaths}</p></td>
                   <td>{valueVE.fk_diff}</td>
@@ -94,11 +100,15 @@ function BothTable ({ team2Table, team1Table }) {
                 kills: 0,
                 deaths: 0,
               })
-              const hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1)
+              let hskpi = 0
+              const hs = valueVE.hs || 0
+              if (hs && valueVE.kills) {
+                hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1, 3)
+              }
               return (
                 <tr key={key}>
-                  <td><p>{valueVE.name}</p></td>
-                  <td><p>{valueVE.hs}/{hskpi}</p></td>
+                  <td><p>{valueVE.nick}</p></td>
+                  <td><p>{hs}/{hskpi}%</p></td>
                   <td><p>-</p></td>
                   <td><p>{valueVE.kills - valueVE.deaths}</p></td>
                   <td>{valueVE.fk_diff}</td>
@@ -137,8 +147,8 @@ function MatchTable ({ team2Table, team1Table }) {
           team1Table.map((value, key) => {
             const valueVE = diffCatch(value)({ hp: 0 })
             return (
-              <tr key={key} className={valueVE.hp > 0 ? styles.gameOver : ''}>
-                <td><p>{valueVE.name}</p></td>
+              <tr key={key} className={valueVE.hp > 0 ? null : styles.gameOver}>
+                <td><p>{valueVE.nick}</p></td>
                 <td className={styles.alignItemsLeft}>
                   <p className={styles.bigTxt}>{valueVE.hp}</p>
                   <div
@@ -162,6 +172,7 @@ function MatchTable ({ team2Table, team1Table }) {
         }
       </tbody>
     </table>
+    <div style={{ height: '5px' }} />
     <table className={styles.csgoTableYellow}>
       <thead>
         <tr>
@@ -179,8 +190,8 @@ function MatchTable ({ team2Table, team1Table }) {
           team2Table.map((value, key) => {
             const valueVE = diffCatch(value)({ hp: 0 })
             return (
-              <tr key={key} className={valueVE.hp > 0 ? styles.gameOver : ''}>
-                <td><p>{valueVE.name}</p></td>
+              <tr key={key} className={valueVE.hp > 0 ? '' : styles.gameOver}>
+                <td><p>{valueVE.nick}</p></td>
                 <td className={styles.alignItemsLeft}>
                   <p className={styles.bigTxt}>{valueVE.hp}</p>
                   <div
@@ -216,9 +227,10 @@ function CsGoMapImg (props) {
   let team2Table
   let first
   let second
-
+  let showBottom = false
   const realHistory = {
     first: {
+      start: false,
       team1: {
         role: true,
         logo: '',
@@ -233,6 +245,7 @@ function CsGoMapImg (props) {
       },
     },
     second: {
+      start: false,
       team1: {
         role: true,
         logo: '',
@@ -262,6 +275,7 @@ function CsGoMapImg (props) {
         }
       }
     })
+    showBottom = true
     team1Table = propsVE.endMatch.team1.players
     team2Table = propsVE.endMatch.team2.players
     first = propsVE.endMatch.real_history.first
@@ -283,8 +297,10 @@ function CsGoMapImg (props) {
   } else {
     propsVE = diffCatch(props)({
       matchList: {
+        status: 0,
         team1_more_attr: {
           other_more_attr: {
+            current_round: 1,
             is_over_time: 0
           }
         },
@@ -302,6 +318,7 @@ function CsGoMapImg (props) {
         }
       }
     })
+    showBottom = propsVE.matchList.status > 0
     team1Table = propsVE.matchResult.match_list.real_players[0] || []
     team2Table = propsVE.matchResult.match_list.real_players[1] || []
     // 成员数据
@@ -322,6 +339,8 @@ function CsGoMapImg (props) {
     realHistory.first.team2.logo = propsVE.matchList.guest_team_logo
     realHistory.second.team1.logo = propsVE.matchList.host_team_logo
     realHistory.second.team2.logo = propsVE.matchList.guest_team_logo
+    realHistory.first.start = team1MoreAttr.current_round > 0
+    realHistory.second.start = team1MoreAttr.current_round > 15
   }
   first.forEach(function (val) {
     if (val.team_role === realHistory.first.team1.role) {
@@ -347,76 +366,81 @@ function CsGoMapImg (props) {
     {propsVE.isBoth ? <BothTable team1Table={team1Table} team2Table={team2Table} /> : <MatchTable
       team1Table={team1Table} team2Table={team2Table} />}
     <div style={{ height: '10px' }} />
-    <div className={styles.operatingRecord}>
-      <div className={styles.topTitle}>
-        <Image src={realHistory.first.team1.role === 'CT' ? ctct : tttt} />
-        <b>{realHistory.first.team1.score}</b>
-        <p>上半场</p>
-        <b>{realHistory.first.team2.score}</b>
-        <Image src={realHistory.first.team2.role === 'T' ? tttt : ctct} />
-      </div>
-      <div className={styles.teamRed}>
-        <Image src={realHistory.first.team1.logo} />
-        <div className={styles.hodlRight}>
-          {
-            realHistory.first.team1.icon.map((val, index) => {
-              if (val) {
-                return <Image src={val} key={index} />
+    {
+      showBottom && [
+        <div key={0} className={styles.operatingRecord}>
+          <div className={styles.topTitle}>
+            <Image src={realHistory.first.team1.role === 'CT' ? ctct : tttt} />
+            <b>{realHistory.first.team1.score}</b>
+            <p>上半场</p>
+            <b>{realHistory.first.team2.score}</b>
+            <Image src={realHistory.first.team2.role === 'T' ? tttt : ctct} />
+          </div>
+          <div className={styles.teamRed}>
+            <Image src={[realHistory.first.team1.logo, def1]} />
+            <div className={styles.hodlRight}>
+              {
+                realHistory.first.team1.icon.map((val, index) => {
+                  if (val) {
+                    return <Image src={val} key={index} />
+                  }
+                  return null
+                })
               }
-              return null
-            })
-          }
-        </div>
-      </div>
-      <div className={styles.teamBlue}>
-        <Image src={realHistory.first.team2.logo} />
-        <div>
-          {
-            realHistory.first.team2.icon.map((val, index) => {
-              if (val) {
-                return <Image src={val} key={index} />
+            </div>
+          </div>
+          <div className={styles.teamBlue}>
+            <Image src={[realHistory.first.team2.logo, def2]} />
+            <div>
+              {
+                realHistory.first.team2.icon.map((val, index) => {
+                  if (val) {
+                    return <Image src={val} key={index} />
+                  }
+                  return null
+                })
               }
-              return null
-            })
-          }
-        </div>
-      </div>
-    </div>
-    <div className={styles.operatingRecord}>
-      <div className={styles.topTitle}>
-        <Image src={realHistory.second.team1.role === 'T' ? tttt : ctct} />
-        <b>{realHistory.second.team1.score}</b>
-        <p>下半场</p>
-        <b>{realHistory.second.team2.score}</b>
-        <Image src={realHistory.second.team2.role === 'CT' ? ctct : tttt} />
-      </div>
-      <div className={styles.teamRed}>
-        <Image src={realHistory.second.team1.logo} />
-        <div className={styles.hodlRight}>
-          {
-            realHistory.second.team1.icon.map((val, index) => {
-              if (val) {
-                return <Image src={val} key={index} />
+            </div>
+          </div>
+        </div>,
+        <div key={3} style={{ height: '5px' }} />,
+        <div key={1} className={styles.operatingRecord}>
+          <div className={styles.topTitle}>
+            <Image src={realHistory.second.team1.role === 'T' ? tttt : ctct} />
+            <b>{realHistory.second.team1.score}</b>
+            <p>下半场</p>
+            <b>{realHistory.second.team2.score}</b>
+            <Image src={realHistory.second.team2.role === 'CT' ? ctct : tttt} />
+          </div>
+          <div className={styles.teamRed}>
+            <Image src={[realHistory.second.team1.logo, def1]} />
+            <div className={styles.hodlRight}>
+              {
+                realHistory.second.team1.icon.map((val, index) => {
+                  if (val) {
+                    return <Image src={val} key={index} />
+                  }
+                  return null
+                })
               }
-              return null
-            })
-          }
-        </div>
-      </div>
-      <div className={styles.teamBlue}>
-        <Image src={realHistory.second.team2.logo} />
-        <div>
-          {
-            realHistory.second.team2.icon.map((val, index) => {
-              if (val) {
-                return <Image src={val} key={index} />
+            </div>
+          </div>
+          <div className={styles.teamBlue}>
+            <Image src={[realHistory.second.team2.logo, def2]} />
+            <div>
+              {
+                realHistory.second.team2.icon.map((val, index) => {
+                  if (val) {
+                    return <Image src={val} key={index} />
+                  }
+                  return null
+                })
               }
-              return null
-            })
-          }
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      ]
+    }
   </div>
 }
 
