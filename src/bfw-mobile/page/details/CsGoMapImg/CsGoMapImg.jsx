@@ -17,6 +17,16 @@ function backColor (num) {
   return '#4F5975'
 }
 
+function fontColor (num) {
+  if (num > 0) {
+    return { color: '#E12727' }
+  }
+  if (num < 0) {
+    return { color: '#2FD082' }
+  }
+  return null
+}
+
 function hpInit (num) {
   if (num > 0) {
     return num
@@ -47,23 +57,27 @@ function BothTable ({ team2Table, team1Table }) {
               team1Table.map((value, key) => {
                 const valueVE = diffCatch(value)({
                   hs: 0,
-                  kills: 0,
+                  score: 0,
                   deaths: 0,
                 })
                 let hskpi = 0
                 const hs = valueVE.hs || 0
-                if (hs && valueVE.kills) {
-                  hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1, 3)
+                if (hs && valueVE.score) {
+                  hskpi = toBigNumber(valueVE.hs / valueVE.score * 100).toFormat(1, 3)
                 }
                 return (
                   <tr key={key}>
                     <td><p>{valueVE.nick}</p></td>
                     <td><p>{hs}/{hskpi}%</p></td>
                     <td><p>-</p></td>
-                    <td><p>{valueVE.kills - valueVE.deaths}</p></td>
-                    <td>{valueVE.fk_diff}</td>
+                    <td><p style={fontColor(valueVE.score - valueVE.deaths)}>{valueVE.score - valueVE.deaths}</p></td>
+                    <td><p style={fontColor(valueVE.fk_diff)}>{valueVE.fk_diff}</p></td>
                     <td><p>{valueVE.rating}</p></td>
-                    <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
+                    <td>
+                      <p>
+                        {valueVE.score}/<span style={{ color: '#70F7E3' }}>{valueVE.deaths}</span>/{valueVE.assists}
+                      </p>
+                    </td>
                     <td><p>{valueVE.damage_pr_round}</p></td>
                   </tr>
                 )
@@ -95,23 +109,23 @@ function BothTable ({ team2Table, team1Table }) {
               team2Table.map((value, key) => {
                 const valueVE = diffCatch(value)({
                   hs: 0,
-                  kills: 0,
+                  score: 0,
                   deaths: 0,
                 })
                 let hskpi = 0
                 const hs = valueVE.hs || 0
-                if (hs && valueVE.kills) {
-                  hskpi = toBigNumber(valueVE.hs / valueVE.kills * 100).toFormat(1, 3)
+                if (hs && valueVE.score) {
+                  hskpi = toBigNumber(valueVE.hs / valueVE.score * 100).toFormat(1, 3)
                 }
                 return (
                   <tr key={key}>
                     <td><p>{valueVE.nick}</p></td>
                     <td><p>{hs}/{hskpi}%</p></td>
                     <td><p>-</p></td>
-                    <td><p>{valueVE.kills - valueVE.deaths}</p></td>
-                    <td>{valueVE.fk_diff}</td>
+                    <td><p style={fontColor(valueVE.score - valueVE.deaths)}>{valueVE.score - valueVE.deaths}</p></td>
+                    <td><p style={fontColor(valueVE.fk_diff)}>{valueVE.fk_diff}</p></td>
                     <td><p>{valueVE.rating}</p></td>
-                    <td><p>{valueVE.kills}/{valueVE.deaths}/{valueVE.assists}</p></td>
+                    <td><p>{valueVE.score}/<span style={{ color: '#70F7E3' }}>{valueVE.deaths}</span>/{valueVE.assists}</p></td>
                     <td><p>{valueVE.damage_pr_round}</p></td>
                   </tr>
                 )
@@ -157,7 +171,7 @@ function MatchTable ({ team2Table, team1Table }) {
                       width: hpInit(valueVE.hp) + '%'
                     }} />
                 </td>
-                <td><p>{valueVE.kills || 0}/{valueVE.deaths || 0}/{valueVE.assists || 0}</p></td>
+                <td><p>{valueVE.score || 0}/{valueVE.deaths || 0}/{valueVE.assists || 0}</p></td>
                 <td><Image src={valueVE.weapon_logo} /></td>
                 <td><Image src={valueVE.equipment_logo} /></td>
                 <td><p className={styles.bigTxt}>{valueVE.money}</p></td>
@@ -200,7 +214,7 @@ function MatchTable ({ team2Table, team1Table }) {
                       width: hpInit(valueVE.hp) + '%'
                     }} />
                 </td>
-                <td><p>{valueVE.kills || 0}/{valueVE.deaths || 0}/{valueVE.assists || 0}</p></td>
+                <td><p>{valueVE.score || 0}/{valueVE.deaths || 0}/{valueVE.assists || 0}</p></td>
                 <td><Image src={valueVE.weapon_logo} /></td>
                 <td><Image src={valueVE.equipment_logo} /></td>
                 <td><p className={styles.bigTxt}>{valueVE.money}</p></td>

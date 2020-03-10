@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import style from './index.module.scss'
 import def2 from '../../../assets/default_teamblue_40.png'
 import def1 from '../../../assets/default_teamred_40.png'
-import exch from '../../../assets/exch_left.png'
 import { diffCatch, PropTypes, toBigNumber } from '../../../../tool/util.js'
 import tianhui from '../../../assets/tianhui.png'
 import yemo from '../../../assets/yemo.png'
@@ -51,19 +50,14 @@ function MemberList (props) {
       level: 0
     }
   })
-  const [big, setBig] = useState(style.twoBig)
   const item = value.item.length ? value.item : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
   let kda = 0
   if (isBoth && value.deaths) {
-    kda = toBigNumber((value.kills + value.assists) / value.deaths).toFixed(1, 3)
+    kda = toBigNumber((value.kills + value.assists) / value.deaths).toFixed(1, 0)
   }
   return <div className={style.oneMember}>
     <div>
-      <div className={big}>
-        {value.logo ? <Image src={value.logo} /> : <span />}
-        <Image src={[value.hero_logo, blueTeam ? def2 : def1]} />
-        <Image src={exch} onClick={() => setBig(big ? '' : style.twoBig)} />
-      </div>
+      <div style={{ backgroundImage: `url(${value.hero_logo || (blueTeam ? def2 : def1)})` }} />
       <p>{value.name}</p>
     </div>
     <div>
@@ -97,7 +91,7 @@ function MemberList (props) {
         </p>
       </div>
       <div>
-        <p>{value.level ? value.level + '级' : '-'}</p>
+        <p>{value.level ? value.level : '-'}级</p>
         <div>
           {
             item.map((val, index) => {
@@ -133,19 +127,14 @@ function MemberListLol (props) {
       game_no: 0
     }
   })
-  const [big, setBig] = useState(style.twoBig)
   const item = propsVE.value.items.length ? propsVE.value.items : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
   let kda = 0
   if (propsVE.isBoth && propsVE.value.deaths) {
-    kda = toBigNumber((propsVE.value.kills + propsVE.value.assists) / propsVE.value.deaths * 3).toFixed(1, 3)
+    kda = toBigNumber((propsVE.value.kills + propsVE.value.assists) / propsVE.value.deaths * 3).toFixed(1, 0)
   }
   return <div className={style.oneMember}>
     <div>
-      <div className={big}>
-        {propsVE.value.logo ? <Image src={propsVE.value.logo} /> : <span />}
-        <Image src={[propsVE.value.champion_img, propsVE.blueTeam ? def2 : def1]} />
-        <Image src={exch} onClick={() => setBig(big ? '' : style.twoBig)} />
-      </div>
+      <div style={{ backgroundImage: `url(${propsVE.value.champion_img || (propsVE.blueTeam ? def2 : def1)})` }} />
       <p>{propsVE.value.name}</p>
     </div>
     <div>
@@ -164,7 +153,7 @@ function MemberListLol (props) {
         <p className={style.yellow}>{propsVE.value.gold}</p>
       </div>
       <div>
-        <p>{propsVE.value.level ? propsVE.value.level + '级' : '-'}</p>
+        <p>{propsVE.value.level ? propsVE.value.level : '-'}级</p>
         <div>
           {
             item.map((val, index) => {

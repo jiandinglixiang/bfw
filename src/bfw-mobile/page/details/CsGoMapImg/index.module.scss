@@ -111,6 +111,15 @@
     &.gameOver {
       background: rgba(6, 5, 26, 0.6);
     }
+
+    td:first-child {
+      max-width: 80px;
+      width: 80px;
+
+      p {
+        padding: 0 2%;
+      }
+    }
   }
 
   tbody tr:last-child {
@@ -126,7 +135,7 @@
     min-height: 25px;
   }
 
-  tbody td {
+  td {
     //width: 0;
     //flex: 1 0 14.2%;
     //display: flex;
@@ -134,6 +143,7 @@
     //justify-content: center;
     //align-items: center;
     //height: 30px;
+    //width: 21%;
   }
 
   .alignItemsLeft p{
@@ -141,12 +151,11 @@
   }
 
   p {
-    max-width: 100%;
+    width: 100%;
     text-align: center;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    line-height: 1;
   }
 
   th p {
