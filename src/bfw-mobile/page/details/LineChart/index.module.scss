@@ -3,16 +3,49 @@
   height: 200px;
 }
 
+.teamBlue, .teamRed {
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+  }
+
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  height: 20px;
+
+  p {
+    font-weight: bold;
+    width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.teamRed:before {
+  background: url("../../../assets/1.png") no-repeat left top;
+  background-size: 100% 100%;
+}
+
+.teamBlue:before {
+  background: url("../../../assets/2.png") no-repeat left top;
+  background-size: 100% 100%;
+}
+
 .lineChartSwitch {
   padding-top: 10px;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 
   > div {
-    background-color: #101831;
-    border-radius: 20px;
+    width: 33.3%;
   }
 
   button {

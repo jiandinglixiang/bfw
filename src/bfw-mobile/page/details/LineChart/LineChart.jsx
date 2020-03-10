@@ -231,21 +231,12 @@ function LineChart (props) {
   }, [ref, curveList])
   return <div>
     <div className={styles.lineChartSwitch}>
-      <div>
-        1
+      <div className={styles.teamList}>
+        <div className={styles.teamRed}><p>asd</p></div>
+        <div className={styles.teamBlue}><p>asd</p></div>
       </div>
-      <div>
+      <div style={{ textAlign: 'center' }}>
         <button className={styles.activeClick}>经济差</button>
-        {/*     <button
-          className={styles.activeClick}
-          onClick={() => {
-            chartOption.series[0].data = [
-              [0, 0],
-              [1, 6.232],
-            ]
-            myChart.setOption(chartOption)
-          }}>经验差
-        </button> */}
       </div>
     </div>
     <div ref={ref} className={styles.container} />
