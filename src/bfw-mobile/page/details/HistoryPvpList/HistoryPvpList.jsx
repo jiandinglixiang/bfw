@@ -135,7 +135,7 @@ function initList (list, len, more, showMore, gameId) {
       {list.map((value, index) => <ListItem key={index} value={value} />)}
       {
         len > 5 && <li className={styles.moreList} onClick={() => showMore(!more)}>
-          {more ? '收起更多比赛' : '点击展开更多比赛'}
+          {more ? '点击收起更多比赛' : '点击展开更多比赛'}
         </li>
       }
     </ul>)

@@ -79,9 +79,9 @@ function FuturePvpList (props) {
       </div>
     </div>
     {
-      !more1 && isHave ? <div className={stylesFuture.moreList} onClick={() => showMore1(!more1)}>
-        点击展开更多比赛
-      </div> : null
+      isHave && <div className={stylesFuture.moreList} onClick={() => showMore1(!more1)}>
+        {more1 ? '点击收起更多比赛' : '点击展开更多比赛'}
+      </div>
     }
   </div>
 }

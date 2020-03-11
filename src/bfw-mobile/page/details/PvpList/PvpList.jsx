@@ -138,9 +138,9 @@ function PvpList (props) {
           list.map((value, index) => <ListItem value={value} key={index} />)
         }
         {
-          !more && twoSidesConfrontation.length > 5 ? <li className={styles.moreList} onClick={() => showMore(!more)}>
-            点击展开更多比赛
-          </li> : null
+          twoSidesConfrontation.length > 5 && <li className={styles.moreList} onClick={() => showMore(!more)}>
+            {more ? '点击收起更多比赛' : '点击展开更多比赛'}
+          </li>
         }
       </ul>
     </div>)
