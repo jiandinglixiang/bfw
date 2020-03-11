@@ -189,11 +189,13 @@ export function OneMember (props) {
     propsVE = diffCatch(propsVE)({
       endMatch: {
         team1: {
+          other_more_attr: {},
           game_type_id: 0,
           players: [],
           team_logo: def1,
         },
         team2: {
+          other_more_attr: {},
           players: [],
           team_logo: def2,
         }
@@ -201,10 +203,10 @@ export function OneMember (props) {
     })
     gameId = propsVE.endMatch.team1.game_type_id
     if (gameId === 5) {
-      camp = propsVE.endMatch.team1.camp === 'dire'
+      camp = propsVE.endMatch.team1.other_more_attr.camp === 'dire'
     }
     if (gameId === 1) {
-      camp = propsVE.endMatch.team1.camp === 'blue'
+      camp = propsVE.endMatch.team1.other_more_attr.camp === 'blue'
     }
     if (camp) {
       team2.logo = propsVE.endMatch.team1.team_logo
