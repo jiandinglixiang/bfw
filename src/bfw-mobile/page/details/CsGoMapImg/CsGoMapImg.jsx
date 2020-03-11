@@ -246,7 +246,7 @@ function CsGoMapImg (props) {
   let propsVE = diffCatch(props)({
     isBoth: false
   })
-  let overtime = false
+  let overTxt
   let team1Table
   let team2Table
   let first
@@ -368,7 +368,6 @@ function CsGoMapImg (props) {
     teamNameLogo.team2.logo = propsVE.matchList.guest_team_logo
     const team1MoreAttrs = propsVE.matchList.team1_more_attr.other_more_attr
     const team2MoreAttrs = propsVE.matchList.team2_more_attr.other_more_attr
-    overtime = team1MoreAttrs.is_over_time > 1
     realHistory.first.team1.role = team1MoreAttrs.first_half_role
     realHistory.first.team2.role = team2MoreAttrs.first_half_role
     realHistory.second.team1.role = team1MoreAttrs.second_half_role
@@ -383,6 +382,13 @@ function CsGoMapImg (props) {
     realHistory.second.team2.logo = propsVE.matchList.guest_team_logo
     realHistory.first.start = team1MoreAttrs.current_round > 0
     realHistory.second.start = team1MoreAttrs.current_round > 15
+    if (showBottom) {
+      if (team1MoreAttrs.is_over_time > 0) {
+        overTxt = `加时赛 RD${team1MoreAttrs.current_round}`
+      } else {
+        overTxt = `${realHistory.second.start ? '下半场' : '上半场'} RD${team1MoreAttrs.current_round}`
+      }
+    }
   }
   first.length > 30 && (first = first.slice(0, 30))
   first.forEach(function (val) {
@@ -406,7 +412,7 @@ function CsGoMapImg (props) {
   return <div>
     <div style={{ height: '10px' }} />
     {showBottom && <p className={`${styles.mapRight} ${styles['csgoMap-' + one.map]}`}>{one.map}</p>}
-    {overtime && <p className={styles.extraTimeTxt}>加时赛</p>}
+    {overTxt && <p className={styles.extraTimeTxt}>{overTxt}</p>}
     {propsVE.isBoth ? (
       <BothTable
         teamNameLogo={teamNameLogo}
