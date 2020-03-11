@@ -10,23 +10,31 @@ function rowItem (data) {
   return [0, 1, 2].map((index) => {
     const leftOdds = (data.odds[index] && data.odds[index][0]) || {}
     const rightOdds = (data.odds[index] && data.odds[index][1]) || {}
-    const names = data.play_name[index] + leftOdds.name + rightOdds.name
-    if (names.includes('单双')) {
+    const names = `${data.play_name[index]}${leftOdds.name}${rightOdds.name}`
+    try {
+      if (names.includes('单双')) {
+        return [
+          '单双',
+          `(${leftOdds.name[0]})${leftOdds.odds} - (${rightOdds.name[0]})${rightOdds.odds}`
+        ]
+      } else if (names.includes('大小')) {
+        return [
+          '总比分大小',
+          `(${leftOdds.name[0]})${leftOdds.odds} - (${rightOdds.name[0]})${rightOdds.odds}`
+        ]
+      } else if (names.includes('让分')) {
+        return [
+          `让分${leftOdds.name}${leftOdds.value}`,
+          `${leftOdds.odds} - ${rightOdds.odds}`
+        ]
+      }
+    } catch (e) {
       return [
-        '单双',
-        `(${leftOdds.name[0]})${leftOdds.odds} - (${rightOdds.name[0]})${rightOdds.odds}`
-      ]
-    } else if (names.includes('大小')) {
-      return [
-        '总比分大小',
-        `(${leftOdds.name[0]})${leftOdds.odds} - (${rightOdds.name[0]})${rightOdds.odds}`
-      ]
-    } else if (names.includes('让分')) {
-      return [
-        `让分${leftOdds.name}${leftOdds.value}`,
-        `${leftOdds.odds} - ${rightOdds.odds}`
+        data.play_name[index] || '-',
+        `${leftOdds.odds || ''} - ${rightOdds.odds || ''}`
       ]
     }
+
     return [
       data.play_name[index] || '-',
       `${leftOdds.odds || ''} - ${rightOdds.odds || ''}`

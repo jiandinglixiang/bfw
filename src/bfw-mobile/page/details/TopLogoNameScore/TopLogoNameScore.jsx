@@ -398,13 +398,14 @@ function Both ({ data = {}, endMatch }) {
       <CsGoNowStatus {...scgoData} />
     </div>
   }
-  if (!data.isBottomBoth && data.gameId === 5) {
+  if (!data.isBottomBoth && [1, 5].includes(data.gameId)) {
     return (
       <div>
         <GameUnderway {...data} />
         <div style={{ padding: '0 2%' }}>
-          <BPList isBan team1={endMatchVE.team1.ban} team2={endMatchVE.team2.ban} />
-          <BPList gameId={5} team1={endMatchVE.team1.players} team2={endMatchVE.team2.players} />
+          {data.gameId === 5 && (
+            <BPList isBan team1={endMatchVE.team1.ban} team2={endMatchVE.team2.ban} />)}
+          <BPList gameId={data.gameId} team1={endMatchVE.team1.players} team2={endMatchVE.team2.players} />
         </div>
       </div>
     )
