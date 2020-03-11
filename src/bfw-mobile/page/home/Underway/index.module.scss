@@ -57,6 +57,17 @@
       flex: 0 0 13%;
     }
 
+    .csgoRole {
+      height: 15px;
+      flex: 0 0 13%;
+      text-align: center;
+
+      img {
+        width: 15px;
+        height: 15px;
+      }
+    }
+
     .dotaMatchRed {
       @extend .koaMatch;
       background: url("../../../assets/tianhui.png") no-repeat center center;

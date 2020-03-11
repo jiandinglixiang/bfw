@@ -45,7 +45,6 @@ function Mine () {
         </Divs>
       </Modal>
     </Divs>)
-
 }
 
 export default Mine

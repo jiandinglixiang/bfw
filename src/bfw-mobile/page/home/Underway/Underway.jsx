@@ -6,6 +6,7 @@ import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
 import { useHistory } from 'react-router-dom'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
+import { csgoCTinit } from '../../details/CsGoNowStatus/CsGoNowStatus.jsx'
 
 export function routerDetails (data, history) {
   const query = {
@@ -157,22 +158,29 @@ function UnderwayCsGo (props) {
     }
     return [sbc]
   }, [moreAttr1.current_round, gameData.poor_economy.time])
-  const isCT = useMemo(() => {
-    // 队伍一是否是CT
-    // if (moreAttr1.current_round > 15) {
-    //   return (moreAttr1.second_half_role||moreAttr1.first_half_role) === 'CT'
-    // }
-    return (moreAttr1.second_half_role || moreAttr1.first_half_role) === 'CT'
-  }, [moreAttr1.first_half_role, moreAttr1.second_half_role])
+  // const isCT = useMemo(() => {
+  //   // 队伍一是否是CT
+  //   // if (moreAttr1.current_round > 15) {
+  //   //   return (moreAttr1.second_half_role||moreAttr1.first_half_role) === 'CT'
+  //   // }
+  //   return (moreAttr1.second_half_role || moreAttr1.first_half_role) === 'CT'
+  // }, [moreAttr1.first_half_role, moreAttr1.second_half_role])
 
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
       <LeftTime gameData={gameData} />
-      <div className={isCT ? styles.csgoMatchBlue : styles.csgoMatchRed} />
+      <div className={styles.csgoRole}>
+        <Image
+
+          src={csgoCTinit(true, 0, moreAttr1.second_half_role || moreAttr1.first_half_role)} />
+      </div>
       <div className={styles.centerDifference}>
         <p>Map: {moreAttr1.map || '...'}</p>
       </div>
-      <div className={isCT ? styles.csgoMatchRed : styles.csgoMatchBlue} />
+      <div className={styles.csgoRole}>
+        <Image
+          src={csgoCTinit(true, 0, moreAttr2.second_half_role || moreAttr2.first_half_role)} />
+      </div>
     </div>
     <div className={styles.formation}>
       <div className={styles.nameAndKill}>

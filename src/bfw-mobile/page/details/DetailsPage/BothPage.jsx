@@ -61,7 +61,10 @@ function BothPage () {
   return (
     <div>
       <TopLogoNameScore isBoth endMatch={endMatchVE} />
-      <div style={{ padding: '4% 2% 2% 2%' }}>
+      <div style={{
+        padding: '4% 2% 2% 2%',
+        backgroundColor: '#06051A'
+      }}>
         {equalStatus([0, 1, 3, 5]) && <TipTitle title={tipTile[0]} />}
         {equalStatus([1, 5]) && <LineChart isBoth endMatch={endMatchVE} />}
         {equalStatus([1, 5]) && <TipTitle title={tipTile[1]} />}

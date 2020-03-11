@@ -8,6 +8,19 @@ import counter from '../../../assets/counter.png'
 import terrorists from '../../../assets/terrorists.png'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
+export function csgoCTinit (host, index, role) {
+  if (role === 'CT') {
+    return counter
+  } else if (role === 'T') {
+    return terrorists
+  }
+  if (host) {
+    return index % 2 ? counter : terrorists
+  } else {
+    return index % 2 ? terrorists : counter
+  }
+}
+
 function CsGoNowStatus (props) {
   const propsVE = diffCatch(props)({
     round: 0,
@@ -58,9 +71,8 @@ function CsGoNowStatus (props) {
       <div className={styles.factionIcon}>
         {
           propsVE.team1.role.map((value, index) => {
-            const camp = value === 'T' ? terrorists : counter
             return <div key={index}>
-              <Image src={camp} />
+              <Image src={csgoCTinit(true, index, value)} />
             </div>
           })
         }
@@ -87,9 +99,8 @@ function CsGoNowStatus (props) {
       <div className={styles.factionIcon}>
         {
           propsVE.team2.role.map((value, index) => {
-            const camp = value === 'T' ? terrorists : counter
             return <div key={index}>
-              <Image src={camp} />
+              <Image src={csgoCTinit(false, index, value)} />
             </div>
           })
         }

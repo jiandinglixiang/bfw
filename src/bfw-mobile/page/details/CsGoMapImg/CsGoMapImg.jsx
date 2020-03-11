@@ -1,11 +1,10 @@
 import React from 'react'
 import styles from './index.module.scss'
-import tttt from '../../../assets/terrorists.png'
-import ctct from '../../../assets/counter.png'
 import { diffCatch, PropTypes, toBigNumber } from '../../../../tool/util.js'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 import def1 from '../../../assets/default_teamred_40.png'
 import def2 from '../../../assets/default_teamblue_40.png'
+import { csgoCTinit } from '../CsGoNowStatus/CsGoNowStatus.jsx'
 
 function backColor (num) {
   if (num > 20) {
@@ -431,11 +430,11 @@ function CsGoMapImg (props) {
       showBottom && [
         <div key={0} className={styles.operatingRecord}>
           <div className={styles.topTitle}>
-            <Image src={realHistory.first.team1.role === 'CT' ? ctct : tttt} />
+            <Image src={csgoCTinit(true, 0, realHistory.first.team1.role)} />
             <b>{realHistory.first.team1.score}</b>
             <p>上半场</p>
             <b>{realHistory.first.team2.score}</b>
-            <Image src={realHistory.first.team2.role === 'T' ? tttt : ctct} />
+            <Image src={csgoCTinit(false, 0, realHistory.first.team2.role)} />
           </div>
           <div className={styles.teamRed}>
             <Image src={[realHistory.first.team1.logo, def1]} />
@@ -464,11 +463,11 @@ function CsGoMapImg (props) {
         <div key={3} style={{ height: '5px' }} />,
         <div key={1} className={styles.operatingRecord}>
           <div className={styles.topTitle}>
-            <Image src={realHistory.second.team1.role === 'T' ? tttt : ctct} />
+            <Image src={csgoCTinit(true, 1, realHistory.second.team1.role)} />
             <b>{realHistory.second.team1.score}</b>
             <p>下半场</p>
             <b>{realHistory.second.team2.score}</b>
-            <Image src={realHistory.second.team2.role === 'CT' ? ctct : tttt} />
+            <Image src={csgoCTinit(false, 1, realHistory.second.team2.role)} />
           </div>
           <div className={styles.teamRed}>
             <Image src={[realHistory.second.team1.logo, def1]} />

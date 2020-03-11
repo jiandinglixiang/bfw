@@ -62,7 +62,7 @@ function TabsList () {
           <p>{stateVE.match_list.status === 2 ? '赛果' : '赛况'}</p>
         </Divs>
       </div>
-      <div className={styles.paddingBody + ' ' + styles.paddingBody2}>
+      <div className={styles.paddingBody}>
         <div style={{ display: tabIndex === 0 ? 'block' : 'none' }}>
           <Page0 oddList={stateVE.match_list.odds_list} />
         </div>
