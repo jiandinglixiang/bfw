@@ -34,15 +34,15 @@ function hpInit (num) {
   return 100
 }
 
-function BothTable ({ team2Table, team1Table }) {
+function BothTable ({ team2Table, team1Table, teamNameLogo }) {
   return (
     <>
       <div className={styles.scrollXContainer}>
         <div style={{ height: '5px' }} />
-        <table className={styles.csgoTableBlue} >
+        <table className={styles.csgoTableBlue}>
           <thead>
             <tr>
-              <th><p>UOL</p></th>
+              <th><p><Image src={[teamNameLogo.team1.logo, def1]} /></p></th>
               <th><p>HS%</p></th>
               <th><p>KAST</p></th>
               <th><p>K-D</p></th>
@@ -59,6 +59,7 @@ function BothTable ({ team2Table, team1Table }) {
                   hs: 0,
                   score: 0,
                   deaths: 0,
+                  kast: 0
                 })
                 let hskpi = 0
                 const hs = valueVE.hs || 0
@@ -69,7 +70,7 @@ function BothTable ({ team2Table, team1Table }) {
                   <tr key={key}>
                     <td><p>{valueVE.nick}</p></td>
                     <td><p>{hs}/{hskpi}%</p></td>
-                    <td><p>-</p></td>
+                    <td><p className={styles.bigTxt2}>{valueVE.kast}%</p></td>
                     <td><p style={fontColor(valueVE.score - valueVE.deaths)}>{valueVE.score - valueVE.deaths}</p></td>
                     <td><p style={fontColor(valueVE.fk_diff)}>{valueVE.fk_diff}</p></td>
                     <td><p>{valueVE.rating}</p></td>
@@ -96,7 +97,7 @@ function BothTable ({ team2Table, team1Table }) {
         <table className={styles.csgoTableYellow}>
           <thead>
             <tr>
-              <th><p>UOL</p></th>
+              <th><p><Image src={[teamNameLogo.team2.logo, def1]} /></p></th>
               <th><p>HS%</p></th>
               <th><p>KAST</p></th>
               <th><p>K-D</p></th>
@@ -113,6 +114,7 @@ function BothTable ({ team2Table, team1Table }) {
                   hs: 0,
                   score: 0,
                   deaths: 0,
+                  kast: 0,
                 })
                 let hskpi = 0
                 const hs = valueVE.hs || 0
@@ -123,7 +125,7 @@ function BothTable ({ team2Table, team1Table }) {
                   <tr key={key}>
                     <td><p>{valueVE.nick}</p></td>
                     <td><p>{hs}/{hskpi}%</p></td>
-                    <td><p>-</p></td>
+                    <td><p className={styles.bigTxt2}>{valueVE.kast}%</p></td>
                     <td><p style={fontColor(valueVE.score - valueVE.deaths)}>{valueVE.score - valueVE.deaths}</p></td>
                     <td><p style={fontColor(valueVE.fk_diff)}>{valueVE.fk_diff}</p></td>
                     <td><p>{valueVE.rating}</p></td>
@@ -146,12 +148,12 @@ function BothTable ({ team2Table, team1Table }) {
   )
 }
 
-function MatchTable ({ team2Table, team1Table }) {
+function MatchTable ({ team2Table, team1Table, teamNameLogo }) {
   return (<>
     <table className={styles.csgoTableBlue}>
       <thead>
         <tr>
-          <th><p>UOL</p></th>
+          <th><p><Image src={[teamNameLogo.team1.logo, def1]} /></p></th>
           <th className={styles.alignItemsLeft}><p>血量</p></th>
           <th><p>K/D/A</p></th>
           <th><p>武器</p></th>
@@ -196,7 +198,7 @@ function MatchTable ({ team2Table, team1Table }) {
     <table className={styles.csgoTableYellow}>
       <thead>
         <tr>
-          <th><p>UOL</p></th>
+          <th><p><Image src={[teamNameLogo.team2.logo, def1]} /></p></th>
           <th className={styles.alignItemsLeft}><p>血量</p></th>
           <th><p>K/D/A</p></th>
           <th><p>武器</p></th>
@@ -249,18 +251,28 @@ function CsGoMapImg (props) {
   let team2Table
   let first
   let second
-  let showBottom = false
+  let showBottom
+  const teamNameLogo = {
+    team1: {
+      name: '',
+      logo: ''
+    },
+    team2: {
+      name: '',
+      logo: ''
+    }
+  }
   const realHistory = {
     first: {
       start: false,
       team1: {
-        role: true,
+        role: '',
         logo: '',
         score: '',
         icon: []
       },
       team2: {
-        role: true,
+        role: '',
         logo: '',
         score: '',
         icon: []
@@ -269,13 +281,13 @@ function CsGoMapImg (props) {
     second: {
       start: false,
       team1: {
-        role: true,
+        role: '',
         logo: '',
         score: '',
         icon: []
       },
       team2: {
-        role: true,
+        role: '',
         logo: '',
         score: '',
         icon: []
@@ -302,6 +314,10 @@ function CsGoMapImg (props) {
     team2Table = propsVE.endMatch.team2.players
     first = propsVE.endMatch.real_history.first
     second = propsVE.endMatch.real_history.second
+    teamNameLogo.team1.name = propsVE.endMatch.team1.team_name
+    teamNameLogo.team2.name = propsVE.endMatch.team2.team_name
+    teamNameLogo.team1.logo = propsVE.endMatch.team1.team_logo
+    teamNameLogo.team2.logo = propsVE.endMatch.team2.team_logo
     const team1MoreAttr = propsVE.endMatch.team1.other_more_attr
     const team2MoreAttr = propsVE.endMatch.team2.other_more_attr
     realHistory.first.team1.role = team1MoreAttr.first_half_role
@@ -346,6 +362,10 @@ function CsGoMapImg (props) {
     // 成员数据
     first = propsVE.matchResult.match_list.real_history.first
     second = propsVE.matchResult.match_list.real_history.second
+    teamNameLogo.team1.name = propsVE.matchList.host_team_name
+    teamNameLogo.team2.name = propsVE.matchList.guest_team_name
+    teamNameLogo.team1.logo = propsVE.matchList.host_team_logo
+    teamNameLogo.team2.logo = propsVE.matchList.guest_team_logo
     const team1MoreAttrs = propsVE.matchList.team1_more_attr.other_more_attr
     const team2MoreAttrs = propsVE.matchList.team2_more_attr.other_more_attr
     overtime = team1MoreAttrs.is_over_time > 1
@@ -364,6 +384,7 @@ function CsGoMapImg (props) {
     realHistory.first.start = team1MoreAttrs.current_round > 0
     realHistory.second.start = team1MoreAttrs.current_round > 15
   }
+  first.length > 30 && (first = first.slice(0, 30))
   first.forEach(function (val) {
     if (val.team_role === realHistory.first.team1.role) {
       realHistory.first.team1.icon.push(val.logo)
@@ -371,6 +392,7 @@ function CsGoMapImg (props) {
       realHistory.first.team2.icon.push(val.logo)
     }
   })
+  second.length > 30 && (second = second.slice(0, 30))
   second.forEach(function (val) {
     if (val.team_role === realHistory.second.team1.role) {
       realHistory.second.team1.icon.push(val.logo)
@@ -385,8 +407,19 @@ function CsGoMapImg (props) {
     <div style={{ height: '10px' }} />
     {showBottom && <p className={`${styles.mapRight} ${styles['csgoMap-' + one.map]}`}>{one.map}</p>}
     {overtime && <p className={styles.extraTimeTxt}>加时赛</p>}
-    {propsVE.isBoth ? <BothTable team1Table={team1Table} team2Table={team2Table} /> : <MatchTable
-      team1Table={team1Table} team2Table={team2Table} />}
+    {propsVE.isBoth ? (
+      <BothTable
+        teamNameLogo={teamNameLogo}
+        team1Table={team1Table}
+        team2Table={team2Table}
+      />
+    ) : (
+      <MatchTable
+        teamNameLogo={teamNameLogo}
+        team1Table={team1Table}
+        team2Table={team2Table}
+      />
+    )}
     <div style={{ height: '10px' }} />
     {
       showBottom && [
@@ -463,10 +496,12 @@ function CsGoMapImg (props) {
 export default CsGoMapImg
 
 MatchTable.propTypes = {
+  team1Table: PropTypes.array,
   team2Table: PropTypes.array,
-  team1Table: PropTypes.array
+  teamNameLogo: PropTypes.object
 }
 BothTable.propTypes = {
+  team1Table: PropTypes.array,
   team2Table: PropTypes.array,
-  team1Table: PropTypes.array
+  teamNameLogo: PropTypes.object
 }

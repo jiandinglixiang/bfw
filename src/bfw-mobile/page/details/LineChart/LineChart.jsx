@@ -9,8 +9,8 @@ function LineChart (props) {
     isBoth: false,
     matchList: {
       game_type_id: 0,
-      team1_more_attr: {},
-      team2_more_attr: {}
+      team1_more_attr: { other_more_attr: {} },
+      team2_more_attr: { other_more_attr: {} }
     },
     matchResult: {
       economic_curve_list: []
@@ -19,32 +19,78 @@ function LineChart (props) {
       poor_economy: {
         economic_curve: []
       },
-      team1: {},
-      team2: {}
+      team1: {
+        game_type_id: 0,
+        other_more_attr: {},
+      },
+      team2: {
+        game_type_id: 0,
+        other_more_attr: {},
+      }
     }
   })
   let curveList = []
+  let colorArr = ['#E12727', '#3393FF']
+  const team1 = {
+    name: '',
+    isBlue: true,
+    lead: true
+  }
+  const team2 = {
+    name: '',
+    isRed: false,
+    lead: false
+  }
   if (propsVE.isBoth) {
     curveList = propsVE.endMatch.poor_economy.economic_curve
+    team1.name = propsVE.endMatch.team1.team_name
+    team2.name = propsVE.endMatch.team2.team_name
+    team1.lead = propsVE.endMatch.team1.other_more_attr.gold_lead > 0
+    team2.lead = propsVE.endMatch.team2.other_more_attr.gold_lead > 0
+    if ([propsVE.endMatch.team1.game_type_id, propsVE.endMatch.team2.game_type_id].includes(5)) {
+      team1.isBlue = propsVE.endMatch.team1.other_more_attr.camp === 'dire'
+      team2.isRed = propsVE.endMatch.team2.other_more_attr.camp === 'radiant'
+      colorArr = ['#3393FF', '#E12727']
+    } else if ([propsVE.endMatch.team1.game_type_id, propsVE.endMatch.team2.game_type_id].includes(1)) {
+      team1.isBlue = propsVE.endMatch.team1.other_more_attr.camp === 'blue'
+      team2.isRed = propsVE.endMatch.team2.other_more_attr.camp === 'red'
+    }
   } else {
     curveList = propsVE.matchResult.economic_curve_list
+    team1.name = propsVE.matchList.host_team_name
+    team2.name = propsVE.matchList.guest_team_name
+    team1.lead = propsVE.matchList.team1_more_attr.other_more_attr.gold_lead > 0
+    team2.lead = propsVE.matchList.team2_more_attr.other_more_attr.gold_lead > 0
+    if ([propsVE.matchList.game_type_id, propsVE.matchList.game_type_id].includes(5)) {
+      team1.isBlue = propsVE.matchList.team1_more_attr.other_more_attr.camp === 'dire'
+      team2.isRed = propsVE.matchList.team2_more_attr.other_more_attr.camp === 'radiant'
+      colorArr = ['#3393FF', '#E12727']
+    } else if ([propsVE.matchList.game_type_id, propsVE.matchList.game_type_id].includes(1)) {
+      team1.isBlue = propsVE.matchList.team1_more_attr.other_more_attr.camp === 'blue'
+      team2.isRed = propsVE.matchList.team2_more_attr.other_more_attr.camp === 'red'
+    }
   }
-
   useEffect(() => {
     // 基于准备好的dom，初始化echarts实例
-    let maxGold = 12
+    let maxGold = 1
+    let maxTime = 25
     const data = curveList.map(value => {
       const valueVE = diffCatch(value)({
         time: 0,
         gold: 0
       })
-      const max = valueVE.gold / 1000
-      if (max > maxGold) {
-        maxGold = max
+      const gold = valueVE.gold / 1000
+      const time = valueVE.time / 60
+      if (Math.abs(gold) > maxGold) {
+        maxGold = Math.abs(gold)
       }
-      return [parseInt(valueVE.time / 60), max]
+      if (time > maxTime) {
+        maxTime = time
+      }
+      return [parseInt(time), gold]
     })
-    maxGold = parseInt(maxGold / 6) * 6 + 6
+    maxGold = maxGold === 1 ? 1 : parseInt(maxGold / 2 + 1) * 2
+    maxTime = maxTime <= 25 ? 25 : (maxTime + 5) >= 65 ? 65 : parseInt(maxTime / 5 + 1) * 5
     // 绘制图表[x,y]
     const chartOption = {
       backgroundColor: '#06051A',
@@ -95,9 +141,9 @@ function LineChart (props) {
       xAxis: {
         type: 'value',
         splitNumber: 6,
-        interval: 13,
+        interval: parseInt(maxTime / 5),
         min: 0,
-        max: 65,
+        max: maxTime,
         boundaryGap: false,
         axisLabel: {
           // 刻度线
@@ -133,7 +179,7 @@ function LineChart (props) {
         {
           type: 'value',
           splitNumber: 5,
-          interval: parseInt(maxGold / 3),
+          interval: maxGold / 2,
           min: -maxGold,
           max: maxGold,
           axisLabel: {
@@ -166,7 +212,7 @@ function LineChart (props) {
           type: 'value',
           position: 'right',
           splitNumber: 5,
-          interval: parseInt(maxGold / 3),
+          interval: maxGold / 2,
           min: -maxGold,
           max: maxGold,
           axisLabel: {
@@ -212,28 +258,38 @@ function LineChart (props) {
             {
               min: -99999,
               max: -2,
-              color: '#E12727'
+              color: colorArr[0]
             },
             {
               max: 99999,
               min: -2,
-              color: '#3393FF'
+              color: colorArr[1]
             }
           ],
           outOfRange: {
-            color: '#3393FF'
+            color: colorArr[0]
           },
         },
       ]
     }
     const myChart = echarts.init(ref.current)
     myChart.setOption(chartOption)
-  }, [ref, curveList])
+  }, [ref, curveList, colorArr])
   return <div>
     <div className={styles.lineChartSwitch}>
-      <div className={styles.teamList}>
-        <div className={styles.teamRed}><p>asd</p></div>
-        <div className={styles.teamBlue}><p>asd</p></div>
+      <div>
+        {
+          team1.lead ? (
+            [
+              <div key={1} className={team1.isBlue ? styles.teamBlue : styles.teamRed}><p>{team1.name || '-'}</p></div>,
+              <div key={2} className={team2.isRed ? styles.teamRed : styles.teamBlue}><p>{team2.name || '-'}</p></div>
+            ]
+          ) : (
+            [
+              <div key={2} className={team2.isRed ? styles.teamRed : styles.teamBlue}><p>{team2.name || '-'}</p></div>,
+              <div key={1} className={team1.isBlue ? styles.teamBlue : styles.teamRed}><p>{team1.name || '-'}</p></div>,
+            ])
+        }
       </div>
       <div style={{ textAlign: 'center' }}>
         <button className={styles.activeClick}>经济差</button>

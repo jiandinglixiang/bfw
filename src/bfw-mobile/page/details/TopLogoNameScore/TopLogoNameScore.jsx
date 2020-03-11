@@ -237,13 +237,13 @@ function csgoInit (team1, team2) {
   // data.team2.name = team2.team_name
   data.team1.score = [team1.first_half_score, team1.second_half_score]
   data.team2.score = [team2.first_half_score, team2.second_half_score]
-  data.team1.role = [team1.first_half_role === 'CT' ? 1 : 2, team1.second_half_role === 'T' ? 2 : 1]
-  data.team2.role = [team2.first_half_role === 'T' ? 2 : 1, team2.second_half_role === 'CT' ? 1 : 2]
+  data.team1.role = [team1.first_half_role, team1.second_half_role]
+  data.team2.role = [team2.first_half_role, team2.second_half_role]
   if (data.overtime) {
     data.team1.score.push(team1.over_time_score)
     data.team2.score.push(team2.over_time_score)
-    data.team1.role.push(team1.second_half_role === 'CT' ? 1 : 2)
-    data.team2.role.push(team2.second_half_role === 'T' ? 2 : 1)
+    data.team1.role.push(team1.second_half_role)
+    data.team2.role.push(team2.second_half_role)
   }
   data.team1.sente = [team1.flag_r1 > 0, team1.flag_w5 > 0, team1.flag_r16 > 0]
   data.team2.sente = [team2.flag_r1 > 0, team2.flag_w5 > 0, team2.flag_r16 > 0]
@@ -334,11 +334,13 @@ function Both ({ data = {}, endMatch }) {
       gold: 0
     },
     team1: {
+      other_more_attr: {},
       players: [],
       ban: [],
       is_win: 0
     },
     team2: {
+      other_more_attr: {},
       players: [],
       ban: [],
       is_win: 0

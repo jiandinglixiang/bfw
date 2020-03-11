@@ -39,24 +39,25 @@
 
     > img {
       margin: 6px;
-      flex: 0 0 auto;
       width: 18px;
+      flex: 0 0 auto;
       max-height: 30px;
     }
 
     > div {
+      width: 0;
       flex: 1 1 auto;
       display: flex;
-      flex-flow: row wrap;
+      flex-flow: row nowrap;
       align-items: center;
       justify-content: flex-start;
       padding-right: 2%;
 
       img {
-        width: 15px;
-        flex: 0 0 auto;
-        height: 15px;
-        margin-left: 2%;
+        width: 0;
+        flex: 0 0 6%;
+        max-height: 40px;
+        margin-left: 0.6%;
       }
     }
   }
@@ -123,6 +124,10 @@
     //justify-content: center;
     //align-items: center;
     min-height: 25px;
+
+    img {
+      height: 22px;
+    }
   }
 
   td {
@@ -168,6 +173,12 @@
     //flex: 0 0 auto;
     height: 13px;
   }
+}
+
+.bigTxt2 {
+  font-family: 'ATUO123';
+  font-weight: bold;
+  color: #F9DF70;
 }
 
 .csgoTableYellow {
