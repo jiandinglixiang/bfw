@@ -53,7 +53,7 @@ function MemberList (props) {
   const item = value.item.length ? value.item : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
   let kda = 0
   if (isBoth) {
-    kda = toBigNumber((value.kills + value.assists) / (value.deaths || 1)).toFixed(1, 0)
+    kda = toBigNumber((value.kills + value.assists) / (value.deaths || 1)).toFixed(1, 4)
   }
   return <div className={style.oneMember}>
     <div>
@@ -130,7 +130,7 @@ function MemberListLol (props) {
   const item = propsVE.value.items.length ? propsVE.value.items : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
   let kda = 0
   if (propsVE.isBoth) {
-    kda = toBigNumber((propsVE.value.kills + propsVE.value.assists) / (propsVE.value.deaths || 1) * 3).toFixed(1, 0)
+    kda = toBigNumber((propsVE.value.kills + propsVE.value.assists) / (propsVE.value.deaths || 1) * 3).toFixed(1, 4)
   }
   return <div className={style.oneMember}>
     <div>

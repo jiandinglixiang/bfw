@@ -20,7 +20,7 @@ function responseInit (response) {
   try {
     if (response.ok) {
       return response.json().then(value => {
-        if (value.data) {
+        if (value && (value.code || value.data)) {
           return value.data
         }
         return Promise.reject(value)
@@ -34,19 +34,33 @@ function responseInit (response) {
 }
 
 const Http = {
-  get (url = '', params = {}) {
+  get (url = '', params = {}, head) {
     url = `${baseURL}${url}${searchFormat(params)}`
+    if (head) {
+      Object.entries(head).forEach(val => {
+        headers.append(val[0], val[1])
+      })
+    }
     return fetch(url, {
       method: 'GET',
       headers,
     }).then(responseInit)
   },
-  post (url = '', data = {}, params = {}) {
+  post (url = '', data = {}, params = {}, head) {
     url = `${baseURL}${url}${searchFormat(params)}`
+    const formData = new FormData()
+    Object.entries(data).forEach(val => {
+      formData.append(val[0], val[1])
+    })
+    if (head) {
+      Object.entries(head).forEach(val => {
+        headers.append(val[0], val[1])
+      })
+    }
     return fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify(data),
+      body: formData,
     }).then(responseInit)
   },
 }
@@ -88,6 +102,38 @@ export const http = {
       device_type: 'web'
     })
   },
-
+  postCode (mobile) {
+    return Http.post('/code', {
+      mobile,
+    })
+  },
+  postRegister ({ password, mobile, confirmPassword, code }) {
+    return Http.post('/register', {
+      password,
+      mobile,
+      confirm_password: confirmPassword,
+      code
+    })
+  },
+  postPasswordReset ({ password, mobile, code }) {
+    return Http.post('/passwordReset', {
+      password,
+      mobile,
+      code
+    })
+  },
+  postLoginOut (Token) {
+    return Http.post('/logout', {}, {}, {
+      'XX-Token': Token,
+      'XX-Device-Type': 'web'
+    })
+  },
+  postChangePassword ({ password, mobile, confirmPassword, code }) {
+    return Http.post('/changePassword', {
+      mobile,
+      password,
+      confirm_password: confirmPassword
+    })
+  }
 }
 export default http

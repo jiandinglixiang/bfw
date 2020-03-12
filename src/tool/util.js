@@ -20,7 +20,7 @@ BigNumber.config({ ROUNDING_MODE: 1 })
 export function toBigNumber (x) {
   return new BigNumber(x)
 }
-
+console.log(toBigNumber(1.0111).toFixed(2))
 export function toFixed (value) {
   try {
     return toBigNumber(value).toFixed(2)

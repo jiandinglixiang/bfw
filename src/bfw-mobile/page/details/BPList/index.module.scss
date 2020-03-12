@@ -9,7 +9,7 @@
     flex: 0 0 auto;
     min-width: 2px;
     font-weight: bold;
-    line-height: 1;
+
     text-align: center;
   }
 
@@ -45,4 +45,8 @@
       background-color: #101831;
     }
   }
+}
+
+.filterGray div{
+  filter: grayscale(1)
 }

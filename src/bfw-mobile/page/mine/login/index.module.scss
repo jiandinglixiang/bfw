@@ -65,13 +65,17 @@
   }
 }
 
+.loginInput2 {
+  border-color: #F9DF70;
+}
+
 .forgetPassword {
   height: 30px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
   align-items: center;
-    color: #F9DF70;
+  color: #F9DF70;
 }
 
 .buttonBlue1 {
@@ -92,13 +96,13 @@
   flex-flow: column nowrap;
   align-items: flex-start;
 
-  > label {
+  .title {
     color: #62BED8;
     font-weight: bold;
     line-height: 40px;
   }
 
-  > div {
+  .box {
     width: 100%;
     display: flex;
     flex-flow: row nowrap;
@@ -149,9 +153,14 @@
     display: inline-block;
     border: 1px solid #70F7E3;
     width: 1em;
+    min-width: 1em;
     height: 1em;
     margin-right: 5px;
     vertical-align: middle;
+  }
+
+  span {
+    white-space: nowrap;
   }
 
   span:last-child {
@@ -222,7 +231,6 @@
   p {
     width: 0;
     flex: 1 1 auto;
-    line-height: 1;
     font-size: 14px;
     color: white;
     font-weight: bold;

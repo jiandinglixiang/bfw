@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './index.module.scss'
 import { diffCatch } from '../../../../tool/util.js'
+import { Divs } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function BPList (props) {
   const propsVe = diffCatch(props)({
@@ -22,7 +23,7 @@ function BPList (props) {
     }
   }
   return <div>
-    <div className={styles.BPlist}>
+    <Divs className={[styles.BPlist, propsVe.isBan && styles.filterGray]}>
       <div>
         {
           noneAny.map(function (index) {
@@ -46,7 +47,7 @@ function BPList (props) {
           })
         }
       </div>
-    </div>
+    </Divs>
   </div>
 }
 

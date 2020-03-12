@@ -258,12 +258,12 @@ function LineChart (props) {
           pieces: [
             {
               min: -99999,
-              lte: 0,
+              lte: -2,
               color: colorArr[0]
             },
             {
               max: 99999,
-              gte: 0,
+              gte: -2,
               color: colorArr[1]
             }
           ],
