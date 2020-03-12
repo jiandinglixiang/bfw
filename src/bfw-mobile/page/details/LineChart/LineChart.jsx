@@ -241,9 +241,9 @@ function LineChart (props) {
             color: 'rgba(36,43,73,0.3)',
             origin: 'start'
           },
-          itemStyle: {
-            color: '#E12727'
-          },
+          // itemStyle: {
+          //   color: '#E12727'
+          // },
           lineStyle: {
             width: 3
           }
@@ -254,21 +254,19 @@ function LineChart (props) {
           show: false,
           type: 'piecewise',
           dimension: 1,
+          seriesIndex: 0,
           pieces: [
             {
               min: -99999,
-              max: -2,
+              lte: 0,
               color: colorArr[0]
             },
             {
               max: 99999,
-              min: -2,
+              gte: 0,
               color: colorArr[1]
             }
           ],
-          outOfRange: {
-            color: colorArr[0]
-          },
         },
       ]
     }
