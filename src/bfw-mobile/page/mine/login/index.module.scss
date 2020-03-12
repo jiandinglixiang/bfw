@@ -6,6 +6,7 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 .loginInput {
@@ -70,10 +71,7 @@
   flex-flow: row nowrap;
   justify-content: flex-end;
   align-items: center;
-
-  a {
     color: #F9DF70;
-  }
 }
 
 .buttonBlue1 {
@@ -192,10 +190,17 @@
 
 .linkBottom {
   width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  height: 40px;
+
+  > div {
+    width: 100%;
+    max-width: 750px;
+    min-width: 320px;
+    position: fixed;
+    bottom: 40px;
+    //left: 0;
+    //right: 0;
+  }
 
   a {
     height: 40px;

@@ -27,6 +27,24 @@
       }
     }
 
+    .centerCamp {
+      flex: 0 0 46%;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: center;
+
+      > div {
+        width: 0;
+        flex: 1 1 auto;
+      }
+
+      > img, > span {
+        width: 20%;
+        flex: 0 0 auto;
+      }
+    }
+
     .centerDifference {
       flex: 0 0 20%;
 

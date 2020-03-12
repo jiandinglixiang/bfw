@@ -14,7 +14,7 @@ export function TeamSing (props) {
   const { sing, logo, name } = props
   return <div className={style.teamSing}>
     <div>
-      <Image src={sing} />
+      {sing && <Image src={sing} />}
     </div>
     <div>
       <Image src={logo} />
@@ -183,6 +183,8 @@ export function OneMember (props) {
     name: '',
     list: []
   }
+  let showCamp1 = false
+  let showCamp2 = false
   let gameId = 0
   let camp // true=team是夜魔/蓝方
   if (propsVE.isBoth) {
@@ -208,6 +210,8 @@ export function OneMember (props) {
     if (gameId === 1) {
       camp = propsVE.endMatch.team1.other_more_attr.camp === 'blue'
     }
+    showCamp1 = propsVE.endMatch.team1.other_more_attr.camp
+    showCamp2 = propsVE.endMatch.team2.other_more_attr.camp
     if (camp) {
       team2.logo = propsVE.endMatch.team1.team_logo
       team2.name = propsVE.endMatch.team1.team_name
@@ -251,6 +255,8 @@ export function OneMember (props) {
     if (gameId === 1) {
       camp = propsVE.matchList.team1_more_attr.other_more_attr.camp === 'blue'
     }
+    showCamp1 = propsVE.matchList.team1_more_attr.other_more_attr.camp
+    showCamp2 = propsVE.matchList.team2_more_attr.other_more_attr.camp
     if (camp) {
       // 队伍1是夜魔客队
       team2.logo = propsVE.matchList.host_team_logo
@@ -272,7 +278,7 @@ export function OneMember (props) {
   }
   return <div>
     <TeamSing
-      sing={gameId === 5 ? tianhui : reateam}
+      sing={showCamp1 ? gameId === 5 ? tianhui : reateam : ''}
       logo={team1.logo}
       name={team1.name}
     />
@@ -285,7 +291,7 @@ export function OneMember (props) {
       })
     }
     <TeamSing
-      sing={gameId === 5 ? yemo : blueteam}
+      sing={showCamp2 ? gameId === 5 ? yemo : blueteam : null}
       logo={team2.logo}
       name={team2.name}
     />

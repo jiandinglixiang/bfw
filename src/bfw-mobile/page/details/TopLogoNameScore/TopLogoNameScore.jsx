@@ -123,11 +123,11 @@ function GameUnderway (props) {
   let teamSenteIcon = {}
   // 阵营识别 红方蓝方
   if (propsVE.gameId === 5) {
-    teamFaction.team1 = propsVE.team1.camp === 1 ? yemo : tianhui
-    teamFaction.team2 = propsVE.team1.camp === 1 ? tianhui : yemo
+    teamFaction.team1 = propsVE.team1.camp && (propsVE.team1.camp === 1 ? yemo : propsVE.team1.camp === 2 ? tianhui : null)
+    teamFaction.team2 = propsVE.team2.camp && (propsVE.team2.camp === 1 ? yemo : propsVE.team2.camp === 2 ? tianhui : null)
   } else if (propsVE.gameId === 1) {
-    teamFaction.team1 = propsVE.team1.camp === 1 ? blueImg : redImg
-    teamFaction.team2 = propsVE.team1.camp === 1 ? redImg : blueImg
+    teamFaction.team1 = propsVE.team1.camp && (propsVE.team1.camp === 1 ? blueImg : propsVE.team1.camp === 2 ? redImg : null)
+    teamFaction.team2 = propsVE.team2.camp && (propsVE.team2.camp === 1 ? blueImg : propsVE.team2.camp === 2 ? redImg : null)
   }
   if (isBoth) {
     tameScoreColor.team1 = { color: propsVE.team1.isWin ? '#F9DF70' : '#85838F' }

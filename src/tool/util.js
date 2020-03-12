@@ -241,7 +241,7 @@ export function diffCatch2 (obj, ReturnObj) {
     }
   } else if (formType1 === formType2) {
     return obj
-  } else if (formType1 === '[object Number]' && formType2 === '[object String]') {
+  } else if (obj && formType1 === '[object Number]' && formType2 === '[object String]') {
     return toBigNumber(obj).toNumber()
   } else {
     if (obj) {

@@ -6,7 +6,39 @@ import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
 import { useHistory } from 'react-router-dom'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
-import { csgoCTinit } from '../../details/CsGoNowStatus/CsGoNowStatus.jsx'
+import lolBlue from '../../../assets/blueteam.png'
+import lolRed from '../../../assets/reateam.png'
+import yemo from '../../../assets/yemo.png'
+import tianhui from '../../../assets/tianhui.png'
+import tttt from '../../../assets/terrorists.png'
+import ctct from '../../../assets/counter.png'
+
+export function csgoRole (role) {
+  if (role === 'CT') {
+    return <Image src={ctct} style={{ maxWidth: '15px' }} />
+  } else if (role === 'T') {
+    return <Image src={tttt} style={{ maxWidth: '15px' }} />
+  }
+  return <span style={{ maxWidth: '15px' }} />
+}
+
+export function lolRole (role, red, blue) {
+  if (role === 'blue') {
+    return <Image src={blue || lolBlue} />
+  } else if (role === 'red') {
+    return <Image src={red || lolRed} />
+  }
+  return <span />
+}
+
+export function dotaRole (role, red, blue) {
+  if (role === 'yemo') {
+    return <Image src={red || yemo} />
+  } else if (role === 'red') {
+    return <Image src={blue || tianhui} />
+  }
+  return <span />
+}
 
 export function routerDetails (data, history) {
   const query = {
@@ -70,17 +102,17 @@ function UnderwayDota (props) {
   }, [gameData])
 
   const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
-  const isDire = useMemo(() => {
-    return moreAttr1.camp === 'dire' || moreAttr2.camp === 'radiant'
-  }, [moreAttr1.camp, moreAttr2.camp])
+
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
       <LeftTime gameData={gameData} />
-      <div className={isDire ? styles.dotaMatchBlue : styles.dotaMatchRed} />
-      <div className={styles.centerDifference}>
-        <p className={styles.money}>差:{poorEconomy}k</p>
+      <div className={styles.centerCamp}>
+        {dotaRole(moreAttr1.camp)}
+        <div className={styles.centerDifference}>
+          <p className={styles.money}>差:{poorEconomy}k</p>
+        </div>
+        {dotaRole(moreAttr2.camp)}
       </div>
-      <div className={isDire ? styles.dotaMatchRed : styles.dotaMatchBlue} />
     </div>
     <div className={styles.formation}>
       <div className={styles.nameAndKill}>
@@ -158,28 +190,18 @@ function UnderwayCsGo (props) {
     }
     return [sbc]
   }, [moreAttr1.current_round, gameData.poor_economy.time])
-  // const isCT = useMemo(() => {
-  //   // 队伍一是否是CT
-  //   // if (moreAttr1.current_round > 15) {
-  //   //   return (moreAttr1.second_half_role||moreAttr1.first_half_role) === 'CT'
-  //   // }
-  //   return (moreAttr1.second_half_role || moreAttr1.first_half_role) === 'CT'
-  // }, [moreAttr1.first_half_role, moreAttr1.second_half_role])
 
+  const team1Camp = moreAttr1.second_half_role || moreAttr1.first_half_role
+  const team2Camp = moreAttr2.second_half_role || moreAttr2.first_half_role
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
       <LeftTime gameData={gameData} />
-      <div className={styles.csgoRole}>
-        <Image
-
-          src={csgoCTinit(true, 0, moreAttr1.second_half_role || moreAttr1.first_half_role)} />
-      </div>
-      <div className={styles.centerDifference}>
-        <p>Map: {moreAttr1.map || '...'}</p>
-      </div>
-      <div className={styles.csgoRole}>
-        <Image
-          src={csgoCTinit(true, 0, moreAttr2.second_half_role || moreAttr2.first_half_role)} />
+      <div className={styles.centerCamp}>
+        {csgoRole(team1Camp)}
+        <div className={styles.centerDifference}>
+          <p>Map: {moreAttr1.map || '...'}</p>
+        </div>
+        {csgoRole(team2Camp)}
       </div>
     </div>
     <div className={styles.formation}>
@@ -258,18 +280,17 @@ function UnderwayLol (props) {
   }, [gameData.poor_economy.time, gameData.current_round])
 
   const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
-  const isBlue = useMemo(() => {
-    return moreAttr1.camp === 'blue' || moreAttr2.camp === 'red'
-  }, [moreAttr1.camp, moreAttr2.camp])
 
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
       <LeftTime gameData={gameData} />
-      <div className={isBlue ? styles.lolMatchBlue : styles.lolMatchRed} />
-      <div className={styles.centerDifference}>
-        <p className={styles.money}>差:{poorEconomy}k</p>
+      <div className={styles.centerCamp}>
+        {lolRole(moreAttr1.camp)}
+        <div className={styles.centerDifference}>
+          <p className={styles.money}>差:{poorEconomy}k</p>
+        </div>
+        {lolRole(moreAttr2.camp)}
       </div>
-      <div className={isBlue ? styles.lolMatchRed : styles.lolMatchBlue} />
     </div>
     <div className={styles.formation}>
       <div className={styles.nameAndKill}>
@@ -339,11 +360,11 @@ function UnderwayKoa (props) {
   return <div className={styles.content}>
     <div className={styles.pvpTitle}>
       <LeftTime gameData={gameData} />
-      <div className={styles.koaMatch} />
-      <div className={styles.centerDifference}>
-        <p className={styles.money}>差:{poorEconomy}k</p>
+      <div className={styles.centerCamp}>
+        <div className={styles.centerDifference}>
+          <p className={styles.money}>差:{poorEconomy}k</p>
+        </div>
       </div>
-      <div className={styles.koaMatch} />
     </div>
     <div className={styles.formation}>
       <p className={styles.teamName1}>{gameData.host_team_name}</p>

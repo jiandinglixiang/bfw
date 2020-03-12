@@ -8,7 +8,13 @@ function TabBar () {
       <NavLink exact to='/' activeClassName={styles.selected}>
         <p>比分</p>
       </NavLink>
-      <NavLink to='/mine' activeClassName={styles.selected}>
+      <NavLink
+        to='/mine'
+        isActive={(match, location) => {
+          // only consider an event active if its event id is an odd number
+          return ['/mine', '/login'].includes(location.pathname)
+        }}
+        activeClassName={styles.selected}>
         <p>我的</p>
       </NavLink>
     </div>

@@ -20,30 +20,22 @@ FastClick.attach(document.body)
 
 updateDeviceSize()
 
-function PrivateRoute () {
-  return (
-    <Route
-      render={({ location }) => {
-        console.log(location)
-        if (userState.userToken()) {
-          return <Mine />
-        }
-        return <Redirect to='/login' push />
-      }}
-    />
-  )
+function PrivateRoute ({ children, ...attr }) {
+  if (userState.userToken()) {
+    return <Route {...attr}>{children}</Route>
+  }
+  return <Redirect to='/login' />
 }
 
 function MoreRouter1 () {
-  return <>
+  return <div>
     <Switch>
       <Route exact path='/'><Home /></Route>
+      <PrivateRoute path='/mine'><Mine /></PrivateRoute>
       <Route path='/login'><Login /></Route>
-      <Route path='/'><Home /></Route>
-      <PrivateRoute path='/mine' />
     </Switch>
     <TabBar />
-  </>
+  </div>
 }
 
 function Router () {

@@ -197,7 +197,7 @@ function MatchTable ({ team2Table, team1Table, teamNameLogo }) {
     <table className={styles.csgoTableYellow}>
       <thead>
         <tr>
-          <th><p><Image src={[teamNameLogo.team2.logo, def1]} /></p></th>
+          <th><p><Image src={[teamNameLogo.team2.logo, def2]} /></p></th>
           <th className={styles.alignItemsLeft}><p>血量</p></th>
           <th><p>K/D/A</p></th>
           <th><p>武器</p></th>

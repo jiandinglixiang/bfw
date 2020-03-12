@@ -14,11 +14,12 @@ export function csgoCTinit (host, index, role) {
   } else if (role === 'T') {
     return terrorists
   }
-  if (host) {
-    return index % 2 ? counter : terrorists
-  } else {
-    return index % 2 ? terrorists : counter
-  }
+  return ''
+  // if (host) {
+  //   return index % 2 ? counter : terrorists
+  // } else {
+  //   return index % 2 ? terrorists : counter
+  // }
 }
 
 function CsGoNowStatus (props) {

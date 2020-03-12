@@ -20,7 +20,10 @@ function responseInit (response) {
   try {
     if (response.ok) {
       return response.json().then(value => {
-        return value.data
+        if (value.data) {
+          return value.data
+        }
+        return Promise.reject(value)
       })
     } else {
       return Promise.reject(response)
@@ -78,5 +81,13 @@ export const http = {
       })
     })
   },
+  postLogin (mobile, password) {
+    return Http.post('/login', {
+      mobile,
+      password,
+      device_type: 'web'
+    })
+  },
+
 }
 export default http
