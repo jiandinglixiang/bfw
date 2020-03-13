@@ -259,15 +259,15 @@ function LineChart (props) {
           pieces: [
             {
               value: 0,
-              color: colorArr[0]
+              color: colorArr[1]
             },
             {
               lt: 0,
-              color: colorArr[0]
+              color: colorArr[1]
             },
             {
               gt: 0,
-              color: colorArr[1]
+              color: colorArr[0]
             },
           ],
         },

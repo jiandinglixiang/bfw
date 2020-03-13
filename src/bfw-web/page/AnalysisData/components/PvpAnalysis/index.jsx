@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import styles from './index.module.scss'
-import { toFixed } from '../../../../../tool/util'
 
-function formatOdd (odds) {
-  let value1 = null
-  let value2 = null
-  if (Array.isArray(odds) && odds.length) {
-    if (odds[0] && odds[0].value) {
-      value1 = <span>{odds[0].name.includes(odds[0].value) ? odds[0].name : odds[0].value}</span>
+function formatOdd (odds, names) {
+  if (Array.isArray(odds) && odds.length && names) {
+    if (names.includes('单双')) {
+      return [
+        '单双',
+        `(${odds[0].name})${odds[0].odds} - (${odds[1].name})${odds[1].odds}`
+      ]
+    } else if (names.includes('大小')) {
+      return [
+        '总比分大小',
+        `(${odds[0].name})${odds[0].odds} - (${odds[1].name})${odds[1].odds}`
+      ]
+    } else if (names.includes('让分')) {
+      return [
+        `让分${odds[0].name}${odds[0].value}`,
+        `${odds[0].odds} - ${odds[0].odds}`
+      ]
+    } else {
+      return [names, `${odds[0].odds} - ${odds[1].odds}`]
     }
-    if (odds[1] && odds[1].value) {
-      value2 = <span>{odds[1].name.includes(odds[1].value) ? odds[1].name : odds[1].value}</span>
-    }
-    return <p>
-      {value1} {odds[0] ? `${toFixed(odds[0].odds)}` : ''}
-      <span> - </span>
-      {value2} {odds[1] ? toFixed(odds[1].odds) : '-'}
-    </p>
   }
-  return <p>-</p>
+
+  return [names, '-']
 }
 
 // eslint-disable-next-line react/no-multi-comp
@@ -36,6 +41,9 @@ function PvpAnalysis (props) {
     if (!Array.isArray(topObj.play_name)) {
       topObj.play_name = []
     }
+    const odd1 = formatOdd(topObj.odds[0], topObj.play_name[0])
+    const odd2 = formatOdd(topObj.odds[1], topObj.play_name[1])
+    const odd3 = formatOdd(topObj.odds[2], topObj.play_name[2])
     return <div className={styles.appContent}>
       <ul className={styles.roundButton}>
         {oddsList.map((value, index) => {
@@ -49,14 +57,14 @@ function PvpAnalysis (props) {
       </ul>
       <div className={styles.roundScore}>
         <div>
-          <p>{topObj.play_name[0] ? topObj.play_name[0] : '-'}</p>
-          <p>{topObj.play_name[1] ? topObj.play_name[1] : '-'}</p>
-          <p>{topObj.play_name[2] ? topObj.play_name[2] : '-'}</p>
+          <p>{odd1[0]}</p>
+          <p>{odd2[0]}</p>
+          <p>{odd3[0]}</p>
         </div>
         <div>
-          {formatOdd(topObj.odds[0])}
-          {formatOdd(topObj.odds[1])}
-          {formatOdd(topObj.odds[2])}
+          <p>{odd1[1]}</p>
+          <p>{odd2[1]}</p>
+          <p>{odd3[1]}</p>
         </div>
       </div>
     </div>

@@ -19,6 +19,7 @@ const headers = new Headers()
 function responseInit (response) {
   try {
     if (response.ok) {
+      // return response.json()
       return response.json().then(value => {
         if (value && (value.code || value.data)) {
           return value.data

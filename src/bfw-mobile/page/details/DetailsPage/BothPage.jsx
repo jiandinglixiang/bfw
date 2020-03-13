@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { diffCatch, findQuery, queryToObj } from '../../../../tool/util'
 import TipTitle from '../TipTitle/TipTitle.jsx'
 import LineChart from '../LineChart/LineChart.jsx'
@@ -19,7 +19,9 @@ function BothPage () {
   // 历史数据
 
   const [matchResult] = underwayData.useStore()
-
+  useEffect(function () {
+    window.scrollTo(0, 0)
+  }, [])
   const search = useMemo(function () {
     return queryToObj(findQuery())
   }, [window.location])
