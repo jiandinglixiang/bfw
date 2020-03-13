@@ -33,9 +33,9 @@ export function lolRole (role, red, blue) {
 
 export function dotaRole (role, red, blue) {
   if (role === 'dire') {
-    return <Image src={red || yemo} />
+    return <Image src={blue || yemo} />
   } else if (role === 'radiant') {
-    return <Image src={blue || tianhui} />
+    return <Image src={red || tianhui} />
   }
   return <span />
 }
