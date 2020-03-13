@@ -134,16 +134,17 @@
         flex: 1 1 80%;
         display: flex;
         flex-flow: row wrap;
-        align-items: flex-start;
-        justify-content: space-between;
+        align-items: center;
+        justify-content: flex-start;
 
         img, span {
-          width: 20px;
-          height: 16px;
-          margin: 5px 2px 5px 0;
+          width: 0;
+          flex: 0 0 10%;
+          margin: 5px 1% 5px 0;
         }
 
         span {
+          padding: 4% 0;
           background-color: #101831;
         }
       }

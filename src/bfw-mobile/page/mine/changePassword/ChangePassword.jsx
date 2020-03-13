@@ -66,7 +66,7 @@ function ChangePassword () {
   return (
     <div>
       <div className={styles.heardNav}>
-        <Image src={nevBar} />
+        <Image src={nevBar} onClick={history.goBack} />
         <div>修改密码</div>
         <div onClick={submitChange}>保存</div>
       </div>

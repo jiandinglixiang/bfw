@@ -50,7 +50,7 @@ function MemberList (props) {
       level: 0
     }
   })
-  const item = value.item.length ? value.item : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
+  const noneArray = new Array(9).fill(1)
   let kda = 0
   if (isBoth) {
     kda = toBigNumber((value.kills + value.assists) / (value.deaths || 1)).toFixed(1, 4)
@@ -94,9 +94,9 @@ function MemberList (props) {
         <p>{value.level ? value.level : '-'}级</p>
         <div>
           {
-            item.map((val, index) => {
-              if (val.img) {
-                return <Image key={index} src={val.img} />
+            noneArray.map((val, index) => {
+              if (value.item[index] && value.item[index].img) {
+                return <Image key={index} src={value.item[index].img} />
               }
               return <span key={index} />
             })
