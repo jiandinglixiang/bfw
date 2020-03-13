@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { Link, useHistory } from 'react-router-dom'
 import password from '../../../assets/modify_password.png'
@@ -313,74 +313,93 @@ function RegisterModule () {
     </Divs>)
 }
 
+const changeFromTip = (name = '', value, all) => {
+  if (name === 'password') {
+    return verify.passwordValid(value)
+  }
+  if (name === 'code') {
+    return verify.smsValid(value)
+  }
+  if (name === 'mobile') {
+    return verify.smsValid(value)
+  }
+}
+
+function checkData (state) {
+  const checkData = {}
+  Object.entries(state).forEach(arr => {
+    console.log(arr)
+    if (arr[1].value) {
+      checkData[arr[0]] = {
+        ...arr[1],
+        pass: changeFromTip(arr[0], arr[1].value)
+      }
+    } else {
+      checkData[arr[0]] = arr[1]
+    }
+  })
+  return checkData
+}
+
+function fromReducer (state, { type, name, value, check }) {
+  if (check) {
+    return checkData(state)
+  }
+  const change = { ...state[name] }
+  if (type === 'change') {
+    change.value = value
+  } else if (type === 'focus') {
+    change.focus++
+  } else if (type === 'blur') {
+    change.blur++
+  }
+  return {
+    ...state,
+    [name]: change
+  }
+}
+
 function ResetPasswordsModule () {
   const random = Math.random()
-  const [from, setFrom] = useState({
-    mobile: '',
-    password: '',
-    code: ''
+
+  const [state, dispatch] = useReducer(fromReducer, {
+    mobile: {
+      blur: 0, // 失去焦点
+      focus: 0, // 得到焦点
+      value: '',
+      tip: null,
+      pass: false
+    },
+    password: {
+      blur: 0, // 失去焦点
+      focus: 0, // 得到焦点
+      value: '',
+      tip: null,
+      pass: false
+    },
+    code: {
+      blur: 0, // 失去焦点
+      focus: 0, // 得到焦点
+      value: '',
+      tip: null,
+      pass: false
+    }
   })
-  const [fromTip, setFromTip] = useState({
-    mobile: null,
-    password: null,
-    code: null,
-  })
-  const disMobile = useMemo(() => {
-    if (verify.isMobile(from.mobile)) {
-      return from.mobile
+  const disMobile = useMemo(function () {
+    if (state.mobile.pass) {
+      return state.mobile.value
     }
-    return false
-  }, [from.mobile])
-  const changeFrom = (event, key) => {
-    const target = event.currentTarget
-    const name = target.name
-    const value = target.value
-    setFrom({
-      ...from,
-      [name]: value
-    })
-    // if (name === 'mobile') {
-    //   value && value.length === 11 && changeFromTip(false, name)
-    // } else if (name === 'password') {
-    //   value && value.length >= 6 && changeFromTip(false, name)
-    // } else if (name === 'code') {
-    //   value && value.length >= 4 && changeFromTip(false, name)
-    // }
-    event.preventDefault()
-  }
-  const changeFromTip = (event, name = '') => {
-    if (event) {
-      const target = event.currentTarget
-      name = target.name
-      event.preventDefault()
-    }
-    let pass = false
-    const state = { ...fromTip }
-    if (name === 'password') {
-      state.password = !verify.passwordValid(from.password)
-      pass = true
-    }
-    if (pass || name === 'code') {
-      state.code = !verify.smsValid(from.code)
-      pass = true
-    }
-    if (pass || name === 'mobile') {
-      state.mobile = !verify.isMobile(from.mobile)
-    }
-    setFromTip(state)
-  }
-  const passSubmit = useMemo(() => {
-    if (Object.entries(from).every(value => value[1])) {
-      return ![fromTip.mobile, fromTip.password, fromTip.code].every(value => value === false)
-    }
-    return true
-  }, [from, fromTip])
+    return null
+  }, [state.mobile.pass])
+
+  const disSubmit = !(state.mobile.pass && state.password.pass && state.code.pass)
+
   const handleSubmit = (event) => {
     event.preventDefault()
     http.postPasswordReset({
-      password: from.password,
-      mobile: from.mobile,
-      code: from.code
+      password: state.password,
+      mobile: state.mobile,
+      code: state.code
     }).then(value => {
       Toast.info('修改成功，请登录', 1)
       loginLinkState.setStore('login')
@@ -389,6 +408,19 @@ function ResetPasswordsModule () {
     })
   }
 
+  const eventInit = (event) => {
+    const type = event.type
+    const name = event.currentTarget.name
+    const value = event.currentTarget.value
+    dispatch({
+      type,
+      name,
+      value
+    })
+    setTimeout(function () {
+      dispatch({ check: true })
+    }, 150)
+  }
   return (
     <Divs className={[styles.loginInput, styles.loginInput2]}>
       <h4 style={{ color: '#F9DF70' }}>忘记密码</h4>
@@ -399,14 +431,15 @@ function ResetPasswordsModule () {
             type='tel'
             id={'mobile' + random}
             placeholder='请输入手机账号'
-            value={from.mobile}
+            value={state.mobile.value}
             name='mobile'
             minLength={11}
             maxLength={11}
-            onChange={changeFrom}
-            onBlur={changeFromTip}
+            onChange={eventInit}
+            onBlur={eventInit}
+            onFocus={eventInit}
           />
-          {fromTip.mobile && <p>*手机号不正确</p>}
+          {state.mobile.tip && <p>*手机号不正确</p>}
         </div>
         <div className={styles.codeVerify}>
           <label className={styles.title} htmlFor={'code' + random}>验证码</label>
@@ -415,16 +448,17 @@ function ResetPasswordsModule () {
               type='text'
               id={'code' + random}
               placeholder='请输入验证码'
-              value={from.code}
+              value={state.code.value}
               name='code'
-              onChange={changeFrom}
               minLength={4}
               maxLength={4}
-              onBlur={changeFromTip}
+              onChange={eventInit}
+              onBlur={eventInit}
+              onFocus={eventInit}
             />
             <Countdown disMobile={disMobile} />
           </label>
-          {fromTip.code && <p>*请输入4位验证码</p>}
+          {state.code.tip && <p>*请输入4位验证码</p>}
         </div>
         <div className={styles.formItem}>
           <label htmlFor={'password' + random}>新密码</label>
@@ -432,16 +466,17 @@ function ResetPasswordsModule () {
             type='password'
             id={'password' + random}
             placeholder='请输入6-12位登录密码'
-            value={from.password}
+            value={state.password.value}
             name='password'
-            onChange={changeFrom}
             minLength={6}
             maxLength={12}
-            onBlur={changeFromTip}
+            onChange={eventInit}
+            onBlur={eventInit}
+            onFocus={eventInit}
           />
-          {fromTip.password && <p>*请输入6-12位新密码</p>}
+          {state.password.tip && <p>*请输入6-12位新密码</p>}
         </div>
-        <button type='submit' disabled={passSubmit} className={styles.buttonBlue2}>确认</button>
+        <button type='submit' disabled={disSubmit} className={styles.buttonBlue2}>确认</button>
         <button
           className={styles.buttonBlue3}
           onClick={() => loginLinkState.setStore('login')}>返回登录
