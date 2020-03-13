@@ -70,6 +70,7 @@ function LineChart (props) {
       team2.isRed = propsVE.matchList.team2_more_attr.other_more_attr.camp === 'red'
     }
   }
+
   useEffect(() => {
     // 基于准备好的dom，初始化echarts实例
     let maxGold = 1
@@ -257,18 +258,23 @@ function LineChart (props) {
           seriesIndex: 0,
           pieces: [
             {
-              min: -99999,
-              lte: -2,
+              value: 0,
               color: colorArr[0]
             },
             {
-              max: 99999,
-              gte: -2,
+              lt: 0,
+              color: colorArr[0]
+            },
+            {
+              gt: 0,
               color: colorArr[1]
-            }
+            },
           ],
         },
-      ]
+      ],
+      outOfRange: {
+        color: colorArr[1]
+      }
     }
     const myChart = echarts.init(ref.current)
     myChart.setOption(chartOption)
