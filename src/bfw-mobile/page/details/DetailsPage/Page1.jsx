@@ -38,9 +38,24 @@ function Page1 () {
     }
   }, [details.match_list])
 
-  useEffect(function () {
+  useEffect(() => {
+    window.scrollTo(0, 0)
     UseStore.getAnalysis(search.smid)
-  }, [search.smid])
+    let time = null
+
+    function getData () {
+      if (time === undefined) return
+      time = setTimeout(function () {
+        UseStore.getAnalysis(search.smid).finally(getData)
+      }, 5000)
+    }
+
+    getData()
+    return function () {
+      clearTimeout(time)
+      time = undefined
+    }
+  }, [search])
   return (
     <div>
       <PvpStatistics

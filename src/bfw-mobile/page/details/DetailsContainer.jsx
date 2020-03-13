@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import HeadBar from '../../components/HeadBar/HeadBar.jsx'
 import styles from './index.module.scss'
-import { findQuery, queryToObj, useDiffCatch } from '../../../tool/util.js'
+import { diffCatch, findQuery, PropTypes, queryToObj, useDiffCatch } from '../../../tool/util.js'
 import TopLogoNameScore from './TopLogoNameScore/TopLogoNameScore.jsx'
 import Page0 from './DetailsPage/Page0.jsx'
 import Page1 from './DetailsPage/Page1.jsx'
@@ -76,8 +76,28 @@ function TabsList () {
     </div>)
 }
 
-function Details () {
+function Details ({ search }) {
   const [state] = detailsData.useStore()
+  useEffect(() => {
+    UseStore.detailsInitData()
+    window.scrollTo(0, 0)
+    const searchVE = diffCatch(search)({})
+    UseStore.getDetails(searchVE.smid)
+    let time = null
+
+    function getData () {
+      if (time === undefined) return
+      time = setTimeout(function () {
+        UseStore.getDetails(searchVE.smid).finally(getData)
+      }, 5000)
+    }
+
+    getData()
+    return function () {
+      clearTimeout(time)
+      time = undefined
+    }
+  }, [search])
   return (
     <div>
       <TopLogoNameScore matchList={state.match_list} />
@@ -91,16 +111,6 @@ function DetailsContainer () {
   const search = useMemo(function () {
     return queryToObj(findQuery())
   }, [window.location])
-  useEffect(() => {
-    window.scrollTo(0, 0)
-    UseStore.getDetails(search.smid)
-    const time = setInterval(function () {
-      // UseStore.getDetails(search.smid)
-    }, 0)
-    return function () {
-      clearTimeout(time)
-    }
-  }, [])
   return (
     <div>
       <HeadBar title={search.matchName} fixedTop styles={{ backgroundColor: '#06051A' }} />
@@ -114,3 +124,7 @@ function DetailsContainer () {
 }
 
 export default DetailsContainer
+
+Details.propTypes = {
+  search: PropTypes.any
+}

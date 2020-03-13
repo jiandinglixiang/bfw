@@ -28,7 +28,22 @@ function Page2 () {
   })
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     UseStore.getMatchData(search.smid, matchListVE.current_round)
+    let time = null
+
+    function getData () {
+      if (time === undefined) return
+      time = setTimeout(function () {
+        UseStore.getMatchData(search.smid, matchListVE.current_round).finally(getData)
+      }, 5000)
+    }
+
+    getData()
+    return function () {
+      clearTimeout(time)
+      time = undefined
+    }
   }, [search.smid, matchListVE.current_round])
 
   const equalStatus = comparisonUtil(matchListVE.game_type_id, matchListVE.status)

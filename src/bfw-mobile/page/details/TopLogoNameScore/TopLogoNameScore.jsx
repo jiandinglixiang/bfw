@@ -1,18 +1,19 @@
 import React from 'react'
 import styles from './index.module.scss'
-import tianhui from '../../../assets/tianhui_type2.png'
-import yemo from '../../../assets/nightdemon_type2.png'
 import { diffCatch, formatDate, inning, PropTypes, toBigNumber } from '../../../../tool/util.js'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
-import redImg from '../../../assets/redteam_type2.png'
-import blueImg from '../../../assets/blueteam_type2(1).png'
 import firstBlood from '../../../assets/firstblood.png'
 import deckills from '../../../assets/deckills.png'
 import fiveKills from '../../../assets/pentakills.png'
 import CsGoNowStatus from '../CsGoNowStatus/CsGoNowStatus.jsx'
 import BPList from '../BPList/BPList.jsx'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
+import { dotaRole, lolRole } from '../../home/Underway/Underway.jsx'
+import yemo2 from '../../../assets/nightdemon_type2.png'
+import tianhui2 from '../../../assets/tianhui_type2.png'
+import red2 from '../../../assets/redteam_type2.png'
+import blue2 from '../../../assets/blueteam_type2(1).png'
 
 export function GameOverOrNotStarted (props) {
   const propsVE = diffCatch(props)({
@@ -98,7 +99,7 @@ function GameUnderway (props) {
     gold: '0.0',
     csgoMap: '...',
     team1: {
-      camp: 0,
+      camp: '',
       logo: '',
       name: '...',
       score: 0,
@@ -106,7 +107,7 @@ function GameUnderway (props) {
       isWin: false
     },
     team2: {
-      camp: 0,
+      camp: '',
       logo: '',
       name: '...',
       score: 0,
@@ -123,11 +124,11 @@ function GameUnderway (props) {
   let teamSenteIcon = {}
   // 阵营识别 红方蓝方
   if (propsVE.gameId === 5) {
-    teamFaction.team1 = propsVE.team1.camp && (propsVE.team1.camp === 1 ? yemo : propsVE.team1.camp === 2 ? tianhui : null)
-    teamFaction.team2 = propsVE.team2.camp && (propsVE.team2.camp === 1 ? yemo : propsVE.team2.camp === 2 ? tianhui : null)
+    teamFaction.team1 = propsVE.team1.camp && dotaRole(propsVE.team1.camp, tianhui2, yemo2)
+    teamFaction.team2 = propsVE.team2.camp && dotaRole(propsVE.team2.camp, tianhui2, yemo2)
   } else if (propsVE.gameId === 1) {
-    teamFaction.team1 = propsVE.team1.camp && (propsVE.team1.camp === 1 ? blueImg : propsVE.team1.camp === 2 ? redImg : null)
-    teamFaction.team2 = propsVE.team2.camp && (propsVE.team2.camp === 1 ? blueImg : propsVE.team2.camp === 2 ? redImg : null)
+    teamFaction.team1 = propsVE.team1.camp && lolRole(propsVE.team1.camp, red2, blue2)
+    teamFaction.team2 = propsVE.team2.camp && lolRole(propsVE.team2.camp, red2, blue2)
   }
   if (isBoth) {
     tameScoreColor.team1 = { color: propsVE.team1.isWin ? '#F9DF70' : '#85838F' }
@@ -147,7 +148,7 @@ function GameUnderway (props) {
       <div className={styles.first}>
         <div className={styles.topLogoIcon1}>
           {
-            teamFaction.team1 && <div className={styles.teamIcon}><Image src={teamFaction.team1} /></div>
+            (teamFaction.team1 || !teamFaction.team2) && <div className={styles.teamIcon}>{teamFaction.team1}</div>
           }
           <div className={styles.logo}>
             <Image src={[propsVE.team1.logo, defImg1]} />
@@ -184,7 +185,7 @@ function GameUnderway (props) {
             <Image src={[propsVE.team2.logo, defImg2]} />
           </div>
           {
-            teamFaction.team2 && <div className={styles.teamIcon}><Image src={teamFaction.team2} /></div>
+            (teamFaction.team2 || !teamFaction.team1) && <div className={styles.teamIcon}>{teamFaction.team2}</div>
           }
         </div>
         <div className={styles.teamName}>
@@ -363,8 +364,8 @@ function Both ({ data = {}, endMatch }) {
   data.gold = toBigNumber(endMatchVE.poor_economy.gold / 1000).toFormat(1)
   if (data.gameId === 5) {
     // dota阵营
-    data.team1.camp = endMatchVE.team1.other_more_attr.camp === 'dire' ? 1 : 2
-    data.team2.camp = endMatchVE.team2.other_more_attr.camp === 'dire' ? 1 : 2
+    data.team1.camp = endMatchVE.team1.other_more_attr.camp
+    data.team2.camp = endMatchVE.team2.other_more_attr.camp
     // 先手icon bool 数组
     data.team1.sente = [
       endMatchVE.team1.other_more_attr.is_first_blood > 0,
@@ -377,8 +378,8 @@ function Both ({ data = {}, endMatch }) {
   }
   if (data.gameId === 1) {
     // lol阵营
-    data.team1.camp = endMatchVE.team1.other_more_attr.camp === 'blue' ? 1 : 2
-    data.team2.camp = endMatchVE.team2.other_more_attr.camp === 'blue' ? 1 : 2
+    data.team1.camp = endMatchVE.team1.other_more_attr.camp
+    data.team2.camp = endMatchVE.team2.other_more_attr.camp
     data.team1.sente = [
       endMatchVE.team1.other_more_attr.first_kills > 0,
       endMatchVE.team1.other_more_attr.five_kills > 0,
@@ -457,8 +458,8 @@ function Match ({ data = {}, matchList }) {
     if (data.gameId === 5) {
       // 非小局 进行中 游戏dota
       // 阵营dire=天辉
-      data.team1.camp = matchList.team1_more_attr.other_more_attr.camp === 'dire' ? 1 : 2
-      data.team2.camp = matchList.team2_more_attr.other_more_attr.camp === 'dire' ? 1 : 2
+      data.team1.camp = matchList.team1_more_attr.other_more_attr.camp
+      data.team2.camp = matchList.team2_more_attr.other_more_attr.camp
       // 先手icon bool 数组
       data.team1.sente = [
         matchList.team1_more_attr.other_more_attr.is_first_blood > 0,
@@ -480,8 +481,8 @@ function Match ({ data = {}, matchList }) {
     if (data.gameId === 1) {
       // 非小局 进行中 游戏lol
       // 阵营blue=蓝方
-      data.team1.camp = matchList.team1_more_attr.other_more_attr.camp === 'blue' ? 1 : 2
-      data.team2.camp = matchList.team2_more_attr.other_more_attr.camp === 'blue' ? 1 : 2
+      data.team1.camp = matchList.team1_more_attr.other_more_attr.camp
+      data.team2.camp = matchList.team2_more_attr.other_more_attr.camp
       data.team1.sente = [
         matchList.team1_more_attr.other_more_attr.first_kills > 0,
         matchList.team1_more_attr.other_more_attr.five_kills > 0,
@@ -541,14 +542,14 @@ function TopLogoNameScore (props) {
     csgoMap: '...',
     underwayBP: false, // 进行中 但没有选角色，没有ban
     team1: {
-      camp: 0,
+      camp: '',
       sente: [],
       name: '',
       logo: '',
       score: 0,
     },
     team2: {
-      camp: 0,
+      camp: '',
       sente: [],
       name: '',
       logo: '',

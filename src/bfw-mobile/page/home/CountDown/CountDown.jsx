@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
 function CountDown ({ cbk }) {
-  const [ss, setSS] = useState(15)
+  const [ss, setSS] = useState(5)
   useEffect(function () {
     let t = null
 
@@ -12,14 +12,14 @@ function CountDown ({ cbk }) {
       setSS(ti => {
         if (!ti) {
           cbk()
-          return 15
+          return 5
         }
         return ti - 1
       })
-      t = setTimeout(updateTime, 100000)
+      t = setTimeout(updateTime, 1000)
     }
 
-    t = setTimeout(updateTime, 100000)
+    t = setTimeout(updateTime, 1000)
     return function () {
       clearTimeout(t)
     }

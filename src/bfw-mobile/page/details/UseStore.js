@@ -21,6 +21,25 @@ export const underwayData = createUseStore({
 })
 
 export default {
+  detailsInitData () {
+    detailsData.setStore({
+      live_list: [],
+      match_list: {}
+    })
+    analysisData.setStore({
+      confrontation: [],
+      histoty_confrontation_statistics: [],
+      match_analysis: [],
+      two_sides_confrontation: [],
+      history_competition: {},
+      future_schedule: {},
+      players: {},
+    })
+    underwayData.setStore({
+      economic_curve_list: [],
+      match_list: {},
+    })
+  },
   getDetails (smid) {
     return http.getMatchDetails(smid).then(function (value) {
       if (value) {

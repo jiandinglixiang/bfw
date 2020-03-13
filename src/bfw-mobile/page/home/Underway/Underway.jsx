@@ -32,9 +32,9 @@ export function lolRole (role, red, blue) {
 }
 
 export function dotaRole (role, red, blue) {
-  if (role === 'yemo') {
+  if (role === 'dire') {
     return <Image src={red || yemo} />
-  } else if (role === 'red') {
+  } else if (role === 'radiant') {
     return <Image src={blue || tianhui} />
   }
   return <span />
