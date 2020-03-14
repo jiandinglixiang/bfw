@@ -20,7 +20,9 @@ BigNumber.config({ ROUNDING_MODE: 1 })
 export function toBigNumber (x) {
   return new BigNumber(x)
 }
+
 console.log(toBigNumber(1.0111).toFixed(2))
+
 export function toFixed (value) {
   try {
     return toBigNumber(value).toFixed(2)
@@ -80,6 +82,7 @@ export function formatDate2 (time) {
     return time || ''
   }
 }
+
 export function formatDate3 (time) {
   try {
     return moment(time).format('HH:mm')
@@ -199,12 +202,27 @@ export function toLowerCaseEqual (name1, name2) {
 export function initOddAndLogo (item, score) {
   const { score1, score2 } = score || {}
   const tameName = [
-    { logo: item.host_team_logo, name: item.host_team_name, odds: null, score: score1 || [] },
-    { logo: item.guest_team_logo, name: item.guest_team_name, odds: null, score: score2 || [] }
+    {
+      logo: item.host_team_logo,
+      name: item.host_team_name,
+      odds: null,
+      score: score1 || []
+    },
+    {
+      logo: item.guest_team_logo,
+      name: item.guest_team_name,
+      odds: null,
+      score: score2 || []
+    }
   ]
   if (Array.isArray(item.odds)) {
     return oddSort(item).map(value => {
-      let nameLogo = { id: value.id, name: value.name, logo: defaultImg, odds: value.odds }
+      let nameLogo = {
+        id: value.id,
+        name: value.name,
+        logo: defaultImg,
+        odds: value.odds
+      }
       let tap
       if ((tap = tameName.find(value1 => toLowerCaseEqual(value1.name, value.name)))) {
         nameLogo = tap
@@ -288,7 +306,7 @@ export function objCatch (obj, expected = {}) {
   }
 }
 
-function fromEntries (arr) {
+export function fromEntries (arr) {
   return arr.reduce(function (obj, val) {
     obj[val[0]] = val[1]
     return obj

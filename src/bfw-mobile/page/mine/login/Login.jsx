@@ -315,48 +315,51 @@ function RegisterModule () {
 
 const changeFromTip = (name = '', value, all) => {
   if (name === 'password') {
-    return verify.passwordValid(value)
+    return !verify.passwordValid(value)
   }
   if (name === 'code') {
-    return verify.smsValid(value)
+    return !verify.smsValid(value)
   }
   if (name === 'mobile') {
-    return verify.smsValid(value)
+    return !verify.isMobile(value)
   }
 }
 
-function checkData (state) {
-  const checkData = {}
-  Object.entries(state).forEach(arr => {
-    console.log(arr)
-    if (arr[1].value) {
-      checkData[arr[0]] = {
+function checkData (data, target, name) {
+  const fromData = Object.entries(data).reduce((obj, arr) => {
+    if (arr[1].value || arr[1].index < target.index) {
+      obj[arr[0]] = {
         ...arr[1],
-        pass: changeFromTip(arr[0], arr[1].value)
+        showTip: changeFromTip(arr[0], arr[1].value)
       }
     } else {
-      checkData[arr[0]] = arr[1]
+      obj[arr[0]] = arr[1]
     }
-  })
-  return checkData
+    return obj
+  }, {})
+  if (target.value) {
+    target.showTip = changeFromTip(name, target.value)
+  }
+  return Object.assign(fromData, { [name]: target })
 }
 
-function fromReducer (state, { type, name, value, check }) {
-  if (check) {
-    return checkData(state)
-  }
-  const change = { ...state[name] }
+function fromReducer (state, { type, name, value }) {
+  const { [name]: { ...target }, ...data } = state
+
   if (type === 'change') {
-    change.value = value
+    target.value = value
+    if (target.inputCheck || (value && Object.entries(data).every(val => val[1].showTip === false))) {
+      console.log('检查')
+      target.showTip = changeFromTip(name, target.value)
+    }
+    data[name] = target
+    return data
   } else if (type === 'focus') {
-    change.focus++
+    return checkData(data, target, name)
   } else if (type === 'blur') {
-    change.blur++
+    return checkData(data, target, name)
   }
-  return {
-    ...state,
-    [name]: change
-  }
+  return state
 }
 
 function ResetPasswordsModule () {
@@ -364,35 +367,27 @@ function ResetPasswordsModule () {
 
   const [state, dispatch] = useReducer(fromReducer, {
     mobile: {
-      blur: 0, // 失去焦点
-      focus: 0, // 得到焦点
+      index: 0,
       value: '',
-      tip: null,
-      pass: false
-    },
-    password: {
-      blur: 0, // 失去焦点
-      focus: 0, // 得到焦点
-      value: '',
-      tip: null,
-      pass: false
+      inputCheck: true,
+      showTip: null,
     },
     code: {
-      blur: 0, // 失去焦点
-      focus: 0, // 得到焦点
+      index: 1,
       value: '',
-      tip: null,
-      pass: false
-    }
+      inputCheck: false,
+      showTip: null,
+    },
+    password: {
+      index: 2,
+      value: '',
+      inputCheck: false,
+      showTip: null,
+    },
   })
-  const disMobile = useMemo(function () {
-    if (state.mobile.pass) {
-      return state.mobile.value
-    }
-    return null
-  }, [state.mobile.pass])
 
-  const disSubmit = !(state.mobile.pass && state.password.pass && state.code.pass)
+  const showCode = state.mobile.showTip === false ? state.mobile.value : null
+  const disSubmit = !([state.mobile.showTip, state.password.showTip, state.code.showTip].every(value => value === false))
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -417,9 +412,6 @@ function ResetPasswordsModule () {
       name,
       value
     })
-    setTimeout(function () {
-      dispatch({ check: true })
-    }, 150)
   }
   return (
     <Divs className={[styles.loginInput, styles.loginInput2]}>
@@ -439,7 +431,7 @@ function ResetPasswordsModule () {
             onBlur={eventInit}
             onFocus={eventInit}
           />
-          {state.mobile.tip && <p>*手机号不正确</p>}
+          {state.mobile.showTip && <p>*手机号不正确</p>}
         </div>
         <div className={styles.codeVerify}>
           <label className={styles.title} htmlFor={'code' + random}>验证码</label>
@@ -456,9 +448,9 @@ function ResetPasswordsModule () {
               onBlur={eventInit}
               onFocus={eventInit}
             />
-            <Countdown disMobile={disMobile} />
+            <Countdown disMobile={showCode} />
           </label>
-          {state.code.tip && <p>*请输入4位验证码</p>}
+          {state.code.showTip && <p>*请输入4位验证码</p>}
         </div>
         <div className={styles.formItem}>
           <label htmlFor={'password' + random}>新密码</label>
@@ -474,7 +466,7 @@ function ResetPasswordsModule () {
             onBlur={eventInit}
             onFocus={eventInit}
           />
-          {state.password.tip && <p>*请输入6-12位新密码</p>}
+          {state.password.showTip && <p>*请输入6-12位新密码</p>}
         </div>
         <button type='submit' disabled={disSubmit} className={styles.buttonBlue2}>确认</button>
         <button
