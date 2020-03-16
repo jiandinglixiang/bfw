@@ -501,7 +501,7 @@ function Match ({ data = {}, matchList }) {
     }
     if (data.gameId === 3) {
       // csgo 显示
-      const csgoScore = matchList.score.split(/,|:/)
+      const csgoScore = matchList.score.split(/:|,/).map(v => (v && parseInt(v)) || 0)
       data.team1.score = csgoScore[0]
       data.team2.score = csgoScore[1]
       data.csgoMap = matchList.team1_more_attr.other_more_attr.map || matchList.team2_more_attr.other_more_attr.map
@@ -523,7 +523,7 @@ function Match ({ data = {}, matchList }) {
     return <GameOverOrNotStarted {...data} />
   }
   // data.status === 2已结束其他
-  const OverScoreArr = matchList.score.split(/:|,/)
+  const OverScoreArr = matchList.score.split(/:|,/).map(v => (v && parseInt(v)) || 0)
   data.team1.score = OverScoreArr[0]
   data.team2.score = OverScoreArr[1]
   return <GameOverOrNotStarted {...data} />

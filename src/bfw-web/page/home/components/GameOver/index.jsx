@@ -6,7 +6,7 @@ import { formatDate, searchFormat } from '../../../../../tool/util'
 
 function GameOver (props) {
   const { endMatchList } = props
-  const score = endMatchList.score.split(',') || []
+  const score = (endMatchList.score || '').split(/:|,/).map(v => (v && parseInt(v)) || 0) || []
   return <div className={styles.appContent}>
     <img src={endMatchList.icon || defaultImg} alt=''/>
     <div className={styles.gameNameAndTime}>

@@ -60,7 +60,7 @@ function PvpTameState ({ gameId, matchList, liveList }) {
       }
     } else if (status === 2) {
       round = inning(scoreList.length)
-      scoreArr = score.split(',').map(v => v || '0')
+      scoreArr = score.split(/:|,/).map(v => (v && parseInt(v)) || 0)
       title = '已结束'
     } else {
       round = '全局'

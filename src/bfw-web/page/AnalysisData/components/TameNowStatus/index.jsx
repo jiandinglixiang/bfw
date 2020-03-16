@@ -41,7 +41,7 @@ function TameNowStatus (props) {
     }
   } else if (status === 2) {
     round = '已结束'
-    scoreArr = score.split(',').map(v => v || '0')
+    scoreArr = score.split(/:|,/).map(v => (v && parseInt(v)) || 0)
   } else {
     round = `${format(matchList.game_start_time, 'HH:mm')} 未开始`
     dis = 'VS'

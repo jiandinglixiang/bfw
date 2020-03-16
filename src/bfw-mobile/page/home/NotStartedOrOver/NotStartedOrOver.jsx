@@ -15,7 +15,7 @@ function ScheduleBody (props) {
   const history = useHistory()
   let pvpStatus
   if (isOver) {
-    const score = gameData.score.split(/:|,/).map(value => parseInt(value) || 0)
+    const score = gameData.score.split(/:|,/).map(v => (v && parseInt(v)) || 0)
     pvpStatus = (
       <div className={styles.center}>
         <p className={styles.gameOverTxt}>已结束</p>

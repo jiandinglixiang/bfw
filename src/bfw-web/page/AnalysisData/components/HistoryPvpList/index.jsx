@@ -24,7 +24,7 @@ function HistoryPvpList (props) {
   const listItem = historyList.map((value, index) => {
     const confrontation = value.confrontation || {}
     const winTame = value.win || {}
-    const score = value.score ? (value.score.split(':') || []) : []
+    const score = value.score ? (value.score.split(/:|,/).map(v => (v && parseInt(v)) || 0) || []) : []
     return <div className={styles.appContent} key={index}>
       <div className={styles.gameNameAndTime}>
         <p>

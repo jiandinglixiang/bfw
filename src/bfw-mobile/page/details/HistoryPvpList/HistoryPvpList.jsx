@@ -20,18 +20,19 @@ function ListItem (props) {
   })
   const { value } = diffCatch(props)({
     value: {
+      score: '',
       confrontation: {},
       win: {}
     }
   })
   const valueVe = value
-  const scoreArr = (valueVe.score || '').split(/:|,/)
+  const scoreArr = valueVe.score.split(/:|,/).map(v => (v && parseInt(v)) || 0)
   let scoreE = <span>暂无</span>
   if (scoreArr.length && (scoreArr[0] || scoreArr[1])) {
     scoreE = <p className={styles.scoreArr}>
-      <Text className={scoreArr[0] > scoreArr[1] && styles.winScore}>{scoreArr[0] || 0}</Text>
+      <Text className={scoreArr[0] > scoreArr[1] && styles.winScore}>{scoreArr[0]}</Text>
       <span>-</span>
-      <Text className={scoreArr[1] > scoreArr[0] && styles.winScore}>{scoreArr[1] || 0}</Text>
+      <Text className={scoreArr[1] > scoreArr[0] && styles.winScore}>{scoreArr[1]}</Text>
     </p>
   }
   if (gameId === 2) {
