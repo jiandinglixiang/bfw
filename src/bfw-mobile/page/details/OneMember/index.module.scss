@@ -135,16 +135,16 @@
         display: flex;
         flex-flow: row wrap;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: space-between;
 
         img, span {
           width: 0;
-          flex: 0 0 10%;
-          margin: 5px 1% 5px 0;
+          flex: 0 1 12%;
+          //margin: 5px 1% 5px 0;
         }
 
         span {
-          padding: 4% 0;
+          padding: 5% 0;
           background-color: #101831;
         }
       }

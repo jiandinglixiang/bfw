@@ -50,61 +50,65 @@ function MemberList (props) {
       level: 0
     }
   })
-  const noneArray = new Array(9).fill(1)
+  const itemVE = value.item
+  const noneArray = new Array(6).fill(1)
   let kda = 0
   if (isBoth) {
     kda = toBigNumber((value.kills + value.assists) / (value.deaths || 1)).toFixed(1, 4)
   }
-  return <div className={style.oneMember}>
-    <div>
-      <div style={{ backgroundImage: `url(${value.hero_logo || (blueTeam ? def2 : def1)})` }} />
-      <p>{value.name}</p>
-    </div>
-    <div>
+  return (
+    <div className={style.oneMember}>
       <div>
-        <p>K/D/A</p>
-        <p>正补/反补</p>
-        <p>GPM</p>
-        <p>XPM</p>
-        <p>经济</p>
+        <div style={{ backgroundImage: `url(${value.hero_logo || (blueTeam ? def2 : def1)})` }} />
+        <p>{value.name}</p>
       </div>
       <div>
-        <p>
-          {isBoth && [<span key={0} style={{ color: '#70F7E3' }}>{kda}</span>, <br key={1} />]}
-          <span>
-            {value.kills}/
-            <span style={isBoth ? { color: '#70F7E3' } : null}>{value.deaths}</span>
-            /{value.assists}
-          </span>
-        </p>
-        <p>{value.last_hits}/{value.denies}</p>
-        <p>{value.gold_per_min}</p>
-        <p className={style.cyan}>
-          {
-            value.xp_per_min
-          }
-        </p>
-        <p className={style.yellow}>
-          {
-            value.gold
-          }
-        </p>
-      </div>
-      <div>
-        <p>{value.level ? value.level : '-'}级</p>
         <div>
-          {
-            noneArray.map((val, index) => {
-              if (value.item[index] && value.item[index].img) {
-                return <Image key={index} src={value.item[index].img} />
-              }
-              return <span key={index} />
-            })
-          }
+          <p>K/D/A</p>
+          <p>正补/反补</p>
+          <p>GPM</p>
+          <p>XPM</p>
+          <p>经济</p>
+        </div>
+        <div>
+          <p>
+            {isBoth && [<span key={0} style={{ color: '#70F7E3' }}>{kda}</span>, <br key={1} />]}
+            <span>{value.kills}
+              /
+              <span style={isBoth ? { color: '#70F7E3' } : null}>
+                {value.deaths}
+              </span>
+              /
+              {value.assists}</span>
+          </p>
+          <p>{value.last_hits}/{value.denies}</p>
+          <p>{value.gold_per_min}</p>
+          <p className={style.cyan}>
+            {
+              value.xp_per_min
+            }
+          </p>
+          <p className={style.yellow}>
+            {
+              value.gold
+            }
+          </p>
+        </div>
+        <div>
+          <p>{value.level ? value.level : '-'}级</p>
+          <div>
+            {
+              noneArray.map((val, index) => {
+                if (itemVE[index] && itemVE[index].img) {
+                  return <Image key={index} src={itemVE[index].img} />
+                }
+                return <span key={index} />
+              })
+            }
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </div>)
 }
 
 function MemberListLol (props) {
@@ -127,7 +131,8 @@ function MemberListLol (props) {
       game_no: 0
     }
   })
-  const item = propsVE.value.items.length ? propsVE.value.items : [{ img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }, { img: false }]
+  const itemVE = propsVE.value.items
+  const noneArray = new Array(7).fill(1)
   let kda = 0
   if (propsVE.isBoth) {
     kda = toBigNumber((propsVE.value.kills + propsVE.value.assists) / (propsVE.value.deaths || 1) * 3).toFixed(1, 4)
@@ -156,9 +161,9 @@ function MemberListLol (props) {
         <p>{propsVE.value.level ? propsVE.value.level : '-'}级</p>
         <div>
           {
-            item.map((val, index) => {
-              if (val.img) {
-                return <Image key={index} src={val.img} />
+            noneArray.map((val, index) => {
+              if (itemVE[index] && itemVE[index].img) {
+                return <Image key={index} src={itemVE[index].img} />
               }
               return <span key={index} />
             })

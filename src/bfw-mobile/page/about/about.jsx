@@ -1,22 +1,21 @@
 import React from 'react'
-import aboutImg from '../../assets/aboutus_pic.png'
 import styles from '../mine/changePassword/index.module.scss'
 import nevBar from '../../assets/nav_back.png'
 import { useHistory } from 'react-router-dom'
 import { Image } from '../../components/BasicsHtml/BasicsHtml.jsx'
+import WebIframe from '../../components/WebIframe/WebIframe.jsx'
 
-function About (props) {
+function About () {
   const history = useHistory()
-  const autoWidth = {
-    width: '100%',
-    backgroundColor: ' #06051A'
-  }
+  const el = window.document.documentElement || window.document.body
+  const minHeight = el.clientHeight - 45 + 'px'
+  const height = 'calc(100vh - 45px)'
   return <div>
     <div className={styles.heardNav}>
       <Image src={nevBar} onClick={() => history.goBack()} />
       <div>关于我们</div>
     </div>
-    <Image src={aboutImg} style={autoWidth} />
+    <WebIframe height={height} minHeight={minHeight} src='http://scoredownloadtest.firebulls.net/help/about' />
   </div>
 }
 
