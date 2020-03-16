@@ -45,7 +45,7 @@ function BothTable ({ team2Table, team1Table, teamNameLogo }) {
               <th><p>HS%</p></th>
               <th><p>KAST</p></th>
               <th><p>K-D</p></th>
-              <th><p>FK driff</p></th>
+              <th><p>FK diff</p></th>
               <th><p>Rating 2.0</p></th>
               <th><p>K/D/A</p></th>
               <th><p>ADR</p></th>
@@ -100,7 +100,7 @@ function BothTable ({ team2Table, team1Table, teamNameLogo }) {
               <th><p>HS%</p></th>
               <th><p>KAST</p></th>
               <th><p>K-D</p></th>
-              <th><p>FK driff</p></th>
+              <th><p>FK diff</p></th>
               <th><p>Rating 2.0</p></th>
               <th><p>K/D/A</p></th>
               <th><p>ADR</p></th>

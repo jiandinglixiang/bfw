@@ -1,17 +1,23 @@
 import { diffCatch, searchFormat } from './util'
 
+let aboutUrl = ''
 let baseURL = '/'
 if (process.env.REACT_APP_build_url === 'test') {
   baseURL = 'http://scoreapitest.firebulls.net'
+  aboutUrl = 'http://scoredownloadtest.firebulls.net/help/about'
   // 打包测试地址
 } else if (process.env.REACT_APP_build_url === 'prod') {
   baseURL = 'https://scoreapi.firebulls.net'
+  aboutUrl = 'http://scoredownload.firebulls.net/help/about'
   // 打包正式地址
 } else if (process.env.NODE_ENV !== 'production') {
   // 开发
   baseURL = '/dev'
+  aboutUrl = 'http://scoredownloadtest.firebulls.net/help/about'
 }
-
+export const StaticURL = {
+  about: aboutUrl
+}
 const headers = new Headers()
 
 // headers.append('Content-Type', 'application/json; charset=utf-8')

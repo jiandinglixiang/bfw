@@ -4,6 +4,7 @@ import nevBar from '../../assets/nav_back.png'
 import { useHistory } from 'react-router-dom'
 import { Image } from '../../components/BasicsHtml/BasicsHtml.jsx'
 import WebIframe from '../../components/WebIframe/WebIframe.jsx'
+import { StaticURL } from '../../../tool/http.js'
 
 function About () {
   const history = useHistory()
@@ -15,7 +16,7 @@ function About () {
       <Image src={nevBar} onClick={() => history.goBack()} />
       <div>关于我们</div>
     </div>
-    <WebIframe height={height} minHeight={minHeight} src='http://scoredownloadtest.firebulls.net/help/about' />
+    <WebIframe height={height} minHeight={minHeight} src={StaticURL.about} />
   </div>
 }
 
