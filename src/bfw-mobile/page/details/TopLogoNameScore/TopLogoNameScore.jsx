@@ -327,7 +327,7 @@ export function csgoBothInit (endMatch) {
   return data
 }
 
-function Both ({ data = {}, endMatch }) {
+function Both ({ data = {}, endMatch, matchList }) {
   // let endMatchVE
   // 小局
   const endMatchVE = diffCatch(endMatch)({
@@ -390,6 +390,14 @@ function Both ({ data = {}, endMatch }) {
     ]
   }
   if (data.gameId === 3) {
+    const matchListVE = diffCatch(matchList)({
+      match_list: {
+        score: ''
+      }
+    })
+    const scoreArr = matchListVE.match_list.score.split(/,|:/).map(v => (v && parseInt(v)) || 0)
+    data.team1.score = scoreArr[0]
+    data.team2.score = scoreArr[1]
     // csgo
     data.csgoMap = endMatchVE.team1.other_more_attr.map || endMatchVE.team2.other_more_attr.map
     // 小局数据
@@ -557,12 +565,14 @@ function TopLogoNameScore (props) {
     }
   }
   const propsVE = diffCatch(props)({
-    matchList: {},
+    matchList: {
+      game_type_id: 0
+    },
     endMatch: {}
   })
   if (data.isBoth || data.isBottomBoth) {
     // 小局顶部/小局单场
-    return <Both data={data} endMatch={propsVE.endMatch} />
+    return <Both data={data} endMatch={propsVE.endMatch} matchList={propsVE.matchList} />
   }
   return <Match data={data} matchList={propsVE.matchList} />
 }
@@ -579,5 +589,6 @@ Match.propTypes = {
 }
 Both.propTypes = {
   data: PropTypes.object,
-  endMatch: PropTypes.object
+  endMatch: PropTypes.object,
+  matchList: PropTypes.object
 }

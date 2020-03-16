@@ -19,6 +19,7 @@ function BothPage () {
   // 历史数据
 
   const [matchResult] = underwayData.useStore()
+  const [detailsMatchList] = detailsData.useStore()
   useEffect(function () {
     window.scrollTo(0, 0)
   }, [])
@@ -62,7 +63,7 @@ function BothPage () {
   }
   return (
     <div>
-      <TopLogoNameScore isBoth endMatch={endMatchVE} />
+      <TopLogoNameScore isBoth endMatch={endMatchVE} matchList={detailsMatchList} />
       <div style={{
         padding: '4% 2% 2% 2%',
         backgroundColor: '#06051A'
