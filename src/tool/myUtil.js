@@ -1,4 +1,4 @@
-function classArray (className) {
+function classFilter (className) {
   if (className) {
     if (Array.isArray(className)) {
       className = className.filter(x => x).join(' ')
@@ -47,7 +47,7 @@ function findSearch (location) {
 
 export default {
   fromEntries,
-  classArray,
+  classFilter,
   searchObject,
   findSearch
 }

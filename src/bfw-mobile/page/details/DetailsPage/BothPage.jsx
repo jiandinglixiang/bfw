@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { diffCatch, findQuery, queryToObj } from '../../../../tool/util'
 import TipTitle from '../TipTitle/TipTitle.jsx'
 import LineChart from '../LineChart/LineChart.jsx'
@@ -10,6 +10,7 @@ import OneMember from '../OneMember/OneMember.jsx'
 import UseStore, { detailsData, underwayData } from '../UseStore.js'
 
 async function getData (smid) {
+  console.log(321321)
   await UseStore.getDetails(smid)
   const details = detailsData.getStore()
   UseStore.getMatchData(smid, details.match_list.current_round)
@@ -20,22 +21,20 @@ function BothPage () {
 
   const [matchResult] = underwayData.useStore()
   const [detailsMatchList] = detailsData.useStore()
+  const [searchVE] = useState(function () {
+    return diffCatch(queryToObj(findQuery()))({
+      round: 0,
+      matchName: '',
+      smid: '',
+      gameId: 0
+    })
+  })
   useEffect(function () {
     window.scrollTo(0, 0)
+    if (!matchResult.match_list.end_match) {
+      getData(searchVE.smid)
+    }
   }, [])
-  const search = useMemo(function () {
-    return queryToObj(findQuery())
-  }, [window.location])
-  const searchVE = diffCatch(search)({
-    round: 0,
-    matchName: '',
-    smid: '',
-    gameId: 0
-  })
-
-  if (!matchResult.match_list.end_match) {
-    getData(searchVE.smid)
-  }
 
   const propsVE = diffCatch(matchResult.match_list)({
     end_match: [],

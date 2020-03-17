@@ -4,11 +4,8 @@ export function updateDeviceSize () {
   let time
 
   function updates () {
-    const big = el.offsetWidth > 750
-    const small = el.offsetWidth < 320
-    const size = big ? 75 : el.offsetWidth / 10
-    window.document.documentElement.style.fontSize = `${size}px`
-    const width = big ? 750 : small ? 320 : el.offsetWidth
+    const width = el.offsetWidth > 750 ? 750 : el.offsetWidth < 320 ? 320 : el.offsetWidth
+    window.document.documentElement.style.fontSize = `${width * 0.0375}px`
     document.querySelector('#root').style = `width:${width}px;min-height:${width}px;margin:0 auto;`
   }
 
@@ -23,9 +20,9 @@ export function updateDeviceSize () {
     }
   }, false)
   window.document.readyState === 'complete'
-    ? window.document.body.style.fontSize = '13px'
+    ? window.document.body.style.fontSize = '12px'
     : window.addEventListener('DOMContentLoaded', (e) => {
-      window.document.body.style.fontSize = '13px'
+      window.document.body.style.fontSize = '12px'
     }, false)
   updates()
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import HeadBar from '../../components/HeadBar/HeadBar.jsx'
 import styles from './index.module.scss'
-import { diffCatch, PropTypes, queryToObj, useDiffCatch } from '../../../tool/util.js'
+import { diffCatch, findQuery, PropTypes, queryToObj, useDiffCatch } from '../../../tool/util.js'
 import TopLogoNameScore from './TopLogoNameScore/TopLogoNameScore.jsx'
 import Page0 from './DetailsPage/Page0.jsx'
 import Page1 from './DetailsPage/Page1.jsx'
@@ -76,9 +76,10 @@ function TabsList () {
     </div>)
 }
 
-function Details ({ search }) {
+function Details () {
   const [state] = detailsData.useStore()
   useEffect(() => {
+    const search = queryToObj(findQuery())
     UseStore.detailsInitData()
     window.scrollTo(0, 0)
     const searchVE = diffCatch(search)({})
@@ -97,7 +98,7 @@ function Details ({ search }) {
       clearTimeout(time)
       time = undefined
     }
-  }, [search])
+  }, [])
   return (
     <div>
       <TopLogoNameScore matchList={state.match_list} />
@@ -109,17 +110,16 @@ function Details ({ search }) {
 
 function DetailsContainer () {
   const location = useLocation()
-
   const search = useMemo(function () {
     return queryToObj(location.search)
-  }, [location.search])
+  }, [location])
   return (
     <div>
       <HeadBar title={search.matchName} fixedTop styles={{ backgroundColor: '#06051A' }} />
       <div className={styles['game-rear-' + search.gameId]}>
         <Switch>
-          <Route path='/details/both'><BothPage search={search} /></Route>
-          <Route path='/details'><Details search={search} /></Route>
+          <Route path='/details/both'><BothPage /></Route>
+          <Route path='/details'><Details /></Route>
         </Switch>
       </div>
     </div>)
