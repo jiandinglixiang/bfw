@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import HeadBar from '../../components/HeadBar/HeadBar.jsx'
 import styles from './index.module.scss'
-import { diffCatch, findQuery, PropTypes, queryToObj, useDiffCatch } from '../../../tool/util.js'
+import { diffCatch, PropTypes, queryToObj, useDiffCatch } from '../../../tool/util.js'
 import TopLogoNameScore from './TopLogoNameScore/TopLogoNameScore.jsx'
 import Page0 from './DetailsPage/Page0.jsx'
 import Page1 from './DetailsPage/Page1.jsx'
 import Page2 from './DetailsPage/Page2.jsx'
 import LiveButton from './LiveButton/LiveButton.jsx'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, useLocation } from 'react-router-dom'
 import BothPage from './DetailsPage/BothPage.jsx'
 import UseStore, { detailsData } from './UseStore.js'
 import { Divs } from '../../components/BasicsHtml/BasicsHtml.jsx'
@@ -108,9 +108,11 @@ function Details ({ search }) {
 }
 
 function DetailsContainer () {
+  const location = useLocation()
+
   const search = useMemo(function () {
-    return queryToObj(findQuery())
-  }, [window.location])
+    return queryToObj(location.search)
+  }, [location.search])
   return (
     <div>
       <HeadBar title={search.matchName} fixedTop styles={{ backgroundColor: '#06051A' }} />

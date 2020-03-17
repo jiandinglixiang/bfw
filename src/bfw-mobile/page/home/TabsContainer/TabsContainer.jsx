@@ -108,7 +108,7 @@ function TabsContainer () {
               className={[styles.endOver, homeState.gameStatus === 2 && styles.activeButton]}>
               <p><span>赛果</span></p>
             </Divs>
-            {homeState.time === dayTime && <CountDown cbk={() => UseStore.getScheduleList()} />}
+            {['', dayTime].includes(homeState.time) && <CountDown cbk={() => UseStore.getScheduleList()} />}
           </div>
           <div className={styles.showMenu}>
             <DatePicker

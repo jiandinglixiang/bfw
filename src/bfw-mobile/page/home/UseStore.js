@@ -1,5 +1,4 @@
 import { createUseReducer, createUseStore } from '../../../tool/useData.js'
-import moment from 'moment'
 import http from '../../../tool/http.js'
 import { diffCatch } from '../../../tool/util.js'
 
@@ -46,7 +45,7 @@ function reducer (state, action) {
 export const homeGameX = createUseReducer(reducer, {
   gameId: 0, // 游戏id
   gameStatus: 0, // 赛程赛果
-  time: moment(Date.now()).format('YYYY-MM-DD'),
+  time: '',
   start_match_list: {}, // 'gameId-time':[]
   not_start_match_list: {},
   end_match_list: {},

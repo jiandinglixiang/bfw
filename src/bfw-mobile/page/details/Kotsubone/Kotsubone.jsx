@@ -91,8 +91,11 @@ function Kotsubone (props) {
     } // 赛况赛果
   })
 
-  function goBoth (round) {
-    history.push(`/details/both${location.search}&round=${round}`)
+  function goBoth (round, matchName) {
+    const params = new URLSearchParams(location.search)
+    params.set('round', round)
+    params.set('matchName', matchName)
+    history.push('/details/both?' + params.toString())
   }
 
   const endMatch = propsVE.matchResult.match_list.end_match
@@ -113,10 +116,10 @@ function Kotsubone (props) {
             is_win: 0
           }
         })
-        const round = inning(valueVE.team1.round)
+        const round = inning(valueVE.team1.round) || '小局'
         const winName = valueVE.team1.is_win > 0 ? valueVE.team1.team_name : valueVE.team2.team_name
         return (
-          <li key={index} onClick={() => goBoth(valueVE.team1.round)}>
+          <li key={index} onClick={() => goBoth(valueVE.team1.round, `${round} ${winName}胜`)}>
             <div key='0' style={{ height: '12px' }} />
             <TipTitle key='1' title={round} />
             <div style={{ height: '10px' }} />
