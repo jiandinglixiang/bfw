@@ -4,12 +4,13 @@ import stylesFuture from './index.module.scss'
 import def from '../../../assets/default_team_60.png'
 import { TameNameLogo } from '../HistoryPvpList/HistoryPvpList'
 import styles from '../PvpList/index.module.scss'
-import { formatDate2, objCatch, useDiffCatch } from '../../../../tool/util'
+import { diffCatch, formatDate2, useDiffCatch } from '../../../../tool/util'
 import { Image } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function initList (value, index) {
-  const confrontation = objCatch(value)('confrontation')
-
+  const { confrontation } = diffCatch(value)({
+    confrontation: {}
+  })
   return <li className={styles.bodyItem} key={index}>
     <div>
       <Image src={confrontation.icon || def} alt='' />

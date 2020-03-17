@@ -382,7 +382,6 @@ function UnderwayKoa (props) {
 function Underway (props) {
   const history = useHistory()
   const propsVE = useDiffCatch(props)({ gameData: { game_type_id: 0 } })
-
   // console.log('变化')
   function f () {
     switch (propsVE.gameData.game_type_id) {

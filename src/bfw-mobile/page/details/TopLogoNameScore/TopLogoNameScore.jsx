@@ -359,7 +359,11 @@ function Both ({ data = {}, endMatch, matchList }) {
   data.team2.score = endMatchVE.team2.score
   data.team1.isWin = endMatchVE.team1.is_win > 0
   data.team2.isWin = endMatchVE.team2.is_win > 0
-  data.round = !data.isBottomBoth && endMatchVE.team1.round && inning(endMatchVE.team1.round)
+  if (!data.isBottomBoth && endMatchVE.team1.round) {
+    data.round = inning(endMatchVE.team1.round)
+  } else {
+    data.round = ''
+  }
   data.time = timeToTxt(endMatchVE.poor_economy.time, data.status)
   data.gold = toBigNumber(endMatchVE.poor_economy.gold / 1000).toFormat(1)
   if (data.gameId === 5) {

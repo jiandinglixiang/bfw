@@ -5,6 +5,7 @@ import 'moment/locale/zh-cn'
 import propTypes from 'prop-types'
 import { useCallback, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
+import { diffCatch as diffCatch2 } from './diffCatch.js'
 
 moment.locale('zh-cn')
 BigNumber.config({ ROUNDING_MODE: 1 })
@@ -231,75 +232,18 @@ export function initOddAndLogo (item, score) {
   return tameName
 }
 
-export function diffCatch2 (obj, ReturnObj) {
-  const formType1 = Object.prototype.toString.call(ReturnObj)
-  const formType2 = Object.prototype.toString.call(obj)
-  const isObj2 = formType2 === '[object Object]'
-  let isObj = formType1 === '[object Object]'
-  let arr
-  if (isObj) {
-    arr = Object.keys(ReturnObj)
-    isObj = !!arr.length
-  }
-  if (isObj2 && isObj) {
-    let copyObj
-    try {
-      copyObj = { ...obj }
-      arr.forEach(function (key) {
-        copyObj[key] = diffCatch(obj[key])(ReturnObj[key])
-      })
-      return copyObj
-    } catch (e) {
-      console.log(e)
-      return ReturnObj
-    }
-  } else if (formType1 === formType2) {
-    return obj
-  } else if (obj && formType1 === '[object Number]' && formType2 === '[object String]') {
-    return toBigNumber(obj).toNumber()
-  } else {
-    if (obj) {
-      console.warn('类型不服合!', '实际=', obj, '预期=', ReturnObj)
-    }
-    return ReturnObj
-  }
-}
-
-export function diffCatch (obj) {
+export function diffCatch (value) {
   // 所见即所得，多成数据取除保存
-  return function (ReturnObj) {
-    return diffCatch2(obj, ReturnObj)
+  return function (defaultValue) {
+    return diffCatch2(value, defaultValue)
   }
 }
 
-export function useDiffCatch (obj) {
+export function useDiffCatch (value) {
   // 所见即所得，多成数据取除保存
-  return useCallback(function (ReturnObj) {
-    return diffCatch2(obj, ReturnObj)
-  }, [obj])
-}
-
-export function objCatch (obj, expected = {}) {
-  return function (arrayOrKey) {
-    try {
-      if (Array.isArray(arrayOrKey)) {
-        let temp = obj
-        for (const key of arrayOrKey) {
-          if (temp[key]) {
-            temp = temp[key]
-          } else {
-            temp = expected
-            break
-          }
-        }
-        return temp || expected
-      } else {
-        return obj[arrayOrKey] || expected
-      }
-    } catch (e) {
-      return expected
-    }
-  }
+  return useCallback(function (defaultValue) {
+    return diffCatch2(value, defaultValue)
+  }, [value])
 }
 
 export function fromEntries (arr) {

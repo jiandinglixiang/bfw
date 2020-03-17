@@ -1,35 +1,72 @@
-export default function diffCatch22 (obj, backObj) {
-  if (obj === undefined) return backObj
-  const upType = typeof obj
-  const backType = typeof backObj
+import { toBigNumber } from './util.js'
+
+export function diffCatch (value, defaultValue) {
+  if (value === undefined) return defaultValue
+  const upType = typeof value
+  const backType = typeof defaultValue
   if (backType === 'object') {
     // 复杂类型
     if (upType !== 'object') {
-      errorTip(obj, upType, backType)
-      return backObj
+      errorTip(value, upType, backType)
+      return defaultValue
     }
-    const type1 = Object.prototype.toString.call(backObj)
-    const type2 = Object.prototype.toString.call(obj)
+    const type1 = Object.prototype.toString.call(defaultValue)
+    const type2 = Object.prototype.toString.call(value)
     if (type1 === type2) {
       if (type2 === '[object Object]') {
-        return Object.entries(backObj).reduce(function (init, arr) {
-          init[arr[0]] = diffCatch22(obj[arr[0]], arr[1])
+        return Object.entries(defaultValue).reduce(function (init, arr) {
+          init[arr[0]] = diffCatch(init[arr[0]], arr[1])
           return init
-        }, {})
+        }, { ...value })
       }
-      return obj
+      return value
     }
-    errorTip(obj, upType, backType)
-    return backObj
-  } else if (backType === upType) {
-    // 基础类型
-    return obj
-  } else if (backType === 'number' && upType === 'string') {
-    errorTip(obj, upType, backType)
-    return (upType && parseFloat(upType)) || backType
+    // errorTip(value, type2, type1)
+    return defaultValue
   }
-  obj && errorTip(obj, upType, backType)
-  return backObj
+  if (backType === upType) {
+    return value
+  }
+  if (backType === 'number' && upType === 'string') {
+    // errorTip(value, upType, backType)
+    return (value && parseFloat(value)) || defaultValue
+  }
+  errorTip(value, upType, backType)
+  return defaultValue
+}
+
+function diffCatch2 (value, defaultValue) {
+  const formType1 = Object.prototype.toString.call(defaultValue)
+  const formType2 = Object.prototype.toString.call(value)
+  const isObj2 = formType2 === '[object Object]'
+  let isObj = formType1 === '[object Object]'
+  let arr
+  if (isObj) {
+    arr = Object.keys(defaultValue)
+    isObj = !!arr.length
+  }
+  if (isObj2 && isObj) {
+    let copyObj
+    try {
+      copyObj = { ...value }
+      arr.forEach(function (key) {
+        copyObj[key] = diffCatch2(value[key], defaultValue[key])
+      })
+      return copyObj
+    } catch (e) {
+      console.log(e)
+      return defaultValue
+    }
+  } else if (formType1 === formType2) {
+    return value
+  } else if (value && formType1 === '[object Number]' && formType2 === '[object String]') {
+    return toBigNumber(value).toNumber()
+  } else {
+    if (value) {
+      console.warn('类型不服合!', '实际=', value, '预期=', defaultValue)
+    }
+    return defaultValue
+  }
 }
 
 function errorTip (obj, upType, backType) {
@@ -37,6 +74,7 @@ function errorTip (obj, upType, backType) {
     console.warn('类型不服合!', obj, '实际=', upType, '预期=', backType)
   }
 }
+
 /*
 
 window.timeasd2 = () => {
@@ -97,3 +135,4 @@ window.timeasd2 = () => {
   }, 100)
 }
 */
+export default diffCatch
