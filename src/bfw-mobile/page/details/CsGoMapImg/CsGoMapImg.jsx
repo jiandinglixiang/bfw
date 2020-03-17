@@ -96,7 +96,7 @@ function BothTable ({ team2Table, team1Table, teamNameLogo }) {
         <table className={styles.csgoTableYellow}>
           <thead>
             <tr>
-              <th><p><Image src={[teamNameLogo.team2.logo, def1]} /></p></th>
+              <th><p><Image src={[teamNameLogo.team2.logo, def2]} /></p></th>
               <th><p>HS%</p></th>
               <th><p>KAST</p></th>
               <th><p>K-D</p></th>

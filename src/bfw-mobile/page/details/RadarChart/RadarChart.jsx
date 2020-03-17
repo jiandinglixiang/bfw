@@ -11,10 +11,10 @@ function RadarChart (props = {}) {
     endMatch: {
       team1: {
         game_type_id: 0,
-        team_logo: def1
+        team_logo: ''
       },
       team2: {
-        team_logo: def2
+        team_logo: ''
       },
       battle_data: {
         team1: {
@@ -38,6 +38,7 @@ function RadarChart (props = {}) {
       }
     }
   })
+  let colorArr = []
 
   const ref = useRef()
   const gameLol = propsVE.endMatch.team1.game_type_id === 1
@@ -81,6 +82,11 @@ function RadarChart (props = {}) {
           max: (value.team1 + value.team2) || 100
         }
       })
+      if (propsVE.endMatch.team1.other_more_attr.camp === 'blue') {
+        colorArr = ['#3393FF', '#E12727']
+      } else if (propsVE.endMatch.team2.other_more_attr.camp === 'blue') {
+        colorArr = ['#E12727', '#3393FF']
+      }
     } else {
       const [denies, lastHits] = [
         {
@@ -99,6 +105,11 @@ function RadarChart (props = {}) {
           max: (value.team1 + value.team2) || 100
         }
       })
+      if (propsVE.endMatch.team1.other_more_attr.camp === 'dire') {
+        colorArr = ['#3393FF', '#E12727']
+      } else if (propsVE.endMatch.team2.other_more_attr.camp === 'dire') {
+        colorArr = ['#E12727', '#3393FF']
+      }
     }
     const option = {
       backgroundColor: '#101831',
@@ -111,20 +122,30 @@ function RadarChart (props = {}) {
               value: indicator.map(val => val.team1 / val.max * val.max),
               lineStyle: {
                 width: 1,
-                color: '#3359FF'
+                color: colorArr[0]
               },
               areaStyle: {
-                color: 'rgba(51,89,255,0.2)'
+                color: colorArr[0],
+                opacity: 0.2
+              },
+              itemStyle: {
+                color: '#fff',
+                borderColor: colorArr[0]
               }
             },
             {
               value: indicator.map(val => val.team2 / val.max * val.max),
               lineStyle: {
                 width: 1,
-                color: '#E12727'
+                color: colorArr[1]
               },
               areaStyle: {
-                color: 'rgba(225,39,39,0.2)'
+                color: colorArr[1],
+                opacity: 0.2
+              },
+              itemStyle: {
+                color: '#fff',
+                borderColor: colorArr[1]
               }
             }
           ]
@@ -164,7 +185,7 @@ function RadarChart (props = {}) {
   return <div className={styles.container}>
     <div className={styles.left}>
       <div>
-        <Image src={propsVE.endMatch.team1.team_logo} />
+        <Image src={[propsVE.endMatch.team1.team_logo, def1]} />
         <p>{propsVE.endMatch.team1.team_name}</p>
       </div>
       <p>总等级:{propsVE.endMatch.battle_data.team1.level}</p>
@@ -181,7 +202,7 @@ function RadarChart (props = {}) {
     <div className={styles.right}>
       <div>
         <p dir='rtl'>{propsVE.endMatch.team2.team_name}</p>
-        <Image src={propsVE.endMatch.team2.team_logo} />
+        <Image src={[propsVE.endMatch.team2.team_logo, def2]} />
       </div>
       <p>{propsVE.endMatch.battle_data.team2.level}:总等级 </p>
       <p>{propsVE.endMatch.battle_data.team2.kills}:总击杀 </p>
