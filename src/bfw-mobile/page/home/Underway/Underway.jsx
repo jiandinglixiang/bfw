@@ -94,12 +94,14 @@ function UnderwayDota (props) {
   })
   const moreAttr1 = gameData.team1_more_attr.other_more_attr
   const moreAttr2 = gameData.team2_more_attr.other_more_attr
+  const duration = moreAttr1.duration || moreAttr2.duration
 
   const inningsTime = useMemo(() => {
     const nowInnings = inning(gameData.current_round)
-    const timeTxt = parseInt(gameData.poor_economy.time / 60)
+    // durationDota和lol使用此作为时间
+    const timeTxt = parseInt(duration / 60)
     return timeTxt ? `${nowInnings} ${timeTxt}’` : nowInnings
-  }, [gameData])
+  }, [duration, gameData.current_round])
 
   const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
 
@@ -272,12 +274,12 @@ function UnderwayLol (props) {
   })
   const moreAttr1 = gameData.team1_more_attr.other_more_attr
   const moreAttr2 = gameData.team2_more_attr.other_more_attr
-
+  const duration = moreAttr1.duration || moreAttr2.duration
   const inningsTime = useMemo(() => {
     const nowInnings = inning(gameData.current_round || 1)
-    const timeTxt = parseInt(gameData.poor_economy.time / 60)
+    const timeTxt = parseInt(duration / 60)
     return timeTxt ? `${nowInnings} ${timeTxt}’` : nowInnings
-  }, [gameData.poor_economy.time, gameData.current_round])
+  }, [duration, gameData.current_round])
 
   const poorEconomy = useMemo(() => toBigNumber(gameData.poor_economy.gold / 1000).toFormat(1), [gameData.poor_economy.gold])
 

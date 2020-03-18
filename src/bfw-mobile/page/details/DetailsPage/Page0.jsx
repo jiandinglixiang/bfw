@@ -14,12 +14,12 @@ function rowItem (data) {
     try {
       if (names.includes('单双')) {
         return [
-          '单双',
+          data.play_name[index] || '-',
           `(${leftOdds.name[0]})${leftOdds.odds} - (${rightOdds.name[0]})${rightOdds.odds}`
         ]
       } else if (names.includes('大小')) {
         return [
-          '总比分大小',
+          data.play_name[index] || '-',
           `(${leftOdds.name[0]})${leftOdds.odds} - (${rightOdds.name[0]})${rightOdds.odds}`
         ]
       } else if (names.includes('让分')) {

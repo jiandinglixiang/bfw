@@ -367,6 +367,7 @@ function Both ({ data = {}, endMatch, matchList }) {
   data.time = timeToTxt(endMatchVE.poor_economy.time, data.status)
   data.gold = toBigNumber(endMatchVE.poor_economy.gold / 1000).toFormat(1)
   if (data.gameId === 5) {
+    data.time = timeToTxt(endMatchVE.team1.other_more_attr.duration, data.status)
     // dota阵营
     data.team1.camp = endMatchVE.team1.other_more_attr.camp
     data.team2.camp = endMatchVE.team2.other_more_attr.camp
@@ -381,6 +382,7 @@ function Both ({ data = {}, endMatch, matchList }) {
     ]
   }
   if (data.gameId === 1) {
+    data.time = timeToTxt(endMatchVE.team1.other_more_attr.duration, data.status)
     // lol阵营
     data.team1.camp = endMatchVE.team1.other_more_attr.camp
     data.team2.camp = endMatchVE.team2.other_more_attr.camp
@@ -460,7 +462,6 @@ function Match ({ data = {}, matchList }) {
     data.team1.score = matchList.team1_score
     data.team2.score = matchList.team2_score
     data.round = inning(matchList.current_round)
-    data.time = timeToTxt(matchList.poor_economy.time, data.status)
     data.gold = toBigNumber(matchList.poor_economy.gold / 1000).toFormat(1)
     data.underwayBP = !!(matchList.team1_more_attr.players.length ||
       matchList.team1_more_attr.ban.length ||
@@ -469,6 +470,7 @@ function Match ({ data = {}, matchList }) {
     // 进行中 但没有选角色，没有ban
     if (data.gameId === 5) {
       // 非小局 进行中 游戏dota
+      data.time = timeToTxt(matchList.team1_more_attr.other_more_attr.duration, data.status)
       // 阵营dire=天辉
       data.team1.camp = matchList.team1_more_attr.other_more_attr.camp
       data.team2.camp = matchList.team2_more_attr.other_more_attr.camp
@@ -492,6 +494,7 @@ function Match ({ data = {}, matchList }) {
     }
     if (data.gameId === 1) {
       // 非小局 进行中 游戏lol
+      data.time = timeToTxt(matchList.team1_more_attr.other_more_attr.duration, data.status)
       // 阵营blue=蓝方
       data.team1.camp = matchList.team1_more_attr.other_more_attr.camp
       data.team2.camp = matchList.team2_more_attr.other_more_attr.camp
@@ -511,6 +514,7 @@ function Match ({ data = {}, matchList }) {
           </div>
         </div>)
     }
+    data.time = timeToTxt(matchList.poor_economy.time, data.status)
     if (data.gameId === 3) {
       // csgo 显示
       const csgoScore = matchList.score.split(/:|,/).map(v => (v && parseInt(v)) || 0)
