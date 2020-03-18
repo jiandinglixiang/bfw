@@ -5,13 +5,17 @@ import GameTitle from '../GameTitle/GameTitle.jsx'
 import MatchTitle from '../../../components/MatchTitle/MatchTitle.jsx'
 import defImg1 from '../../../assets/default_teamred_40.png'
 import defImg2 from '../../../assets/default_teamblue_40.png'
-import TryCatch from '../../../components/TryCatch/TryCatch.jsx'
 import { routerDetails } from '../Underway/Underway.jsx'
 import { useHistory } from 'react-router-dom'
 import { Divs, Image, Text } from '../../../components/BasicsHtml/BasicsHtml.jsx'
 
 function ScheduleBody (props) {
-  const { gameData = {}, isOver = false } = props
+  const { gameData, isOver } = diffCatch(props)({
+    gameData: {
+      score: ''
+    },
+    isOver: false
+  })
   const history = useHistory()
   let pvpStatus
   if (isOver) {
@@ -55,15 +59,13 @@ function ScheduleList (props) {
   return propsVE.value.map((value, index) => {
     const time = formatDate3(value.game_start_time)
     return <ul key={index}>
-      <TryCatch>
-        <GameTitle
-          gameId={value.game_type_id}
-          gameName={value.game_name}
-          icon={value.icon}
-          time={`${value.match_rules} ${time}`}
-        />
-        <ScheduleBody gameData={value} isOver={propsVE.isOver} />
-      </TryCatch>
+      <GameTitle
+        gameId={value.game_type_id}
+        gameName={value.game_name}
+        icon={value.icon}
+        time={`${value.match_rules} ${time}`}
+      />
+      <ScheduleBody gameData={value} isOver={propsVE.isOver} />
     </ul>
   })
 }

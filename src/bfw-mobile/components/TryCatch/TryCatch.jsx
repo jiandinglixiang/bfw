@@ -6,8 +6,9 @@ export default class TryCatch extends React.Component {
     this.state = { hasError: false }
   }
 
-  static getDerivedStateFromError () {
+  static getDerivedStateFromError (err) {
     // 更新 state 使下一次渲染能够显示降级后的 UI
+    console.log(err)
     return { hasError: true }
   }
 
