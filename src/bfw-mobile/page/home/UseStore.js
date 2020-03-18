@@ -9,32 +9,26 @@ export const homeMenuData = createUseStore({
 })
 
 function reducer (state, action) {
+  let name
   switch (action.type) {
     case 'TIME_UPDATE':
       return Object.assign({}, state, {
         time: action.time,
-        gameStatus: action.gameStatus
+        gameType: action.gameType
       })
     case 'GAME_STATUS_UPDATE':
-      return Object.assign({}, state, { gameStatus: action.gameStatus })
+      return Object.assign({}, state, { gameType: action.gameType })
     case 'GAME_ID_UPDATE':
       return Object.assign({}, state, {
         gameId: action.gameId,
-        gameStatus: action.gameStatus, // 赛程赛果
+        gameType: action.gameType, // 赛程赛果
       })
     case 'ADD_SCHEDULE_LIST':
+      name = 'schedule_list' + state.gameType
       return Object.assign({}, state, {
-        start_match_list: {
-          ...state.start_match_list,
-          [state.gameId + state.time]: action.start_match_list
-        },
-        not_start_match_list: {
-          ...state.not_start_match_list,
-          [state.gameId + state.time]: action.not_start_match_list
-        },
-        end_match_list: {
-          ...state.end_match_list,
-          [state.gameId + state.time]: action.end_match_list
+        [name]: {
+          ...state[name],
+          [state.gameId + state.time]: action.schedule_list
         },
       })
     default:
@@ -44,11 +38,11 @@ function reducer (state, action) {
 
 export const homeGameX = createUseReducer(reducer, {
   gameId: 0, // 游戏id
-  gameStatus: 0, // 赛程赛果
   time: '',
-  start_match_list: {}, // 'gameId-time':[]
-  not_start_match_list: {},
-  end_match_list: {},
+  gameType: 0, // 0赛程1进行中2赛果
+  schedule_list0: {}, // 'gameId-time':[]
+  schedule_list1: {}, // 'gameId-time':[]
+  schedule_list2: {}, // 'gameId-time':[]
 })
 
 export default {
@@ -64,7 +58,7 @@ export default {
       }
     })
   },
-  getScheduleList (gameId, time) {
+  getScheduleList (gameId, time, type) {
     let state
     if (gameId === undefined) {
       state = homeGameX.getStoreX()
@@ -74,18 +68,16 @@ export default {
       !state && (state = homeGameX.getStoreX())
       time = state.time
     }
-    return http.getHomeSchedule(gameId, time).then(function (value) {
+    if (type === undefined) {
+      !state && (state = homeGameX.getStoreX())
+      type = state.gameType
+    }
+    return http.getHomeSchedule(gameId, time, type).then(function (value) {
       if (value) {
-        const valueVE = diffCatch(value)({
-          start_match_list: [],
-          not_start_match_list: [],
-          end_match_list: [],
-        })
+        const valueVE = diffCatch(value)([])
         homeGameX.dispatchX({
           type: 'ADD_SCHEDULE_LIST',
-          start_match_list: valueVE.start_match_list,
-          not_start_match_list: valueVE.not_start_match_list,
-          end_match_list: valueVE.end_match_list,
+          schedule_list: valueVE
         })
       }
     })

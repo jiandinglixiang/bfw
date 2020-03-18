@@ -51,9 +51,10 @@ function TabsContainer () {
 
   function statusTap (x) {
     // 切换赛程赛果
+    UseStore.getScheduleList(homeState.gameId, homeState.time, x)
     homeDispatch({
       type: 'GAME_STATUS_UPDATE',
-      gameStatus: x
+      gameType: x
     })
   }
 
@@ -71,11 +72,11 @@ function TabsContainer () {
                     onClick={() => {
                       if (menuState === 2) setMenuState(1)
                       if (value.id === homeState.gameId) return
-                      UseStore.getScheduleList(value.id, homeState.time)
+                      UseStore.getScheduleList(value.id, homeState.time, 0)
                       homeDispatch({
                         type: 'GAME_ID_UPDATE',
                         gameId: value.id,
-                        gameStatus: 0, // 赛程赛果
+                        gameType: 0, // 赛程赛果
                       })
                     }}>
                     {value.game_name}
@@ -95,17 +96,17 @@ function TabsContainer () {
           <div className={styles.dayList}>
             <Divs
               onClick={() => statusTap(0)}
-              className={[styles.noStart, homeState.gameStatus === 0 && styles.activeButton]}>
+              className={[styles.noStart, homeState.gameType === 0 && styles.activeButton]}>
               <p><span>赛程</span></p>
             </Divs>
             <Divs
               onClick={() => statusTap(1)}
-              className={[styles.starting, homeState.gameStatus === 1 && styles.activeButton]}>
+              className={[styles.starting, homeState.gameType === 1 && styles.activeButton]}>
               <p><span>进行中</span></p>
             </Divs>
             <Divs
               onClick={() => statusTap(2)}
-              className={[styles.endOver, homeState.gameStatus === 2 && styles.activeButton]}>
+              className={[styles.endOver, homeState.gameType === 2 && styles.activeButton]}>
               <p><span>赛果</span></p>
             </Divs>
             {['', dayTime].includes(homeState.time) && <CountDown cbk={() => UseStore.getScheduleList()} />}
@@ -118,11 +119,11 @@ function TabsContainer () {
               onChange={(value) => {
                 const date = moment(value).format('YYYY-MM-DD')
                 // setPickerTime(date.toDate())
-                UseStore.getScheduleList(homeState.gameId, date)
+                UseStore.getScheduleList(homeState.gameId, date, 0)
                 homeDispatch({
                   type: 'TIME_UPDATE',
                   time: date,
-                  gameStatus: 0, // 赛程赛果
+                  gameType: 0, // 赛程赛果
                 })
               }}
             >

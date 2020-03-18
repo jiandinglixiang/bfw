@@ -76,9 +76,10 @@ export const http = {
   getHomeMenu () {
     return Http.get('/home')
   },
-  getHomeSchedule (gameId, time) {
+  getHomeSchedule (gameId, time, type) {
     return Http.get('/schedule', {
       game_id: gameId,
+      type,
       time,
     })
   },

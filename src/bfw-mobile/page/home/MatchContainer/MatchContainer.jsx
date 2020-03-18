@@ -34,13 +34,11 @@ function onScroll () {
 
 function MatchContainer () {
   const [state] = homeGameX.useStoreX()
+
   const stateVE = useMemo(function () {
-    return [
-      state.not_start_match_list[state.gameId + state.time],
-      state.start_match_list[state.gameId + state.time],
-      state.end_match_list[state.gameId + state.time]
-    ]
+    return state['schedule_list' + state.gameType][state.gameId + state.time]
   }, [state])
+
   useEffect(function () {
     window.addEventListener('scroll', onScroll)
     return function () {
@@ -48,13 +46,14 @@ function MatchContainer () {
       window.removeEventListener('scroll', onScroll)
     }
   }, [stateVE])
-  if (!stateVE[state.gameStatus] || (stateVE[state.gameStatus] && !stateVE[state.gameStatus].length)) {
+
+  if (!stateVE || (stateVE && !stateVE.length)) {
     return <div className={styles.withOut}>暂无数据</div>
   }
-  if (state.gameStatus === 1) {
-    return <InPlay data={stateVE[1]} />
+  if (state.gameType === 1) {
+    return <InPlay data={stateVE} />
   }
-  return <NotStartedOrOver data={stateVE[state.gameStatus]} isOver={state.gameStatus === 2} />
+  return <NotStartedOrOver data={stateVE} isOver={state.gameType === 2} />
 }
 
 export default MatchContainer
