@@ -13,7 +13,7 @@ if (process.env.REACT_APP_build_url === 'test') {
 } else if (process.env.NODE_ENV !== 'production') {
   // 开发
   baseURL = '/dev'
-  aboutUrl = 'http://scoreapitest.firebulls.net/help/about'
+  aboutUrl = baseURL + '/help/about'
 }
 export const StaticURL = {
   about: aboutUrl

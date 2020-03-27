@@ -246,8 +246,8 @@ function CsGoMapImg (props) {
     isBoth: false
   })
   let overTxt
-  let team1Table
-  let team2Table
+  let team1Table = []
+  let team2Table = []
   let first
   let second
   let showBottom
@@ -356,8 +356,6 @@ function CsGoMapImg (props) {
       }
     })
     showBottom = propsVE.matchList.status > 0
-    team1Table = propsVE.matchResult.match_list.real_players[0] || []
-    team2Table = propsVE.matchResult.match_list.real_players[1] || []
     // 成员数据
     first = propsVE.matchResult.match_list.real_history.first
     second = propsVE.matchResult.match_list.real_history.second
@@ -365,6 +363,15 @@ function CsGoMapImg (props) {
     teamNameLogo.team2.name = propsVE.matchList.guest_team_name
     teamNameLogo.team1.logo = propsVE.matchList.host_team_logo
     teamNameLogo.team2.logo = propsVE.matchList.guest_team_logo
+    propsVE.matchResult.match_list.real_players.forEach((arr) => {
+      if (arr && arr[0]) {
+        if (arr[0].team1_id === propsVE.matchList.team1_id) {
+          team1Table = arr
+        } else if (arr[0].team1_id === propsVE.matchList.team2_id) {
+          team2Table = arr
+        }
+      }
+    })
     const team1MoreAttrs = propsVE.matchList.team1_more_attr.other_more_attr
     const team2MoreAttrs = propsVE.matchList.team2_more_attr.other_more_attr
     realHistory.first.team1.role = team1MoreAttrs.first_half_role
