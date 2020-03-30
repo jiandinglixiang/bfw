@@ -12,7 +12,7 @@ if (process.env.REACT_APP_build_url === 'test') {
   // 打包正式地址
 } else if (process.env.NODE_ENV !== 'production') {
   // 开发
-  baseURL = '/dev'
+  baseURL = '/prod'
   aboutUrl = baseURL + '/help/about'
 }
 export const StaticURL = {

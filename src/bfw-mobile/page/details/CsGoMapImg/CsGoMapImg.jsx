@@ -365,9 +365,9 @@ function CsGoMapImg (props) {
     teamNameLogo.team2.logo = propsVE.matchList.guest_team_logo
     propsVE.matchResult.match_list.real_players.forEach((arr) => {
       if (arr && arr[0]) {
-        if (arr[0].team1_id === propsVE.matchList.team1_id) {
+        if (arr[0].team_id === propsVE.matchList.team1_id) {
           team1Table = arr
-        } else if (arr[0].team1_id === propsVE.matchList.team2_id) {
+        } else if (arr[0].team_id === propsVE.matchList.team2_id) {
           team2Table = arr
         }
       }
